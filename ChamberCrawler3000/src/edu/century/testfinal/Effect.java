@@ -2,7 +2,10 @@ package edu.century.testfinal;
 
 public class Effect
 {
-	public static enum effects
+	String name;
+	double magnitude;
+	
+	public Effect(String name)
 	{
 		
 	}

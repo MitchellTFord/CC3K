@@ -45,11 +45,11 @@ public class Race
 		return effectMagnitude;
 	}
 
-	Race shade = new Race("Shade", 0, 0, 0, null, 0);
-	Race drow = new Race("Drow", 25, 0, -10, null, 0);
-	Race vampire = new Race("Vampire", -75, 0, 0, null, 0);
-	Race troll = new Race("Troll", -5, 0, 0, null, 0);
-	Race goblin = new Race("Goblin", -10, 0, 0, null, 0);
+	public static Race shade = new Race("Shade", 0, 0, 0, null, 0);
+	public static Race drow = new Race("Drow", 25, 0, -10, null, 0);
+	public static Race vampire = new Race("Vampire", -75, 0, 0, null, 0);
+	public static Race troll = new Race("Troll", -5, 0, 0, null, 0);
+	public static Race goblin = new Race("Goblin", -15, -5, 0, null, 0);
 	  
 	/*
 	0	Shade:		125 HP, 25 Atk,	25 Def
