@@ -1,4 +1,4 @@
-package edu.century.testfinal;
+package edu.century.game;
 
 public class Tile
 {

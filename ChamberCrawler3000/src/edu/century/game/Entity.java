@@ -1,6 +1,11 @@
-package edu.century.testfinal;
+package edu.century.game;
 
-public class Entity
+enum EntityType
+{
+	CHARACTER, ITEM;
+}
+
+public abstract class Entity
 {
 	private Tile currentTile;
 	EntityType entityType;
