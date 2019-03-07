@@ -2,22 +2,34 @@ package edu.century.game;
 
 public class Race
 {
-	
 	private String raceName;
 	private double healthMod;
 	private double attackMod;
 	private double defenceMod;
 	private EffectType raceEffectType;
-	private double effectMagnitude;
+	private double raceEffectMagnitude;
 	
 	private Race(String raceName, double healthMod, double attackMod, double defenceMod, 
-			EffectType raceEffectType, double effectMagnitude)
+			EffectType raceEffectType, double raceEffectMagnitude)
 	{
 		this.raceName = raceName;
 		this.healthMod = healthMod;
 		this.attackMod = attackMod;
 		this.defenceMod = defenceMod;
 		this.raceEffectType = raceEffectType;
+		this.raceEffectMagnitude = raceEffectMagnitude;
+	}
+	
+	public Effect getEffect(Character character)
+	{
+		if (raceEffectType != null)
+		{
+			return new Effect(character, character, raceName + " Racial", raceEffectType, raceEffectMagnitude, -1);
+		}
+		else
+		{
+			return null;
+		}
 	}
 	
 	public String getRaceName()
@@ -36,20 +48,28 @@ public class Race
 	{
 		return defenceMod;
 	}
+	
+	/**
+	 * @deprecated
+	 */
 	public EffectType getRaceEffectType()
 	{
 		return raceEffectType;
 	}
+	
+	/**
+	 * @deprecated
+	 */
 	public double getEffectMagnitude()
 	{
-		return effectMagnitude;
+		return raceEffectMagnitude;
 	}
 
 	public static Race shade = new Race("Shade", 0, 0, 0, null, 0);
-	public static Race drow = new Race("Drow", 25, 0, -10, EffectType.POTION_POWER, 0);
-	public static Race vampire = new Race("Vampire", -75, 0, 0, null, 0);
-	public static Race troll = new Race("Troll", -5, 0, 0, null, 0);
-	public static Race goblin = new Race("Goblin", -15, -5, 0, null, 0);
+	public static Race drow = new Race("Drow", 25, 0, -10, EffectType.POTION_POWER, 0.5);
+	public static Race vampire = new Race("Vampire", -75, 0, 0, EffectType.VAMPIRE_RACIAL, 0);
+	public static Race troll = new Race("Troll", -5, 0, 0, EffectType.REGENERATION, 5);
+	public static Race goblin = new Race("Goblin", -15, -5, 0, EffectType.GOLD_ON_KILL, 5);
 	  
 	/*
 	0	Shade:		125 HP, 25 Atk,	25 Def

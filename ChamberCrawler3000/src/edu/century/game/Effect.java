@@ -2,9 +2,14 @@ package edu.century.game;
 
 enum EffectType
 {
+	//Implemented
 	BURN,
 	BOOST_MAX_HEALTH, BOOST_ATK, BOOST_DEF, WOUND_ATK, WOUND_DEF, WOUND_MAX_HEALTH,
-	POTION_POWER;
+	POTION_POWER,
+	
+	//Not Implemented
+	REGENERATION, GOLD_ON_KILL,
+	VAMPIRE_RACIAL;
 }
 
 public class Effect
@@ -15,6 +20,7 @@ public class Effect
 	EffectType baseEffect;
 	double magnitude;
 	int duration;
+	boolean hasNonStatEffect, isPermanent;
 	
 	double potionPowerMod;
 	double attackMod, defenceMod, healthMod;
@@ -33,10 +39,19 @@ public class Effect
 		this.healthMod = 0;
 		this.potionPowerMod = 0;
 		
+		if(duration == -1)
+		{	//A duration of -1 signifies that an effect is permanent
+			isPermanent = true;
+		}
+		
+		//Can be set to true in the switch below
+		hasNonStatEffect = false;
+		
 		switch(baseEffect)
 		{
 		case BURN:
-			Character.damage(this.caster, this.affectedCharacter, DamageType.ELEMENTAL, magnitude);
+			hasNonStatEffect = true;
+			//Character.damage(this.caster, this.affectedCharacter, DamageType.ELEMENTAL, magnitude);
 			break;
 		case POTION_POWER:
 			potionPowerMod = magnitude;
@@ -59,6 +74,39 @@ public class Effect
 		case WOUND_MAX_HEALTH:
 			healthMod = -magnitude;
 			break;
+		
+		//TODO: implement these cases
+		case GOLD_ON_KILL:
+			break;
+		case REGENERATION:
+			break;
+		case VAMPIRE_RACIAL:
+			break;
+		default:
+			break;
 		}
+	}
+	
+	public void applyEffect()
+	{
+		switch(baseEffect)
+		{
+		case BURN:
+			Character.damage(this.caster, this.affectedCharacter, DamageType.ELEMENTAL, magnitude);
+			break;
+		}
+	}
+	
+	public void decrementDuration()
+	{
+		if(!isPermanent)
+		{
+			duration--;
+		}
+	}
+	
+	public int getDuration()
+	{
+		return duration;
 	}
 }

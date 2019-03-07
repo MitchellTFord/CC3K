@@ -7,7 +7,7 @@ enum EntityType
 
 public abstract class Entity
 {
-	private Tile currentTile;
+	Tile currentTile;
 	EntityType entityType;
 	
 	public Tile getCurrentTile()
