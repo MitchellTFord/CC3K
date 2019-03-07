@@ -1,8 +1,8 @@
 package edu.century.game.entity;
 
-import edu.century.game.Effect;
-import edu.century.game.Race;
 import edu.century.game.Tile;
+import edu.century.game.effect.Effect;
+import edu.century.game.race.Race;
 
 
 public class Character extends Entity
@@ -83,32 +83,7 @@ public class Character extends Entity
 		{
 			if (effects[i] != null)
 			{
-				potionPower += effects[i].getPotionPowerMod();
-				maxHealth += effects[i].getHealthMod();
-				attack += effects[i].getAttackMod();
-				defence += effects[i].getDefenceMod();
-			}
-		}
-	}
-
-	public void applyEffects()
-	{
-		for(int i = 0; i < effects.length; i++)
-		{
-			if (effects[i] != null)
-			{
-				if (effects[i].getHasNonStatEffect())
-				{
-					effects[i].applyEffect();
-				}
-
-				if (effects[i].getDuration() == 0)
-				{
-					// Destroy Effect object
-
-					// Remove object from effects array
-					effects[i] = null;
-				}
+				effects[i].applyEffect(this);
 			}
 		}
 	}
@@ -121,5 +96,40 @@ public class Character extends Entity
 	public double getDefence()
 	{
 		return defence;
+	}
+	
+	public void modMaxHealth(double amount)
+	{
+		potionPower += amount;
+	}
+	
+	public void modAttack(double amount)
+	{
+		attack += amount;
+	}
+	
+	public void modDefence(double amount)
+	{
+		defence += amount;
+	}
+	
+	public void modPotionPower(double amount)
+	{
+		potionPower += amount;
+	}
+	
+	//Called at end of turn
+	public void decrementEffectDurations(Effect[] effects)
+	{
+		for(int i = 0; i < effects.length; i++)
+		{
+			if (effects[i].getDuration() == 0)
+			{
+				//TODO: Destroy Effect object
+
+				// Remove object from effects array
+				effects[i] = null;
+			}
+		}
 	}
 }
