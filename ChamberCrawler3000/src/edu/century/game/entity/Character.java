@@ -1,9 +1,9 @@
-package edu.century.game;
+package edu.century.game.entity;
 
-enum DamageType
-{
-	PHYSICAL, ELEMENTAL;
-}
+import edu.century.game.Effect;
+import edu.century.game.Race;
+import edu.century.game.Tile;
+
 
 public class Character extends Entity
 {
@@ -16,8 +16,6 @@ public class Character extends Entity
 
 	public Character(Tile currentTile, Race race)
 	{
-		super();
-		
 		this.entityType = EntityType.CHARACTER;
 
 		this.currentTile = currentTile;
@@ -85,10 +83,10 @@ public class Character extends Entity
 		{
 			if (effects[i] != null)
 			{
-				potionPower += effects[i].potionPowerMod;
-				maxHealth += effects[i].healthMod;
-				maxHealth += effects[i].healthMod;
-				maxHealth += effects[i].healthMod;
+				potionPower += effects[i].getPotionPowerMod();
+				maxHealth += effects[i].getHealthMod();
+				attack += effects[i].getAttackMod();
+				defence += effects[i].getDefenceMod();
 			}
 		}
 	}
@@ -99,7 +97,7 @@ public class Character extends Entity
 		{
 			if (effects[i] != null)
 			{
-				if (effects[i].hasNonStatEffect)
+				if (effects[i].getHasNonStatEffect())
 				{
 					effects[i].applyEffect();
 				}

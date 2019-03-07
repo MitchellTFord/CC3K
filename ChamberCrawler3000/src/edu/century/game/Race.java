@@ -1,5 +1,7 @@
 package edu.century.game;
 
+import edu.century.game.entity.Character;
+
 public class Race
 {
 	private String raceName;

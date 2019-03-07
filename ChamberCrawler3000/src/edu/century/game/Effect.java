@@ -1,5 +1,8 @@
 package edu.century.game;
 
+import edu.century.game.entity.Character;
+import edu.century.game.entity.DamageType;
+
 enum EffectType
 {
 	//Implemented
@@ -108,5 +111,35 @@ public class Effect
 	public int getDuration()
 	{
 		return duration;
+	}
+
+	public boolean isPermanent()
+	{
+		return isPermanent;
+	}
+
+	public double getPotionPowerMod()
+	{
+		return potionPowerMod;
+	}
+
+	public double getAttackMod()
+	{
+		return attackMod;
+	}
+
+	public double getDefenceMod()
+	{
+		return defenceMod;
+	}
+
+	public double getHealthMod()
+	{
+		return healthMod;
+	}
+	
+	public boolean getHasNonStatEffect()
+	{
+		return hasNonStatEffect;
 	}
 }

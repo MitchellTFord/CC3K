@@ -1,5 +1,7 @@
 package edu.century.game;
 
+import edu.century.game.entity.Entity;
+
 public class Tile
 {
 	private int gridX, gridY;

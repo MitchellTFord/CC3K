@@ -1,4 +1,6 @@
-package edu.century.game;
+package edu.century.game.entity;
+
+import edu.century.game.Tile;
 
 enum EntityType
 {
