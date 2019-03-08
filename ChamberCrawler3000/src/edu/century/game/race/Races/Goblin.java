@@ -1,27 +1,27 @@
-package edu.century.game.race;
+package edu.century.game.race.Races;
 
 import edu.century.game.effect.Effect;
 import edu.century.game.entity.Character;
+import edu.century.game.race.Race;
 
-public class Drow extends Race
+public class Goblin extends Race
 {
-	//public static Race drow = new Race("Drow", 25, 0, -10, EffectType.POTION_POWER, 0.5);
-	public Drow()
+	//public static Race goblin = new Race("Goblin", -15, -5, 0, EffectType.GOLD_ON_KILL, 5);
+	public Goblin()
 	{
-		raceName = "Drow";
+		raceName = "Goblin";
 		
-		//Shade is the baseline class
-		healthMod = 0;
-		attackMod = 0;
+		healthMod = -15;
+		attackMod = -5;
 		defenceMod = 0;
 	}
 	
 	@Override
 	public Effect getEffect(Character character)
 	{
-		//Potion power is increased by 50%
+		//Gains 5 gold on kill
 		
-		//TODO: implement drow racial effect
+		//TODO: implement goblin racial effect
 		return null;
 	}
 
@@ -34,19 +34,19 @@ public class Drow extends Race
 	@Override
 	public double getHealthMod()
 	{
-		return healthMod;
+		return 0;
 	}
 
 	@Override
 	public double getAttackMod()
 	{
-		return attackMod;
+		return 0;
 	}
 
 	@Override
 	public double getDefenceMod()
 	{
-		return defenceMod;
+		return 0;
 	}
 }
 

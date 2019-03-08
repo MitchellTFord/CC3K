@@ -1,16 +1,16 @@
-package edu.century.game.race;
+package edu.century.game.race.Races;
 
 import edu.century.game.effect.Effect;
 import edu.century.game.entity.Character;
+import edu.century.game.race.Race;
 
-public class Shade extends Race
+public class Vampire extends Race
 {
-	public Shade()
+	public Vampire()
 	{
-		raceName = "Shade";
+		raceName = "Vampire";
 		
-		//Shade is the baseline class
-		healthMod = 0;
+		healthMod = -75;
 		attackMod = 0;
 		defenceMod = 0;
 	}
@@ -18,7 +18,8 @@ public class Shade extends Race
 	@Override
 	public Effect getEffect(Character character)
 	{
-		//Shade has no racial effect
+		//Gains 5 health on kill, no maximum health
+		//TODO: implement vampire racial effect
 		return null;
 	}
 
@@ -31,19 +32,19 @@ public class Shade extends Race
 	@Override
 	public double getHealthMod()
 	{
-		return 0;
+		return healthMod;
 	}
 
 	@Override
 	public double getAttackMod()
 	{
-		return 0;
+		return attackMod;
 	}
 
 	@Override
 	public double getDefenceMod()
 	{
-		return 0;
+		return defenceMod;
 	}
 }
 

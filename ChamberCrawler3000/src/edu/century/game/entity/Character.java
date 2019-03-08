@@ -2,15 +2,18 @@ package edu.century.game.entity;
 
 import edu.century.game.Tile;
 import edu.century.game.effect.Effect;
-import edu.century.game.race.Race;
+import edu.century.game.race.*;
+import edu.century.game.race.Races.*;
 
 
 public class Character extends Entity
 {
 	private double health, maxHealth, attack, defence;
+	
 	private Item armor, weapon;
 	private Race race;
 	private Tile currentTile;
+	
 	private Effect[] effects = new Effect[64];
 	private double potionPower;
 
@@ -19,16 +22,38 @@ public class Character extends Entity
 		this.entityType = EntityType.CHARACTER;
 
 		this.currentTile = currentTile;
-		this.race = race;
+		this.race = new Shade();
 
 		this.health = this.maxHealth = 125 + this.race.getHealthMod();
 		this.attack = 25 + this.race.getAttackMod();
 		this.defence = 25 + this.race.getDefenceMod();
 		
-		addEffect(race.getEffect(this));
-
+		this.addEffect(race.getEffect(this));
 	}
-
+	
+	public void update()
+	{
+		
+	}
+	
+	public void render()
+	{
+		
+	}
+	
+	public void startTurn()
+	{
+		this.updateStats();
+		this.applyEffects();
+	}
+	
+	public void endTurn()
+	{
+		this.decrementEffectDurations(this.effects);
+		
+		//Indicate to controller object that this character's turn is over
+	}
+	
 	public static void damage(Character caster, Character target, DamageType damageType, double damage)
 	{
 		switch(damageType)
@@ -36,10 +61,10 @@ public class Character extends Entity
 		case PHYSICAL:
 			// Damage(defender) =
 			// ceiling((100/(100+Def(defender)))*Atk(Attacker))
-			target.takeDamage(Math.ceil((100 / (100 + target.getDefence())) * damage));
+			target.takeDamage(Math.ceil((100 / (100 + target.getDefence())) * damage), caster);
 			break;
 		case ELEMENTAL:
-			target.takeDamage(damage);
+			target.takeDamage(damage, caster);
 			// Elemental damage goes through armor for now
 			break;
 		}
@@ -59,13 +84,17 @@ public class Character extends Entity
 			}
 			// TODO: handle the case where effects[] is full
 		}
-		//This character's race doesn't have a special effect
 	}
 
-	public void takeDamage(double amount)
+	public void takeDamage(double amount, Character damager)
 	{
 		this.health -= amount;
+		
 		// Check if dead, handle it
+		if(health <= 0)
+		{
+			
+		}
 	}
 
 	public void takeHeal(double amount)
@@ -83,9 +112,26 @@ public class Character extends Entity
 		{
 			if (effects[i] != null)
 			{
-				effects[i].applyEffect(this);
+				effects[i].applyStatChange();
 			}
 		}
+	}
+	
+	//Called at the start of the turn
+	public void applyEffects()
+	{
+		for(int i = 0; i < effects.length; i++)
+		{
+			if (effects[i] != null)
+			{
+				effects[i].applyEffect();
+			}
+		}
+	}
+	
+	public void targetKilled(Character target)
+	{
+		//On-kill effects are triggered here
 	}
 
 	public double getAttack()
@@ -118,7 +164,7 @@ public class Character extends Entity
 		potionPower += amount;
 	}
 	
-	//Called at end of turn
+	//Called at the end of this character's turn
 	public void decrementEffectDurations(Effect[] effects)
 	{
 		for(int i = 0; i < effects.length; i++)

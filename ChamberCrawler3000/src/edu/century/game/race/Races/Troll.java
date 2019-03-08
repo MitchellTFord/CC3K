@@ -1,7 +1,8 @@
-package edu.century.game.race;
+package edu.century.game.race.Races;
 
 import edu.century.game.effect.Effect;
 import edu.century.game.entity.Character;
+import edu.century.game.race.Race;
 
 public class Troll extends Race
 {

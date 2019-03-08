@@ -1,12 +1,11 @@
 package edu.century.game.effect;
 
 import edu.century.game.entity.Character;
-import edu.century.game.entity.DamageType;
 
 public abstract class Effect
 {
 	protected Character affectedCharacter;
-	protected Character caster;
+	protected Character caster; //Used by damaging effects
 	protected String effectName;
 	protected double magnitude;
 	protected int duration;
@@ -30,7 +29,8 @@ public abstract class Effect
 		
 		//Character.damage(this.caster, this.affectedCharacter, DamageType.ELEMENTAL, magnitude);
 	
-	public abstract void applyEffect(Character target);
+	public abstract void applyEffect();
+	public abstract void applyStatChange();
 	
 	public void decrementDuration()
 	{
