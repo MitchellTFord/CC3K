@@ -1,8 +1,8 @@
-package edu.century.game.race.Races;
+package edu.century.game.entity.race.player_races;
 
 import edu.century.game.effect.Effect;
 import edu.century.game.entity.Character;
-import edu.century.game.race.Race;
+import edu.century.game.entity.race.Race;
 
 public class Shade extends Race
 {

@@ -1,4 +1,4 @@
-package edu.century.game.race;
+package edu.century.game.entity.race;
 
 import edu.century.game.effect.*;
 import edu.century.game.entity.Character;
@@ -31,6 +31,7 @@ public abstract class Race
 	*/
 	
 	/*
+	Races as defined in the CC3K document
 	0	Shade:		125 HP, 25 Atk,	25 Def
 	1	Drow:		150 HP, 25 Atk, 15 Def, all potions have their effect magnified by 1.5
 	2	Vampire:	50 HP,	25 Atk, 25 Def, gains 5 HP every successful attack and has no maximum HP

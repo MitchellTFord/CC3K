@@ -1,6 +1,6 @@
-package edu.century.game.effect;
+package edu.century.game.entity;
 
 public enum Stat 
 {
-	MAXHEALTH, ATTACK, DEFENCE, POTION_POWER;
+	MAX_HEALTH, ATTACK, DEFENCE, POTION_POWER, HEALTH_ON_KILL, GOLD_ON_KILL;
 }

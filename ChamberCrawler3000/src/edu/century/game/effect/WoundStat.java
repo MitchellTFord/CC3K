@@ -1,6 +1,7 @@
 package edu.century.game.effect;
 
 import edu.century.game.entity.Character;
+import edu.century.game.entity.Stat;
 
 public class WoundStat extends Effect
 {
@@ -19,11 +20,17 @@ public class WoundStat extends Effect
 		case DEFENCE:
 			effectName = "Wound Defence";
 			break;
-		case MAXHEALTH:
+		case MAX_HEALTH:
 			effectName = "Wound Max Health";
 			break;
 		case POTION_POWER:
 			effectName = "Wound Potion Power";
+			break;
+		case HEALTH_ON_KILL:
+			effectName = "Wound Health on Kill";
+			break;
+		case GOLD_ON_KILL:
+			effectName = "Wound Gold on Kill";
 			break;
 		default:
 			//Shouldn't ever happen
@@ -33,24 +40,7 @@ public class WoundStat extends Effect
 	
 	public void applyStatChange()
 	{
-		switch(stat)
-		{
-		case ATTACK:
-			affectedCharacter.modAttack(-magnitude);
-			break;
-		case DEFENCE:
-			affectedCharacter.modDefence(-magnitude);
-			break;
-		case MAXHEALTH:
-			affectedCharacter.modMaxHealth(-magnitude);
-			break;
-		case POTION_POWER:
-			affectedCharacter.modPotionPower(-magnitude);
-			break;
-		default:
-			//Shouldn't ever happen
-			break;
-		}
+		affectedCharacter.modStat(-magnitude, stat);
 	}
 	
 	@Override

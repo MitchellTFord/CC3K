@@ -1,12 +1,13 @@
-package edu.century.game.race.Races;
+package edu.century.game.entity.race.player_races;
 
+import edu.century.game.effect.BoostStat;
 import edu.century.game.effect.Effect;
 import edu.century.game.entity.Character;
-import edu.century.game.race.Race;
+import edu.century.game.entity.Stat;
+import edu.century.game.entity.race.Race;
 
 public class Goblin extends Race
 {
-	//public static Race goblin = new Race("Goblin", -15, -5, 0, EffectType.GOLD_ON_KILL, 5);
 	public Goblin()
 	{
 		raceName = "Goblin";
@@ -20,9 +21,7 @@ public class Goblin extends Race
 	public Effect getEffect(Character character)
 	{
 		//Gains 5 gold on kill
-		
-		//TODO: implement goblin racial effect
-		return null;
+		return new BoostStat(character, "Goblin Greed", 5, -1, Stat.GOLD_ON_KILL);
 	}
 
 	@Override
@@ -34,19 +33,19 @@ public class Goblin extends Race
 	@Override
 	public double getHealthMod()
 	{
-		return 0;
+		return healthMod;
 	}
 
 	@Override
 	public double getAttackMod()
 	{
-		return 0;
+		return attackMod;
 	}
 
 	@Override
 	public double getDefenceMod()
 	{
-		return 0;
+		return defenceMod;
 	}
 }
 

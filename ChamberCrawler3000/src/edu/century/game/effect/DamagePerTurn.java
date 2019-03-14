@@ -17,7 +17,7 @@ public class DamagePerTurn extends Effect
 	@Override
 	public void applyEffect() 
 	{
-		Character.damage(caster, affectedCharacter, damageType, magnitude);
+		Character.doDamage(caster, affectedCharacter, damageType, magnitude);
 	}
 
 	@Override
