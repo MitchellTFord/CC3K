@@ -1,32 +1,34 @@
 package edu.century.game.entity;
 
-import edu.century.game.Tile;
-
-enum EntityType
-{
-	CHARACTER, ITEM;
-}
+import edu.century.game.Cell;
 
 public abstract class Entity
 {
-	Tile currentTile;
-	EntityType entityType;
+	protected Cell currentCell;
 	
-	public Tile getCurrentTile()
+	public abstract void update();
+	public abstract void render();
+	
+	public Entity(Cell currentCell)
 	{
-		return this.currentTile;
+		this.currentCell = currentCell;
 	}
-	public void setCurrentTile(Tile currentTile)
+	
+	public Cell getCurrentCell()
 	{
-		this.currentTile = currentTile;
+		return this.currentCell;
+	}
+	public void setCurrentCell(Cell currentCell)
+	{
+		this.currentCell = currentCell;
 	}
 	
 	public int getGridX()
 	{
-		return this.currentTile.getGridX();
+		return this.currentCell.getGridX();
 	}
 	public int getGridY()
 	{
-		return this.currentTile.getGridY();
+		return this.currentCell.getGridY();
 	}
 }
