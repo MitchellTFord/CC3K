@@ -3,8 +3,10 @@ package edu.century.game.effect;
 import edu.century.game.entity.Character;
 import edu.century.game.entity.Stat;
 
+//This class is intended to serve as an template for creating new Effects
 public class WoundStat extends Effect
 {
+	
 	Stat stat;
 	
 	public WoundStat(Character affectedCharacter, String effectName, double magnitude, int duration, Stat stat)
@@ -12,32 +14,37 @@ public class WoundStat extends Effect
 		super(affectedCharacter, "Wound Stat", magnitude, duration);
 		this.stat = stat;
 		
-		switch(stat)
+		//A generic effect name will be assigned to the effect if another isn't assigned
+		if(effectName == null)
 		{
-		case ATTACK:
-			effectName = "Wound Attack";
-			break;
-		case DEFENCE:
-			effectName = "Wound Defence";
-			break;
-		case MAX_HEALTH:
-			effectName = "Wound Max Health";
-			break;
-		case POTION_POWER:
-			effectName = "Wound Potion Power";
-			break;
-		case HEALTH_ON_KILL:
-			effectName = "Wound Health on Kill";
-			break;
-		case GOLD_ON_KILL:
-			effectName = "Wound Gold on Kill";
-			break;
-		default:
-			//Shouldn't ever happen
-			break;
+			switch(stat)
+			{
+			case ATTACK:
+				effectName = "Boost Attack";
+				break;
+			case DEFENCE:
+				effectName = "Boost Defence";
+				break;
+			case MAX_HEALTH:
+				effectName = "Boost Max Health";
+				break;
+			case POTION_POWER:
+				effectName = "Boost Potion Power";
+				break;
+			case HEALTH_ON_KILL:
+				effectName = "Boost Health on Kill";
+				break;
+			case GOLD_ON_KILL:
+				effectName = "Boost Gold on Kill";
+				break;
+			default:
+				//Shouldn't ever happen
+				break;
+			}
 		}
 	}
 	
+	@Override
 	public void applyStatChange()
 	{
 		affectedCharacter.modStat(-magnitude, stat);

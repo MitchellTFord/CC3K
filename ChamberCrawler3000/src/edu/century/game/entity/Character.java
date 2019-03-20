@@ -9,17 +9,24 @@ import edu.century.game.entity.race.player_races.*;
 
 public class Character extends Entity
 {
-	protected double health, maxHealth, attack, defence;
-
-	protected int gold;
-	protected Item armor, weapon;
-	protected Race race;
-
-	protected Effect[] effects = new Effect[64];
-	protected double potionPower, healthOnKill;
+	// this character's various stats
+	protected double health, maxHealth, attack, defence, potionPower, healthOnKill;
 	protected int goldOnKill;
 
-	protected BufferedImage sprite;
+	// the amount of gold held by this character
+	protected int gold;
+
+	// this Character’s equipped armor/weapon Item
+	protected Item armor, weapon;
+
+	// this Character's Race
+	protected Race race;
+
+	// the array of effects this Character is affected by
+	protected Effect[] effects = new Effect[64];
+
+	// the sprite representing this Character
+	protected BufferedImage characterSprite;
 
 	public Character(Cell currentCell, Race race)
 	{
@@ -39,17 +46,25 @@ public class Character extends Entity
 
 	}
 
-	public void render()
+	public void render(int x, int y)
 	{
-
+		// characterSprite at x, y
 	}
 
+	/**
+	 * Triggered at the start of a turn, calls updateStats() and applyEffects()
+	 */
 	public void startTurn(/* TurnController turnController */)
 	{
 		this.updateStats();
 		this.applyEffects();
 	}
 
+	/**
+	 * Triggered at the end of a turn, decrements the duration of all current
+	 * Effects, tells indicates to the appropriate controller that this
+	 * Character's turn is over
+	 */
 	public void endTurn()
 	{
 		this.decrementEffectDurations(this.effects);
@@ -58,6 +73,19 @@ public class Character extends Entity
 		// turnController.NextCharactersTurn()
 	}
 
+	/**
+	 * Handles the dealing of damage between characters, passes different values
+	 * into takeDamage() depending on damageType when it’s called
+	 * 
+	 * @param caster
+	 *            the Character doing the damage
+	 * @param target
+	 *            the Character taking the damage
+	 * @param damageType
+	 *            the damageType of the attack
+	 * @param damage
+	 *            the amount of damage before armor is taken into account
+	 */
 	public static void doDamage(Character caster, Character target, DamageType damageType, double damage)
 	{
 		switch(damageType)
@@ -74,8 +102,15 @@ public class Character extends Entity
 		}
 	}
 
-	
-
+	/**
+	 * decrements health by the amount parameter, if this kills the character,
+	 * attempt to call targetKilled(damager)
+	 * 
+	 * @param amount
+	 *            the amount of health to remove
+	 * @param damager
+	 *            the Character that did the damage
+	 */
 	public void takeDamage(double amount, Character damager)
 	{
 		this.health -= amount;
@@ -99,11 +134,22 @@ public class Character extends Entity
 		}
 	}
 
+	/**
+	 * Increments health by the amount parameter, up to maxHealth
+	 * 
+	 * @param amount
+	 *            the amount of health to gain
+	 */
 	public void takeHeal(double amount)
 	{
 		this.health = Math.min(this.health + amount, this.maxHealth);
 	}
-	
+
+	/**
+	 * Adds the given effect Effect to this character’s effects array
+	 * 
+	 * @param effect
+	 */
 	public void addEffect(Effect effect)
 	{
 		if (effect != null)
@@ -120,13 +166,17 @@ public class Character extends Entity
 		}
 	}
 
-	// To be called whenever a stat change is expected
+	/**
+	 * update this character’s stats based on base values, racial bonuses, item
+	 * bonuses, and stat-changing effects, calls effects[i].applyStatChange()
+	 * for all i in effects
+	 */
 	public void updateStats()
 	{
+		// Set all stats to base values
 		maxHealth = 125 + race.getHealthMod();
 		attack = race.getAttackMod();
 		defence = race.getDefenceMod();
-
 		potionPower = 1;
 		healthOnKill = 0;
 		goldOnKill = 0;
@@ -140,7 +190,9 @@ public class Character extends Entity
 		}
 	}
 
-	// Called at the start of the turn
+	/**
+	 * Calls effects[i].applyEffect() for all i in effects
+	 */
 	public void applyEffects()
 	{
 		for(int i = 0; i < effects.length; i++)
@@ -151,26 +203,67 @@ public class Character extends Entity
 			}
 		}
 	}
-	
+
+	/**
+	 * Call effects[i].decrementDuration() for all i in effects, destroy effects
+	 * with duration 0
+	 * 
+	 * @param effects
+	 */
+	public void decrementEffectDurations(Effect[] effects)
+	{
+		for(int i = 0; i < effects.length; i++)
+		{
+			effects[i].decrementDuration();
+
+			if (effects[i].getDuration() == 0)
+			{
+				// TODO: Destroy Effect object
+
+				// Remove object from effects array
+				effects[i] = null;
+			}
+		}
+	}
+
+	/**
+	 * Apply this character’s xxxOnKill variables
+	 * 
+	 * @param target
+	 *            the Character that was killed, needed for vampire/dwarf rule
+	 */
 	public void targetKilled(Character target)
 	{
 		// On-kill effects are triggered here
-		
-		//TODO: implement vampire/dwarf rule
+
+		// TODO: implement vampire/dwarf rule
 		// Doesn't account for vampires being allergic to dwarves
 		this.takeHeal(healthOnKill);
+
+		this.gold += goldOnKill;
 	}
 
+	/**
+	 * @return this Character's attack
+	 */
 	public double getAttack()
 	{
 		return attack;
 	}
 
+	/**
+	 * @return this Character's defence
+	 */
 	public double getDefence()
 	{
 		return defence;
 	}
-
+	
+	/**
+	 * Increment the given Stat by the given amount
+	 * @param amount the amount to modify the given Stat by
+	 * @param stat the Stat to be modified
+	 */
 	public void modStat(double amount, Stat stat)
 	{
 		switch(stat)
@@ -196,23 +289,6 @@ public class Character extends Entity
 		default:
 			// Shouldn't ever happen
 			break;
-		}
-	}
-
-	// Called at the end of this character's turn
-	public void decrementEffectDurations(Effect[] effects)
-	{
-		for(int i = 0; i < effects.length; i++)
-		{
-			effects[i].decrementDuration();
-
-			if (effects[i].getDuration() == 0)
-			{
-				// TODO: Destroy Effect object
-
-				// Remove object from effects array
-				effects[i] = null;
-			}
 		}
 	}
 }

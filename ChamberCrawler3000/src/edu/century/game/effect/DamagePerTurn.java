@@ -3,6 +3,7 @@ package edu.century.game.effect;
 import edu.century.game.entity.Character;
 import edu.century.game.entity.DamageType;
 
+//This class is intended to serve as an template for creating new Effects
 public class DamagePerTurn extends Effect
 {
 	DamageType damageType;

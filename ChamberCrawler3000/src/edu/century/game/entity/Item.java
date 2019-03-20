@@ -9,7 +9,10 @@ enum ItemType
 
 public class Item extends Entity
 {
+	//indicating whether this item is a weapon, armor, or potion
 	ItemType itemType;
+	
+	//The changes in stats this Item causes
 	double healthMod, attackMod, defenceMod;
 
 	public Item(Cell currentCell, ItemType itemType, double healthMod, double attackMod, double defenceMod)
@@ -27,7 +30,7 @@ public class Item extends Entity
 		
 	}
 	
-	public void render()
+	public void render(int xOffset, int offsetY)
 	{
 		
 	}
