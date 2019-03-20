@@ -73,6 +73,31 @@ public class Character extends Entity
 		// turnController.NextCharactersTurn()
 	}
 
+	public void move(Cell destCell)
+	{
+		if (currentCell.isAdjecent(destCell) && destCell.getSpaceOpen())
+		{
+			//Remove this Character from its current Cell
+			currentCell.setOccupant(null);
+			
+			//Assign this Character to its destination Cell
+			//currentCell is automatically updated by setOccupant()
+			destCell.setOccupant(this);
+		}
+	}
+
+	/**
+	 * Allows calling of move() using coordinates as parameters rather than a
+	 * Cell object
+	 * 
+	 * @param gridX the x index of the destination Cell in the floor's cells array
+	 * @param gridY the y index of the destination Cell in the floor's cells array
+	 */
+	public void move(int gridX, int gridY)
+	{
+		move(currentCell.getFloor().getCell(gridX, gridY));
+	}
+
 	/**
 	 * Handles the dealing of damage between characters, passes different values
 	 * into takeDamage() depending on damageType when it’s called
@@ -244,25 +269,12 @@ public class Character extends Entity
 	}
 
 	/**
-	 * @return this Character's attack
-	 */
-	public double getAttack()
-	{
-		return attack;
-	}
-
-	/**
-	 * @return this Character's defence
-	 */
-	public double getDefence()
-	{
-		return defence;
-	}
-	
-	/**
 	 * Increment the given Stat by the given amount
-	 * @param amount the amount to modify the given Stat by
-	 * @param stat the Stat to be modified
+	 * 
+	 * @param amount
+	 *            the amount to modify the given Stat by
+	 * @param stat
+	 *            the Stat to be modified
 	 */
 	public void modStat(double amount, Stat stat)
 	{
@@ -290,5 +302,21 @@ public class Character extends Entity
 			// Shouldn't ever happen
 			break;
 		}
+	}
+
+	/**
+	 * @return this Character's attack
+	 */
+	public double getAttack()
+	{
+		return attack;
+	}
+
+	/**
+	 * @return this Character's defence
+	 */
+	public double getDefence()
+	{
+		return defence;
 	}
 }
