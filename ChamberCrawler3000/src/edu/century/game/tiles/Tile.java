@@ -2,14 +2,14 @@ package edu.century.game.tiles;
 
 import java.awt.image.BufferedImage;
 
+import edu.century.game.graphics.Assets;
+import edu.century.game.graphics.SpriteSheet;
+
 public class Tile
 {
 	//The width/height of Tiles
-	public static final int TILE_WIDTH = 32,
-							TILE_HEIGHT = 32;
-	
-	//The sprite of this Tile
-	protected BufferedImage texture;
+	public static final int TILE_WIDTH = 16,
+							TILE_HEIGHT = 16;
 	
 	//The ID of this Tile
 	protected int id;
@@ -20,19 +20,23 @@ public class Tile
 	//Array of Tile derived classes
 	public static Tile[] tileIDs = new Tile[256];
 	
-	public Tile(BufferedImage texture, int id)
+	public Tile(int id)
 	{
-		this.texture = texture;
 		this.id = id;
 		
-		//Add this Tile to tileIDs
+		//Add this Tile to tileIDs array
 		tileIDs[id] = this;
 	}
 	
-	public void render(int x, int y)
+	/**
+	 * Should be overridden by Tile derived classes
+	 * @return a BufferedImage to be used as this Tile's texture
+	 */
+	public BufferedImage getTexture()
 	{
-		
+		return Assets.loadImage("textures/MissingTexture");
 	}
+	
 	
 	/**
 	 * @return this Tile's occupiable boolean

@@ -18,9 +18,9 @@ public class Cell
 
 	// The texture of the colored border around this Cell
 	private BufferedImage cellBorder;
-
-	// The Tile assigned to this Cell
-	private Tile tile;
+	
+	//The texture assigned to this Cell by a Tile
+	private BufferedImage tileTexture;
 
 	// Whether or not this cell can have an occupant, determined by tile
 	private boolean occupiable;
@@ -44,8 +44,8 @@ public class Cell
 		this.gridX = gridX;
 		this.gridY = gridY;
 		this.floor = floor;
-		this.tile = tile;
 		this.occupiable = tile.isOccupiable();
+		this.tileTexture = tile.getTexture();
 	}
 
 	public void update()
@@ -59,8 +59,8 @@ public class Cell
 		// values
 		updatePos(offsetX, offsetY);
 
-		// Calls tile's render() method
-		tile.render(x, y);
+		// TODO: implement tileTexture
+		// render tileTexture at x, y
 
 		// TODO: implement tileBorder
 		// render tileBorder at x, y
