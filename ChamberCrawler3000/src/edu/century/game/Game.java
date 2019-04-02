@@ -36,6 +36,9 @@ public class Game implements Runnable
 		this.title = title;
 	}
 	
+	/**
+	 * Called when the game thread is opened
+	 */
 	public void run()
 	{
 		init();
@@ -95,6 +98,7 @@ public class Game implements Runnable
 			return; //Skip the rest of render();
 		}
 		
+		//Set g to the draw object of the BufferStrategy
 		g = bs.getDrawGraphics();
 		
 		//Clear Screen
@@ -138,6 +142,7 @@ public class Game implements Runnable
 	
 	private void init()
 	{
+		//Create the display
 		display = new Display(title, width, height);
 		
 		Assets.init();
