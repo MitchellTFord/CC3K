@@ -20,6 +20,9 @@ public class Tile
 	//Array of Tile derived classes
 	public static Tile[] tileIDs = new Tile[256];
 	
+	//Tile derived classes
+	public static Tile dirtTile = new DirtTile(0);
+	
 	public Tile(int id)
 	{
 		this.id = id;
@@ -34,9 +37,9 @@ public class Tile
 	 */
 	public BufferedImage getTexture()
 	{
+		//Use a special "missing texture" sprite if this method isn't overridden
 		return Assets.loadImage("textures/MissingTexture");
 	}
-	
 	
 	/**
 	 * @return this Tile's occupiable boolean

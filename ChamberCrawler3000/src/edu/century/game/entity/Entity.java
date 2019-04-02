@@ -1,6 +1,6 @@
 package edu.century.game.entity;
 
-import edu.century.game.Cell;
+import edu.century.game.floor.Cell;
 
 public abstract class Entity
 {

@@ -1,4 +1,6 @@
-package edu.century.game;
+package edu.century.game.floor;
+
+import java.awt.Graphics;
 
 import edu.century.game.tiles.Tile;
 
@@ -39,7 +41,7 @@ public class Floor
 
 	}
 
-	public void render(int offsetX, int offsetY)
+	public void render(Graphics g, int offsetX, int offsetY)
 	{
 		// Iterates through all of the positions in the cells array
 		for(int gridY = 0; gridY < gridHeight; gridY++)
@@ -48,7 +50,7 @@ public class Floor
 			{
 				// Calls render() for each Cell object in cells using passed in
 				// offset values
-				cells[gridX][gridY].render(offsetX, offsetY);
+				cells[gridX][gridY].render(Graphics g, offsetX, offsetY);
 			}
 		}
 	}

@@ -1,5 +1,6 @@
-package edu.century.game;
+package edu.century.game.floor;
 
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import edu.century.game.entity.Entity;
@@ -53,7 +54,7 @@ public class Cell
 
 	}
 
-	public void render(int offsetX, int offsetY)
+	public void render(Graphics g, int offsetX, int offsetY)
 	{
 		// Update this Cell's rendering position based on the passed in offset
 		// values

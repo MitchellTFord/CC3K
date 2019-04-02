@@ -2,10 +2,10 @@ package edu.century.game.entity;
 
 import java.awt.image.BufferedImage;
 
-import edu.century.game.Cell;
 import edu.century.game.effect.Effect;
 import edu.century.game.entity.race.*;
 import edu.century.game.entity.race.player_races.*;
+import edu.century.game.floor.Cell;
 
 public class Character extends Entity
 {

@@ -12,22 +12,39 @@ public class Assets
 	public static SpriteSheet cellBorders;
 	public static SpriteSheet dirtSprites;
 	
+	/**
+	 * Loads all needed image resources into memory and assigns them to variables
+	 */
 	public static void init()
 	{
 		cellBorders = new SpriteSheet(loadImage("textures/CellBorders"), Tile.TILE_WIDTH, Tile.TILE_HEIGHT);
 		dirtSprites = new SpriteSheet(loadImage("textures/DirtSprites"), Tile.TILE_WIDTH, Tile.TILE_HEIGHT);
 	}
 	
+	/**
+	 * Creates a BufferedImage object from a given file path
+	 * @param path the location of the image within the res directory
+	 * @return the loaded BufferedImage
+	 */
 	public static BufferedImage loadImage(String path)
 	{
 		try
 		{
+			//Load the given image resource
 			return ImageIO.read(Assets.class.getResource(path));
 		} catch (IOException e)
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			System.exit(1);
+			try
+			{
+				//Attempt to return a special "missing texture" sprite
+				return ImageIO.read(Assets.class.getResource("textures/MissingTexture"));
+			}
+			catch (IOException f)
+			{
+				// Give up and close the program
+				e.printStackTrace();
+				System.exit(1);
+			}
 		}
 		return null;
 	}
