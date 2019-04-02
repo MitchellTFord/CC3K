@@ -5,39 +5,41 @@ import java.awt.image.BufferedImage;
 public class SpriteSheet
 {
 	private BufferedImage sheet;
-	private BufferedImage[][] sprites;
-	private int spriteHeight, spriteWidth, rows, columns;
+	private BufferedImage[] sprites;
+	private int spriteHeight, spriteWidth, numSprites;
 	
-	public SpriteSheet(BufferedImage sheet, int spriteWidth, int spriteHeight)
+	public SpriteSheet(BufferedImage sheet, int spriteWidth, int spriteHeight, int numSprites)
 	{
 		this.sheet = sheet;
 		this.spriteWidth = spriteWidth;
 		this.spriteHeight = spriteHeight;
+		this.numSprites = numSprites;
+
+		sprites = new BufferedImage[numSprites];
 		
-		rows = sheet.getHeight() / spriteHeight;
-		columns = sheet.getWidth() / spriteWidth;
-		BufferedImage[][] sprites = new BufferedImage[columns][rows];
+		makeSprites();
 	}
 	
-	public BufferedImage getSprite(int spriteX, int spriteY)
+	public BufferedImage getSprite(int index)
 	{
-		for(int y = 0; y < rows - 1; y++)
+		return sprites[index];
+	}
+
+	public void makeSprites()
+	{
+		for(int i = 0; i < numSprites; i++)
 		{
-			for(int x = 0; x < columns - 1; x++)
-			{
-				sprites[x][y] = sheet.getSubimage(spriteWidth *  x, spriteHeight * y, spriteWidth, spriteHeight);
-			}
+			sprites[i] = crop(spriteWidth * i, 0, spriteWidth, spriteHeight);
 		}
-		return sprites[spriteX][spriteY];
 	}
-
-	public int getRows()
+	
+	public BufferedImage crop(int x, int y, int width, int height)
 	{
-		return rows;
+		return sheet.getSubimage(x, y, width, height);
 	}
-
-	public int getColumns()
+	
+	public int getNumSprites()
 	{
-		return columns;
+		return numSprites;
 	}
 }

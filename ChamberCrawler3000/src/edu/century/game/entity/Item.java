@@ -1,5 +1,7 @@
 package edu.century.game.entity;
 
+import java.awt.Graphics;
+
 import edu.century.game.floor.Cell;
 
 enum ItemType
@@ -30,7 +32,7 @@ public class Item extends Entity
 		
 	}
 	
-	public void render(int xOffset, int offsetY)
+	public void render(Graphics g, int xOffset, int offsetY)
 	{
 		
 	}

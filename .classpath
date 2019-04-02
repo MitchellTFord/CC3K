@@ -2,5 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="ChamberCrawler3000/src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="ChamberCrawler3000/res"/>
 	<classpathentry kind="output" path="ChamberCrawler3000/bin"/>
 </classpath>

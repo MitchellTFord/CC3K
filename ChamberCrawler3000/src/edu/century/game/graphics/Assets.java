@@ -17,8 +17,10 @@ public class Assets
 	 */
 	public static void init()
 	{
-		cellBorders = new SpriteSheet(loadImage("textures/CellBorders"), Tile.TILE_WIDTH, Tile.TILE_HEIGHT);
-		dirtSprites = new SpriteSheet(loadImage("textures/DirtSprites"), Tile.TILE_WIDTH, Tile.TILE_HEIGHT);
+		//cellBorders = new SpriteSheet(loadImage("/textures/CellBorders.png"), Tile.TILE_WIDTH, Tile.TILE_HEIGHT, 1);
+		dirtSprites = new SpriteSheet(loadImage("/textures/DirtSprites.png"), Tile.TILE_WIDTH, Tile.TILE_HEIGHT, 6);
+		
+		System.out.println("Asset Loading Complete");
 	}
 	
 	/**
@@ -32,14 +34,14 @@ public class Assets
 		{
 			//Load the given image resource
 			return ImageIO.read(Assets.class.getResource(path));
-		} catch (IOException e)
+		} catch (Exception e)
 		{
 			try
 			{
 				//Attempt to return a special "missing texture" sprite
-				return ImageIO.read(Assets.class.getResource("textures/MissingTexture"));
+				return ImageIO.read(Assets.class.getResourceAsStream("/textures/MissingTexture.png"));
 			}
-			catch (IOException f)
+			catch (Exception f)
 			{
 				// Give up and close the program
 				e.printStackTrace();

@@ -6,7 +6,7 @@ import edu.century.game.graphics.Assets;
 
 public class DirtTile extends Tile
 {
-	int randX, randY;
+	int rand;
 	
 	public DirtTile(int id)
 	{
@@ -16,9 +16,8 @@ public class DirtTile extends Tile
 	@Override
 	public BufferedImage getTexture()
 	{
-		randX = (int) Math.round(Assets.dirtSprites.getColumns() * Math.random());
-		randY = (int) Math.round(Assets.dirtSprites.getRows() * Math.random());
+		rand = (int) Math.floor(Assets.dirtSprites.getNumSprites() * Math.random());
 		
-		return Assets.dirtSprites.getSprite(randX, randY);
+		return Assets.dirtSprites.getSprite(rand);
 	}
 }

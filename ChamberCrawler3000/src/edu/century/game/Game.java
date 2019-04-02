@@ -14,6 +14,12 @@ public class Game implements Runnable
 	private int width, height;
 	private String title;
 	
+	//Desired FPS
+	private final int fps = 60;
+	
+	//Maximum time in nanoseconds between updates to meet desired FPS
+	private final double timePerTick = 1000000000 / fps;
+	
 	private boolean running = false;
 	private Thread thread;
 	
@@ -33,13 +39,6 @@ public class Game implements Runnable
 	public void run()
 	{
 		init();
-		
-		//Desired FPS
-		int fps = 60;
-		
-		//Maximum time in nanoseconds between updates to meet desired FPS
-		double timePerTick = 1000000000 / fps;
-		
 		
 		double delta = 0;
 		
@@ -71,12 +70,13 @@ public class Game implements Runnable
 			//Console FPS counter
 			if(timer >= 1000000000)
 			{
-				//System.out.println("Ticks and Frames: " + ticks);
+				System.out.println("FPS: " + ticks);
 				ticks = 0;
 				timer = 0;
 			}
 		}
 		
+		//End the program
 		stop();
 	}
 	
@@ -87,10 +87,11 @@ public class Game implements Runnable
 	
 	public void render()
 	{
-		bs = display.getFloorDisplay().getCanvas().getBufferStrategy();
+		bs = display.getFloorPanel().getCanvas().getBufferStrategy();
 		if(bs == null)
 		{	//Happens on launch
-			display.getFloorDisplay().getCanvas().createBufferStrategy(3);
+			display.getFloorPanel().getCanvas().createBufferStrategy(3);
+			System.out.println("Buffer Strategy Created");
 			return; //Skip the rest of render();
 		}
 		
@@ -141,6 +142,8 @@ public class Game implements Runnable
 		
 		Assets.init();
 		
-		floor = new SampleFloor();
+		//Temp
+		floor = new Floor(64, 64, null);
+		System.out.println("Test Floor created");
 	}
 }

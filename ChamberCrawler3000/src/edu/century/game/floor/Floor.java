@@ -2,6 +2,7 @@ package edu.century.game.floor;
 
 import java.awt.Graphics;
 
+import edu.century.game.graphics.Assets;
 import edu.century.game.tiles.Tile;
 
 public class Floor
@@ -17,6 +18,9 @@ public class Floor
 
 	public Floor(int gridWidth, int gridHeight, Tile[][] tiles)
 	{
+		this.gridWidth = gridWidth;
+		this.gridHeight = gridHeight;
+		
 		// Initializes the cells array with dimensions defined by the
 		// constructor
 		cells = new Cell[gridWidth][gridHeight];
@@ -27,7 +31,14 @@ public class Floor
 			for(int gridX = 0; gridX < gridWidth; gridX++)
 			{
 				// Creates a new Cell object in the current position
-				cells[gridX][gridY] = new Cell(this, gridX, gridY, tiles[gridX][gridY]);
+				if(tiles != null)
+				{
+					cells[gridX][gridY] = new Cell(this, gridX, gridY, tiles[gridX][gridY]);
+				}
+				else
+				{
+					cells[gridX][gridY] = new Cell(this, gridX, gridY, Tile.dirtTile);
+				}
 			}
 		}
 
@@ -50,7 +61,7 @@ public class Floor
 			{
 				// Calls render() for each Cell object in cells using passed in
 				// offset values
-				cells[gridX][gridY].render(Graphics g, offsetX, offsetY);
+				cells[gridX][gridY].render(g, offsetX, offsetY);
 			}
 		}
 	}

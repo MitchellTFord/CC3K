@@ -4,16 +4,16 @@ import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
 
-public class Display extends JFrame
+public class Display
 {
 	private String title;
 	private int width, height;
 	
-	private FloorDisplay floorDisplay;
+	private JFrame frame;
+	private FloorDisplay floorPanel;
 	
 	public Display(String title, int width, int height)
 	{
-		super(title);
 		this.title = title;
 		this.width = width;
 		this.height = height;
@@ -22,22 +22,29 @@ public class Display extends JFrame
 	
 	private void init()
 	{
-		this.setSize(width, height);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setResizable(false);
-		this.setLocationRelativeTo(null); //Centered on screen
-		this.setVisible(true);
+		frame = new JFrame(title);
+		frame.setSize(width, height);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Actually exit on close
+		frame.setResizable(false); //Not resizable
+		frame.setLocationRelativeTo(null); //Centered on screen
+		frame.setVisible(true);
 		
-		setLayout(new BorderLayout());
+		frame.setLayout(new BorderLayout());
 		
-		add(floorDisplay, BorderLayout.CENTER);
-		floorDisplay.setVisible(true);
+		floorPanel = new FloorDisplay(width, height);
+		frame.add(floorPanel, BorderLayout.CENTER);
+		floorPanel.setVisible(true);
 		
-		pack();
+		frame.pack();
 	}
 	
-	public FloorDisplay getFloorDisplay()
+	public JFrame getFrame()
 	{
-		return this.floorDisplay;
+		return this.frame;
+	}
+	
+	public FloorDisplay getFloorPanel()
+	{
+		return this.floorPanel;
 	}
 }
