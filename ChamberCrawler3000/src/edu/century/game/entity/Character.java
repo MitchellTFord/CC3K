@@ -41,11 +41,6 @@ public class Character extends Entity
 		this.addEffect(race.getEffect(this));
 	}
 
-	public void update()
-	{
-
-	}
-
 	public void render(Graphics g, int x, int y)
 	{
 		// characterSprite at x, y

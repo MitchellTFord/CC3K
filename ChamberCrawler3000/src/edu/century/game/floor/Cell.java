@@ -49,11 +49,6 @@ public class Cell
 		this.tileTexture = tile.getTexture();
 	}
 
-	public void update()
-	{
-
-	}
-
 	public void render(Graphics g, int offsetX, int offsetY)
 	{
 		//TODO: prevent non-visible Cells from rendering

@@ -27,11 +27,6 @@ public class Item extends Entity
 		this.defenceMod = defenceMod;
 	}
 	
-	public void update()
-	{
-		
-	}
-	
 	public void render(Graphics g, int xOffset, int offsetY)
 	{
 		

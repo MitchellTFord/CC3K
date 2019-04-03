@@ -10,8 +10,13 @@ import edu.century.game.graphics.Assets;
 
 public class Game implements Runnable
 {
+	//The AWT Display object the game is being displayed on
 	private Display display;
+	
+	//The width/height in pixels of the game window
 	private int width, height;
+	
+	//The title of the game window
 	private String title;
 	
 	//Desired FPS
@@ -20,15 +25,27 @@ public class Game implements Runnable
 	//Maximum time in nanoseconds between updates to meet desired FPS
 	private final double timePerTick = 1000000000 / fps;
 	
+	//Status of the game
 	private boolean running = false;
+	
+	//The thread the game is running on
 	private Thread thread;
 	
+	//The BufferStrategy used by the game
 	private BufferStrategy bs;
+	
+	//The AWT Graphics objects used by the game
 	private Graphics g;
 	
 	//Temp
-	public Floor floor;
+	public Floor testFloor;
 	
+	/**
+	 * Game constructor
+	 * @param title the title of the game window
+	 * @param width the width of the game window
+	 * @param height the height of the game window
+	 */
 	public Game(String title, int width, int height)
 	{
 		this.width = width;
@@ -41,6 +58,8 @@ public class Game implements Runnable
 	 */
 	public void run()
 	{
+		System.out.println("Thread Created");
+		
 		init();
 		
 		double delta = 0;
@@ -88,6 +107,9 @@ public class Game implements Runnable
 		
 	}
 	
+	/**
+	 * Renders the display
+	 */
 	public void render()
 	{
 		bs = display.getFloorPanel().getCanvas().getBufferStrategy();
@@ -106,7 +128,7 @@ public class Game implements Runnable
 		
 		//Start Drawing
 		
-		floor.render(g, 0, 0);
+		testFloor.render(g, 0, 0);
 		
 		//End Drawing
 		
@@ -114,6 +136,9 @@ public class Game implements Runnable
 		g.dispose();
 	}
 	
+	/**
+	 * Starts the game's thread
+	 */
 	public synchronized void start()
 	{
 		if(running)
@@ -125,6 +150,9 @@ public class Game implements Runnable
 		thread.start(); //Automatically calls run()
 	}
 	
+	/**
+	 * Ends the game's thread
+	 */
 	public synchronized void stop()
 	{
 		if(!running)
@@ -140,15 +168,20 @@ public class Game implements Runnable
 		}
 	}
 	
+	/**
+	 * Initialize the display and other objects
+	 */
 	private void init()
 	{
 		//Create the display
 		display = new Display(title, width, height);
 		
+		
+		//Load image assets into memory
 		Assets.init();
 		
 		//Temp
-		floor = new Floor(64, 64, null);
+		testFloor = new Floor(32, 32, null);
 		System.out.println("Test Floor created");
 	}
 }

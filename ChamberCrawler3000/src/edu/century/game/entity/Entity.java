@@ -13,9 +13,7 @@ public abstract class Entity
 	{
 		this.currentCell = currentCell;
 	}
-
-	public abstract void update();
-
+	
 	public abstract void render(Graphics g, int offsetX, int offsetY);
 
 	/**
