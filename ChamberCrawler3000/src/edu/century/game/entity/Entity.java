@@ -1,6 +1,8 @@
 package edu.century.game.entity;
 
-import edu.century.game.Cell;
+import java.awt.Graphics;
+
+import edu.century.game.floor.Cell;
 
 public abstract class Entity
 {
@@ -11,10 +13,8 @@ public abstract class Entity
 	{
 		this.currentCell = currentCell;
 	}
-
-	public abstract void update();
-
-	public abstract void render(int offsetX, int offsetY);
+	
+	public abstract void render(Graphics g, int offsetX, int offsetY);
 
 	/**
 	 * @return this Entity's currentCell

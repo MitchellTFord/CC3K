@@ -1,5 +1,6 @@
-package edu.century.game;
+package edu.century.game.floor;
 
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import edu.century.game.entity.Entity;
@@ -18,9 +19,9 @@ public class Cell
 
 	// The texture of the colored border around this Cell
 	private BufferedImage cellBorder;
-
-	// The Tile assigned to this Cell
-	private Tile tile;
+	
+	//The texture assigned to this Cell by a Tile
+	private BufferedImage tileTexture;
 
 	// Whether or not this cell can have an occupant, determined by tile
 	private boolean occupiable;
@@ -44,31 +45,31 @@ public class Cell
 		this.gridX = gridX;
 		this.gridY = gridY;
 		this.floor = floor;
-		this.tile = tile;
 		this.occupiable = tile.isOccupiable();
+		this.tileTexture = tile.getTexture();
 	}
 
-	public void update()
+	public void render(Graphics g, int offsetX, int offsetY)
 	{
-
-	}
-
-	public void render(int offsetX, int offsetY)
-	{
+		//TODO: prevent non-visible Cells from rendering
+		
 		// Update this Cell's rendering position based on the passed in offset
 		// values
 		updatePos(offsetX, offsetY);
 
-		// Calls tile's render() method
-		tile.render(x, y);
+		//Render tile texture
+		g.drawImage(tileTexture, x, y, Tile.TILE_WIDTH, Tile.TILE_HEIGHT, null);
 
-		// TODO: implement tileBorder
-		// render tileBorder at x, y
+		//Render cellBorder if it is something other than null
+		if(cellBorder != null)
+		{
+			g.drawImage(cellBorder, x, y, Tile.TILE_WIDTH, Tile.TILE_HEIGHT, null);
+		}
 
 		// Calls occupant's render() method if this Cell has an occupant
 		if (occupant != null)
 		{
-			occupant.render(x, y);
+			occupant.render(g, x, y);
 		}
 	}
 

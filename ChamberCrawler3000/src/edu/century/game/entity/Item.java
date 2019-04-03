@@ -1,6 +1,8 @@
 package edu.century.game.entity;
 
-import edu.century.game.Cell;
+import java.awt.Graphics;
+
+import edu.century.game.floor.Cell;
 
 enum ItemType
 {
@@ -25,12 +27,7 @@ public class Item extends Entity
 		this.defenceMod = defenceMod;
 	}
 	
-	public void update()
-	{
-		
-	}
-	
-	public void render(int xOffset, int offsetY)
+	public void render(Graphics g, int xOffset, int offsetY)
 	{
 		
 	}

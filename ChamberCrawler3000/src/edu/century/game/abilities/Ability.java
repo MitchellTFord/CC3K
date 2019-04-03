@@ -1,6 +1,6 @@
 package edu.century.game.abilities;
 
-import edu.century.game.Cell;
+import edu.century.game.floor.Cell;
 
 public abstract class Ability
 {

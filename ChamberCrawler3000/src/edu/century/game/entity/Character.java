@@ -1,11 +1,11 @@
 package edu.century.game.entity;
 
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
-import edu.century.game.Cell;
 import edu.century.game.effect.Effect;
-import edu.century.game.entity.race.*;
-import edu.century.game.entity.race.player_races.*;
+import edu.century.game.entity.race.Race;
+import edu.century.game.floor.Cell;
 
 public class Character extends Entity
 {
@@ -41,12 +41,7 @@ public class Character extends Entity
 		this.addEffect(race.getEffect(this));
 	}
 
-	public void update()
-	{
-
-	}
-
-	public void render(int x, int y)
+	public void render(Graphics g, int x, int y)
 	{
 		// characterSprite at x, y
 	}
