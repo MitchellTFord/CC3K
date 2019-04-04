@@ -29,7 +29,7 @@ public class Display extends JFrame
 		
 		setLayout(new BorderLayout());
 		
-		floorPanel = new FloorDisplay(width, height);
+		floorPanel = new FloorDisplay(width * 2/3, height);
 		add(floorPanel, BorderLayout.CENTER);
 		
 		pack();
