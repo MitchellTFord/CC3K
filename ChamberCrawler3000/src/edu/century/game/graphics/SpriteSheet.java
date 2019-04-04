@@ -5,31 +5,35 @@ import java.awt.image.BufferedImage;
 public class SpriteSheet
 {
 	private BufferedImage sheet;
-	private BufferedImage[] sprites;
-	private int spriteHeight, spriteWidth, numSprites;
+	private BufferedImage[][] sprites;
+	private int spriteHeight, spriteWidth, numSpritesTall, numSpritesWide;
 	
-	public SpriteSheet(BufferedImage sheet, int spriteWidth, int spriteHeight, int numSprites)
+	public SpriteSheet(BufferedImage sheet, int spriteWidth, int spriteHeight, int numSpritesWide, int numSpritesTall)
 	{
 		this.sheet = sheet;
 		this.spriteWidth = spriteWidth;
 		this.spriteHeight = spriteHeight;
-		this.numSprites = numSprites;
+		this.numSpritesTall = numSpritesTall;
+		this.numSpritesWide = numSpritesWide;
 
-		sprites = new BufferedImage[numSprites];
+		sprites = new BufferedImage[numSpritesWide][numSpritesTall];
 		
 		makeSprites();
 	}
 	
-	public BufferedImage getSprite(int index)
+	public BufferedImage getSprite(int x, int y)
 	{
-		return sprites[index];
+		return sprites[x][y];
 	}
 
 	public void makeSprites()
 	{
-		for(int i = 0; i < numSprites; i++)
+		for(int y = 0; y < numSpritesTall; y++)
 		{
-			sprites[i] = crop(spriteWidth * i, 0, spriteWidth, spriteHeight);
+			for(int x = 0; x < numSpritesWide; x++)
+			{
+				sprites[x][y] = crop(spriteWidth * x, spriteHeight * y, spriteWidth, spriteHeight);
+			}
 		}
 	}
 	
@@ -38,8 +42,13 @@ public class SpriteSheet
 		return sheet.getSubimage(x, y, width, height);
 	}
 	
-	public int getNumSprites()
+	public int getNumSpritesTall()
 	{
-		return numSprites;
+		return numSpritesTall;
+	}
+	
+	public int getNumSpritesWide()
+	{
+		return numSpritesWide;
 	}
 }

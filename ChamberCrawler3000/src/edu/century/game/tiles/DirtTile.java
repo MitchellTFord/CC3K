@@ -16,8 +16,8 @@ public class DirtTile extends Tile
 	@Override
 	public BufferedImage getTexture()
 	{
-		rand = (int) Math.round((Assets.dirtSprites.getNumSprites() - 1) * Math.random());
+		rand = (int) Math.round((Assets.dirtSprites.getNumSpritesWide() - 1) * Math.random());
 		
-		return Assets.dirtSprites.getSprite(rand);
+		return Assets.dirtSprites.getSprite(rand, 0);
 	}
 }
