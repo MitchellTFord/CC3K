@@ -6,14 +6,13 @@ import javax.swing.JFrame;
 
 public class Display extends JFrame
 {
-	private String title;
 	private int width, height;
 	
 	private FloorDisplay floorPanel;
 	
 	public Display(String title, int width, int height)
 	{
-		this.title = title;
+		super(title);
 		this.width = width;
 		this.height = height;
 		init();
