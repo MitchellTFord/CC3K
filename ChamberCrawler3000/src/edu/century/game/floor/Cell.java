@@ -58,7 +58,7 @@ public class Cell
 		updatePos(offsetX, offsetY);
 
 		//Render tile texture
-		g.drawImage(tileTexture, x, y, Tile.TILE_WIDTH, Tile.TILE_HEIGHT, null);
+		g.drawImage(tileTexture, x, y, (int) (Tile.TILE_WIDTH * Tile.TILE_SCALE), (int) (Tile.TILE_WIDTH * Tile.TILE_SCALE), null);
 
 		//Render cellBorder if it is something other than null
 		if(cellBorder != null)

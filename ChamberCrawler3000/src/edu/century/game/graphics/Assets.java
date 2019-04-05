@@ -11,6 +11,8 @@ public class Assets
 {
 	public static SpriteSheet cellBorders;
 	public static SpriteSheet dirtSprites;
+	public static SpriteSheet missingSprite;
+	public static SpriteSheet tileSprites;
 	
 	/**
 	 * Loads all needed image resources into memory and assigns them to variables
@@ -18,7 +20,9 @@ public class Assets
 	public static void init()
 	{
 		//cellBorders = new SpriteSheet(loadImage("/textures/CellBorders.png"), Tile.TILE_WIDTH, Tile.TILE_HEIGHT, 1);
-		dirtSprites = new SpriteSheet(loadImage("/textures/DirtSprites.png"), Tile.TILE_WIDTH, Tile.TILE_HEIGHT, 6, 1);
+		//dirtSprites = new SpriteSheet(loadImage("/textures/DirtSprites.png"), Tile.TILE_WIDTH, Tile.TILE_HEIGHT, 6, 1);
+		missingSprite = new SpriteSheet(loadImage("/textures/MissingTexture.png"), Tile.TILE_WIDTH, Tile.TILE_HEIGHT, 1, 1);
+		tileSprites = new SpriteSheet(loadImage("/textures/TileSprites.png"), 32, 32, 6, 7);
 		
 		System.out.println("Asset Loading Complete");
 	}

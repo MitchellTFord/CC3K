@@ -8,8 +8,10 @@ import edu.century.game.graphics.SpriteSheet;
 public class Tile
 {
 	//The width/height of Tiles
-	public static final int TILE_WIDTH = 16,
-							TILE_HEIGHT = 16;
+	public static final int TILE_WIDTH = 32,
+							TILE_HEIGHT = 32;
+	
+	public static final double TILE_SCALE = 2;
 	
 	//The ID of this Tile
 	protected int id;
