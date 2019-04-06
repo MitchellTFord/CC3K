@@ -58,12 +58,14 @@ public class Cell
 		updatePos(offsetX, offsetY);
 
 		//Render tile texture
-		g.drawImage(tileTexture, x, y, (int) (Tile.TILE_WIDTH * Tile.TILE_SCALE), (int) (Tile.TILE_WIDTH * Tile.TILE_SCALE), null);
+		g.drawImage(tileTexture, (int) (x * Tile.TILE_SCALE), (int) (y * Tile.TILE_SCALE), 
+				(int) (Tile.TILE_WIDTH * Tile.TILE_SCALE), (int) (Tile.TILE_HEIGHT * Tile.TILE_SCALE), null);
 
 		//Render cellBorder if it is something other than null
 		if(cellBorder != null)
 		{
-			g.drawImage(cellBorder, x, y, Tile.TILE_WIDTH, Tile.TILE_HEIGHT, null);
+			g.drawImage(cellBorder, (int) (x * Tile.TILE_SCALE), (int) (y * Tile.TILE_SCALE), 
+					(int) (Tile.TILE_WIDTH * Tile.TILE_SCALE), (int) (Tile.TILE_HEIGHT * Tile.TILE_SCALE), null);
 		}
 
 		// Calls occupant's render() method if this Cell has an occupant
@@ -88,17 +90,28 @@ public class Cell
 	 * @param occupant
 	 *            the Entity to make this Cell's occupant
 	 */
-	public void setOccupant(Entity occupant)
+	public boolean setOccupant(Entity newOccupant)
 	{
 		// This function shouldn't be called if this Cell already has an
 		// occupant, but it checks to make sure it doesn't have an occupant
 		// anyway
-		if (this.occupant == null && this.occupiable)
+		if(newOccupant != null)
 		{
-			this.occupant = occupant;
-
-			// Tells the new occupant what cell it now belongs to
-			occupant.setCurrentCell(this);
+			if (this.occupant == null && this.occupiable)
+			{
+				this.occupant = newOccupant;
+	
+				// Tells the new occupant what cell it now belongs to
+				newOccupant.setCurrentCell(this);
+				
+				return true;
+			}
+			return false;
+		}
+		else
+		{
+			this.occupant = null;
+			return true;
 		}
 	}
 

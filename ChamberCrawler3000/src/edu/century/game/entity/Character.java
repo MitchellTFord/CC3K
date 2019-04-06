@@ -6,6 +6,8 @@ import java.awt.image.BufferedImage;
 import edu.century.game.effect.Effect;
 import edu.century.game.entity.race.Race;
 import edu.century.game.floor.Cell;
+import edu.century.game.graphics.Assets;
+import edu.century.game.tiles.Tile;
 
 public class Character extends Entity
 {
@@ -41,9 +43,11 @@ public class Character extends Entity
 		this.addEffect(race.getEffect(this));
 	}
 
+	@Override
 	public void render(Graphics g, int x, int y)
 	{
-		// characterSprite at x, y
+		//Temp
+		g.drawImage(Assets.tempPlayer, (int) (x * Tile.TILE_SCALE), (int) (y * Tile.TILE_SCALE), 64, 64, null);
 	}
 
 	/**
@@ -72,12 +76,15 @@ public class Character extends Entity
 	{
 		if (currentCell.isAdjecent(destCell) && destCell.getSpaceOpen())
 		{
-			//Remove this Character from its current Cell
-			currentCell.setOccupant(null);
+			Cell prevCell = currentCell;
 			
 			//Assign this Character to its destination Cell
 			//currentCell is automatically updated by setOccupant()
-			destCell.setOccupant(this);
+			if(destCell.setOccupant(this))
+			{
+				//Remove this Character from its current Cell
+				prevCell.setOccupant(null);
+			}
 		}
 	}
 
@@ -90,6 +97,8 @@ public class Character extends Entity
 	 */
 	public void move(int gridX, int gridY)
 	{
+		if(gridX >= 0 && gridX < currentCell.getFloor().getGridWidth()
+				&& gridY >= 0 && gridY < currentCell.getFloor().getGridHeight())
 		move(currentCell.getFloor().getCell(gridX, gridY));
 	}
 

@@ -102,4 +102,14 @@ public class Floor
 			return null;
 		}
 	}
+	
+	public int getGridWidth()
+	{
+		return gridWidth;
+	}
+	
+	public int getGridHeight()
+	{
+		return gridHeight;
+	}
 }

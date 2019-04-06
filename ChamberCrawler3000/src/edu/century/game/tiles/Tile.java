@@ -25,9 +25,10 @@ public class Tile
 	//Tile derived classes
 	public static Tile dirtTile = new DirtTile(0);
 	
-	public Tile(int id)
+	public Tile(int id, boolean occupiable)
 	{
 		this.id = id;
+		this.occupiable = occupiable;
 		
 		//Add this Tile to tileIDs array
 		tileIDs[id] = this;

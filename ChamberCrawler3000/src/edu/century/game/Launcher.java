@@ -4,7 +4,7 @@ public class Launcher
 {
 	public static void main(String[] args)
 	{
-		Game game = new Game("Chamber Crawler 3000", 640, 360);
+		Game game = new Game("Chamber Crawler 3000", 640, 360, true);
 		game.start();
 	}
 }

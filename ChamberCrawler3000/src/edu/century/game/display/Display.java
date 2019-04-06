@@ -3,6 +3,9 @@ package edu.century.game.display;
 import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+import edu.century.game.entity.Player;
 
 public class Display extends JFrame
 {
@@ -10,11 +13,20 @@ public class Display extends JFrame
 	
 	private FloorDisplay floorPanel;
 	
-	public Display(String title, int width, int height)
+	//Temp
+	private JPanel leftPanel;
+	private Player player;
+	
+	private DirectionalPad dPad;
+	private boolean useDPad;
+	
+	public Display(Player player, String title, int width, int height, boolean useDPad)
 	{
 		super(title);
+		this.player = player;
 		this.width = width;
 		this.height = height;
+		this.useDPad = useDPad;
 		init();
 	}
 	
@@ -30,6 +42,18 @@ public class Display extends JFrame
 		
 		floorPanel = new FloorDisplay(width * 2/3, height);
 		add(floorPanel, BorderLayout.CENTER);
+		
+		if(useDPad)
+		{
+			leftPanel = new JPanel();
+			leftPanel.setLayout(new BorderLayout(2, 1));
+			
+			dPad = new DirectionalPad();
+			dPad.player = player;
+			leftPanel.add(dPad, BorderLayout.SOUTH);
+			
+			add(leftPanel, BorderLayout.WEST);
+		}
 		
 		pack();
 	}

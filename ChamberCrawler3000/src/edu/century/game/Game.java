@@ -4,8 +4,9 @@ import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
 import edu.century.game.display.Display;
+import edu.century.game.entity.Player;
+import edu.century.game.entity.race.player_races.Shade;
 import edu.century.game.floor.Floor;
-import edu.century.game.floor.SampleFloor;
 import edu.century.game.graphics.Assets;
 
 public class Game implements Runnable
@@ -18,6 +19,9 @@ public class Game implements Runnable
 	
 	//The title of the game window
 	private String title;
+	
+	//Whether or not a D-Pad should be used
+	private boolean useDPad;
 	
 	//Desired FPS
 	private final int fps = 60;
@@ -39,6 +43,7 @@ public class Game implements Runnable
 	
 	//Temp
 	public Floor testFloor;
+	public Player testPlayer;
 	
 	/**
 	 * Game constructor
@@ -46,11 +51,12 @@ public class Game implements Runnable
 	 * @param width the width of the game window
 	 * @param height the height of the game window
 	 */
-	public Game(String title, int width, int height)
+	public Game(String title, int width, int height, boolean useDPad)
 	{
 		this.width = width;
 		this.height = height;
 		this.title = title;
+		this.useDPad = useDPad;
 	}
 	
 	/**
@@ -173,15 +179,26 @@ public class Game implements Runnable
 	 */
 	private void init()
 	{
-		//Create the display
-		display = new Display(title, width, height);
-		
+	
 		
 		//Load image assets into memory
 		Assets.init();
 		
 		//Temp
-		testFloor = new Floor(32, 32, null);
-		System.out.println("Test Floor created");
+		testFloor = new Floor(4, 4, null);
+		System.out.println("Test Floor Created");
+		
+		//Temp
+		testPlayer = new Player(testFloor.getCell(2, 2), new Shade());
+		System.out.println("Test Player Created");
+		
+		//Create the display
+		display = new Display(testPlayer, title, width, height, useDPad);
+	}
+	
+	//Temp
+	public Player getPlayer()
+	{
+		return testPlayer;
 	}
 }
