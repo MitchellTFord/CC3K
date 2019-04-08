@@ -1,6 +1,6 @@
 package edu.century.game.effect;
 
-import edu.century.game.entity.Character;
+import edu.century.game.entity.Creature;
 import edu.century.game.entity.Stat;
 
 //This class is intended to serve as an template for creating new Effects
@@ -9,7 +9,7 @@ public class WoundStat extends Effect
 	
 	Stat stat;
 	
-	public WoundStat(Character affectedCharacter, String effectName, double magnitude, int duration, Stat stat)
+	public WoundStat(Creature affectedCharacter, String effectName, double magnitude, int duration, Stat stat)
 	{
 		super(affectedCharacter, "Wound Stat", magnitude, duration);
 		this.stat = stat;

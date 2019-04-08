@@ -1,6 +1,6 @@
 package edu.century.game.effect;
 
-import edu.century.game.entity.Character;
+import edu.century.game.entity.Creature;
 import edu.century.game.entity.Stat;
 
 //This class is intended to serve as an template for creating new Effects
@@ -8,7 +8,7 @@ public class BoostStat extends Effect
 {
 	Stat stat;
 	
-	public BoostStat(Character affectedCharacter, String effectName, double magnitude, int duration, Stat stat)
+	public BoostStat(Creature affectedCharacter, String effectName, double magnitude, int duration, Stat stat)
 	{
 		super(affectedCharacter, "Boost Stat", magnitude, duration);
 		this.stat = stat;

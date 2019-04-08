@@ -5,6 +5,7 @@ import java.awt.BorderLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import edu.century.game.Game;
 import edu.century.game.entity.Player;
 
 public class Display extends JFrame
@@ -13,17 +14,17 @@ public class Display extends JFrame
 	
 	private FloorDisplay floorPanel;
 	
-	//Temp
+	private Game game;
+	
 	private JPanel leftPanel;
-	private Player player;
 	
 	private DirectionalPad dPad;
 	private boolean useDPad;
 	
-	public Display(Player player, String title, int width, int height, boolean useDPad)
+	public Display(Game game, String title, int width, int height, boolean useDPad)
 	{
 		super(title);
-		this.player = player;
+		this.game = game;
 		this.width = width;
 		this.height = height;
 		this.useDPad = useDPad;
@@ -48,8 +49,7 @@ public class Display extends JFrame
 			leftPanel = new JPanel();
 			leftPanel.setLayout(new BorderLayout(2, 1));
 			
-			dPad = new DirectionalPad();
-			dPad.player = player;
+			dPad = new DirectionalPad(game);
 			leftPanel.add(dPad, BorderLayout.SOUTH);
 			
 			add(leftPanel, BorderLayout.WEST);

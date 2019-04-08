@@ -1,7 +1,7 @@
 package edu.century.game.entity.race.player_races;
 
 import edu.century.game.effect.Effect;
-import edu.century.game.entity.Character;
+import edu.century.game.entity.Creature;
 import edu.century.game.entity.race.Race;
 
 public class Shade extends Race
@@ -17,7 +17,7 @@ public class Shade extends Race
 	}
 	
 	@Override
-	public Effect getEffect(Character character)
+	public Effect getEffect(Creature character)
 	{
 		//Shade has no racial effect
 		return null;

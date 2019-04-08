@@ -7,15 +7,18 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import edu.century.game.entity.Player;
+import edu.century.game.Game;
 
 public class DirectionalPad extends JPanel
 {
-	public Player player;
+	private Game game;
 	
-	public DirectionalPad()
+	public DirectionalPad(Game game)
 	{
 		super();
+		
+		this.game = game;
+		
 		setLayout(new GridLayout(3, 3));
 		
 		add(new MovementButton("NW", -1, -1, this));
@@ -31,9 +34,9 @@ public class DirectionalPad extends JPanel
 		add(new MovementButton("SE", 1, 1, this));	
 	}
 	
-	public void sendMoveCommand(int xMove, int yMove)
+	public void sendDPadCommand(int xMove, int yMove)
 	{
-		player.move(player.getGridX() + xMove, player.getGridY() + yMove);
+		game.getState().takePlayerDPadInput(xMove, yMove);
 	}
 	
 	private class MovementButton extends JButton implements ActionListener
@@ -53,7 +56,7 @@ public class DirectionalPad extends JPanel
 		@Override
 		public void actionPerformed(ActionEvent e)
 		{
-			dPad.sendMoveCommand(xMove, yMove);
+			dPad.sendDPadCommand(xMove, yMove);
 		}
 	}
 }

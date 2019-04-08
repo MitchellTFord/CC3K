@@ -4,10 +4,13 @@ import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
 import edu.century.game.display.Display;
-import edu.century.game.entity.Player;
+import edu.century.game.entity.race.Race;
 import edu.century.game.entity.race.player_races.Shade;
 import edu.century.game.floor.Floor;
 import edu.century.game.graphics.Assets;
+import edu.century.game.state.GameState;
+import edu.century.game.state.State;
+import edu.century.game.entity.*;
 
 public class Game implements Runnable
 {
@@ -24,7 +27,7 @@ public class Game implements Runnable
 	private boolean useDPad;
 	
 	//Desired FPS
-	private final int fps = 60;
+	public static final int fps = 60;
 	
 	//Maximum time in nanoseconds between updates to meet desired FPS
 	private final double timePerTick = 1000000000 / fps;
@@ -41,9 +44,12 @@ public class Game implements Runnable
 	//The AWT Graphics objects used by the game
 	private Graphics g;
 	
+	//The current state
+	private State state;
+	
 	//Temp
 	public Floor testFloor;
-	public Player testPlayer;
+	public Creature testPlayer;
 	
 	/**
 	 * Game constructor
@@ -134,7 +140,7 @@ public class Game implements Runnable
 		
 		//Start Drawing
 		
-		testFloor.render(g, 0, 0);
+		state.render(g);
 		
 		//End Drawing
 		
@@ -179,26 +185,28 @@ public class Game implements Runnable
 	 */
 	private void init()
 	{
-	
-		
 		//Load image assets into memory
 		Assets.init();
 		
 		//Temp
-		testFloor = new Floor(4, 4, null);
+		testFloor = new Floor(6, 5, null);
 		System.out.println("Test Floor Created");
 		
 		//Temp
-		testPlayer = new Player(testFloor.getCell(2, 2), new Shade());
+		testPlayer = new Creature(testFloor.getCell(2, 2), new Shade());
 		System.out.println("Test Player Created");
 		
 		//Create the display
-		display = new Display(testPlayer, title, width, height, useDPad);
+		display = new Display(this, title, width, height, useDPad);
+		System.out.println("Display Created");
+		
+		//Create a game state
+		state = new GameState(this, testPlayer, g, testFloor);
+		System.out.println("GameState Created");
 	}
 	
-	//Temp
-	public Player getPlayer()
+	public State getState()
 	{
-		return testPlayer;
+		return state;
 	}
 }

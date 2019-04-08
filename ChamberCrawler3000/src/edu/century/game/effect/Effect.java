@@ -1,14 +1,14 @@
 package edu.century.game.effect;
 
-import edu.century.game.entity.Character;
+import edu.century.game.entity.Creature;
 
 public abstract class Effect
 {
 	//The character that this character acts on
-	protected Character affectedCharacter;
+	protected Creature affectedCharacter;
 	
 	//The Character that applied this Effect
-	protected Character caster;
+	protected Creature caster;
 	
 	//The name of this Effect
 	protected String effectName;
@@ -25,7 +25,7 @@ public abstract class Effect
 	//The amount this Effect will modify various stats
 	protected double attackMod, defenceMod, healthMod, potionPowerMod;
 	
-	public Effect(Character affectedCharacter, String effectName, double magnitude, int duration)
+	public Effect(Creature affectedCharacter, String effectName, double magnitude, int duration)
 	{
 		this.affectedCharacter = affectedCharacter;
 		this.effectName = effectName;

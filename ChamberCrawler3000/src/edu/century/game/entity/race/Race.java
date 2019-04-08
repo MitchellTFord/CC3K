@@ -1,7 +1,7 @@
 package edu.century.game.entity.race;
 
 import edu.century.game.effect.*;
-import edu.century.game.entity.Character;
+import edu.century.game.entity.Creature;
 
 public abstract class Race
 {
@@ -40,7 +40,7 @@ public abstract class Race
 	 * @return a new Effect, implemented differently for each Race, character is
 	 *         the character effected
 	 */
-	public abstract Effect getEffect(Character character);
+	public abstract Effect getEffect(Creature character);
 
 	/*
 	 * Races before being redone as seperate classes public static Race shade =

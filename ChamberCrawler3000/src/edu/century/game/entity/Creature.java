@@ -3,13 +3,14 @@ package edu.century.game.entity;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
+import edu.century.game.Game;
 import edu.century.game.effect.Effect;
 import edu.century.game.entity.race.Race;
 import edu.century.game.floor.Cell;
 import edu.century.game.graphics.Assets;
 import edu.century.game.tiles.Tile;
 
-public class Character extends Entity
+public class Creature extends Entity
 {
 	// this character's various stats
 	protected double health, maxHealth, attack, defence, potionPower, healthOnKill;
@@ -29,8 +30,11 @@ public class Character extends Entity
 
 	// the sprite representing this Character
 	protected BufferedImage characterSprite;
-
-	public Character(Cell currentCell, Race race)
+	
+	//
+	protected float animationOffsetX, animationOffsetY;
+	
+	public Creature(Cell currentCell, Race race)
 	{
 		super(currentCell);
 
@@ -47,7 +51,17 @@ public class Character extends Entity
 	public void render(Graphics g, int x, int y)
 	{
 		//Temp
-		g.drawImage(Assets.tempPlayer, (int) (x * Tile.TILE_SCALE), (int) (y * Tile.TILE_SCALE), 64, 64, null);
+		g.drawImage(Assets.tempPlayer, (int) (x * Tile.TILE_SCALE /*+ animationOffsetX*/), (int) (y * Tile.TILE_SCALE /*+ animationOffsetY*/), 64, 64, null);
+		
+//		if(animationOffsetX != 0)
+//		{
+//			animationOffsetX -= Math.min((Math.abs(animationOffsetX) / animationOffsetX) / Game.fps, (Math.abs(animationOffsetX) / animationOffsetX));
+//		}
+//		if(animationOffsetY != 0)
+//		{
+//			animationOffsetY -= Math.min((Math.abs(animationOffsetY) / animationOffsetY) / Game.fps, (Math.abs(animationOffsetY) / animationOffsetY));
+//		}
+		
 	}
 
 	/**
@@ -84,6 +98,10 @@ public class Character extends Entity
 			{
 				//Remove this Character from its current Cell
 				prevCell.setOccupant(null);
+			
+				animationOffsetX += Tile.TILE_SCALE * Tile.TILE_WIDTH * (prevCell.getGridX() - currentCell.getGridX());
+				animationOffsetY += Tile.TILE_SCALE * Tile.TILE_HEIGHT * (prevCell.getGridY() - currentCell.getGridY());
+			
 			}
 		}
 	}
@@ -99,7 +117,10 @@ public class Character extends Entity
 	{
 		if(gridX >= 0 && gridX < currentCell.getFloor().getGridWidth()
 				&& gridY >= 0 && gridY < currentCell.getFloor().getGridHeight())
-		move(currentCell.getFloor().getCell(gridX, gridY));
+		{
+			move(currentCell.getFloor().getCell(gridX, gridY));
+		}
+		
 	}
 
 	/**
@@ -115,7 +136,7 @@ public class Character extends Entity
 	 * @param damage
 	 *            the amount of damage before armor is taken into account
 	 */
-	public static void doDamage(Character caster, Character target, DamageType damageType, double damage)
+	public static void doDamage(Creature caster, Creature target, DamageType damageType, double damage)
 	{
 		switch(damageType)
 		{
@@ -140,7 +161,7 @@ public class Character extends Entity
 	 * @param damager
 	 *            the Character that did the damage
 	 */
-	public void takeDamage(double amount, Character damager)
+	public void takeDamage(double amount, Creature damager)
 	{
 		this.health -= amount;
 
@@ -261,7 +282,7 @@ public class Character extends Entity
 	 * @param target
 	 *            the Character that was killed, needed for vampire/dwarf rule
 	 */
-	public void targetKilled(Character target)
+	public void targetKilled(Creature target)
 	{
 		// On-kill effects are triggered here
 
@@ -317,7 +338,7 @@ public class Character extends Entity
 	}
 
 	/**
-	 * @return this Character's defence
+	 * @return this Character's defense
 	 */
 	public double getDefence()
 	{

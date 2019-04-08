@@ -16,6 +16,9 @@ public class Floor
 	// Keeps track of all the Character objects on this Floor
 	protected Character[] characters;
 	
+	//Number of Characters currently in the characters array
+	protected int numCharacters;
+	
 	// The gridX and gridY locations of the player's spawn location
 	protected int playerSpawnX, playerSpawnY;
 	
@@ -75,14 +78,25 @@ public class Floor
 
 	public void render(Graphics g, int offsetX, int offsetY)
 	{
-		// Iterates through all of the positions in the cells array
+		// Render Tile textures
 		for(int gridY = 0; gridY < gridHeight; gridY++)
 		{
 			for(int gridX = 0; gridX < gridWidth; gridX++)
 			{
-				// Calls render() for each Cell object in cells using passed in
+				// Calls renderTile() for each Cell object in cells using passed in
 				// offset values
-				cells[gridX][gridY].render(g, offsetX, offsetY);
+				cells[gridX][gridY].renderTile(g, offsetX, offsetY);
+			}
+		}
+		
+		//Render Entity textures
+		for(int gridY = 0; gridY < gridHeight; gridY++)
+		{
+			for(int gridX = 0; gridX < gridWidth; gridX++)
+			{
+				// Calls renderOccupant() for each Cell object in cells using passed in
+				// offset values
+				cells[gridX][gridY].renderOccupant(g, offsetX, offsetY);
 			}
 		}
 	}
@@ -101,6 +115,66 @@ public class Floor
 			// within the bounds of cells
 			return null;
 		}
+	}
+	
+	public void addCharacter(Character newCharacter)
+	{
+		sortCharacters();
+		
+		if(numCharacters >= characters.length)
+		{
+			expandCharacters();
+		}
+		
+		for(int i = 0; i < characters.length; i++)
+		{
+			if(characters[i] == null)
+			{
+				characters[i] = newCharacter;
+				
+				return;
+			}
+		}
+	}
+	
+	public void removeCharacter(Character removeCharacter)
+	{
+		sortCharacters();
+		
+		for(int i = 0; i < characters.length; i++)
+		{
+			if(characters[i].equals(removeCharacter))
+			{
+				characters[i] = null;
+				
+				return;
+			}
+		}
+	}
+	
+	public void expandCharacters()
+	{
+		//Temporary array of twice the size
+		Character[] newCharacters = new Character[numCharacters * 2];
+		
+		//Duplicate the items from the original array to the new array
+		for(int i = 0; i < numCharacters; i++)
+		{
+			newCharacters[i] = characters[i];
+		}
+		
+		//Set the reference to the original array to the temporary array
+		characters = newCharacters;
+	}
+	
+	public void sortCharacters()
+	{
+		//TODO: implement sortCharacters()
+	}
+	
+	public Character[] getCharacters()
+	{
+		return this.characters;
 	}
 	
 	public int getGridWidth()

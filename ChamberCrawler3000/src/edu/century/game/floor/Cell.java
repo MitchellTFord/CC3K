@@ -53,13 +53,7 @@ public class Cell
 	{
 		//TODO: prevent non-visible Cells from rendering
 		
-		// Update this Cell's rendering position based on the passed in offset
-		// values
-		updatePos(offsetX, offsetY);
-
-		//Render tile texture
-		g.drawImage(tileTexture, (int) (x * Tile.TILE_SCALE), (int) (y * Tile.TILE_SCALE), 
-				(int) (Tile.TILE_WIDTH * Tile.TILE_SCALE), (int) (Tile.TILE_HEIGHT * Tile.TILE_SCALE), null);
+		
 
 		//Render cellBorder if it is something other than null
 		if(cellBorder != null)
@@ -67,13 +61,28 @@ public class Cell
 			g.drawImage(cellBorder, (int) (x * Tile.TILE_SCALE), (int) (y * Tile.TILE_SCALE), 
 					(int) (Tile.TILE_WIDTH * Tile.TILE_SCALE), (int) (Tile.TILE_HEIGHT * Tile.TILE_SCALE), null);
 		}
+	}
 
+	public void renderTile(Graphics g, int offsetX, int offsetY)
+	{
+		// Update this Cell's rendering position based on the passed in offset
+		// values
+		updatePos(offsetX, offsetY);
+		
+		//Render tile texture
+		g.drawImage(tileTexture, (int) (x * Tile.TILE_SCALE), (int) (y * Tile.TILE_SCALE), 
+				(int) (Tile.TILE_WIDTH * Tile.TILE_SCALE), (int) (Tile.TILE_HEIGHT * Tile.TILE_SCALE), null);
+	}
+	
+	public void renderOccupant(Graphics g, int offsetX, int offsetY)
+	{
 		// Calls occupant's render() method if this Cell has an occupant
 		if (occupant != null)
 		{
 			occupant.render(g, x, y);
 		}
 	}
+	
 
 	/**
 	 * @return this Cell's occupant

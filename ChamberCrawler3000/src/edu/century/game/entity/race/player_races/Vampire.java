@@ -1,7 +1,7 @@
 package edu.century.game.entity.race.player_races;
 
 import edu.century.game.effect.Effect;
-import edu.century.game.entity.Character;
+import edu.century.game.entity.Creature;
 import edu.century.game.entity.race.Race;
 
 public class Vampire extends Race
@@ -16,7 +16,7 @@ public class Vampire extends Race
 	}
 	
 	@Override
-	public Effect getEffect(Character character)
+	public Effect getEffect(Creature character)
 	{
 		//Gains 5 health on kill, no maximum health
 		//TODO: implement vampire racial effect

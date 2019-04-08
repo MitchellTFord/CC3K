@@ -2,7 +2,7 @@ package edu.century.game.entity.race.player_races;
 
 import edu.century.game.effect.BoostStat;
 import edu.century.game.effect.Effect;
-import edu.century.game.entity.Character;
+import edu.century.game.entity.Creature;
 import edu.century.game.entity.Stat;
 import edu.century.game.entity.race.Race;
 
@@ -18,7 +18,7 @@ public class Goblin extends Race
 	}
 	
 	@Override
-	public Effect getEffect(Character character)
+	public Effect getEffect(Creature character)
 	{
 		//Gains 5 gold on kill
 		return new BoostStat(character, "Goblin Greed", 5, -1, Stat.GOLD_ON_KILL);
