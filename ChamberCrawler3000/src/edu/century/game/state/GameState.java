@@ -17,7 +17,6 @@ public class GameState extends State
 	public GameState(Game game, Creature player, Graphics g)
 	{
 		this(game, player, g, new SampleFloor());
-
 	}
 
 	public GameState(Game game, Creature player, Graphics g, Floor floor)

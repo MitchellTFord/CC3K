@@ -56,6 +56,7 @@ public class Game implements Runnable
 	 * @param title the title of the game window
 	 * @param width the width of the game window
 	 * @param height the height of the game window
+	 * @param useDPad whether of a DPad should be used
 	 */
 	public Game(String title, int width, int height, boolean useDPad)
 	{
@@ -124,9 +125,12 @@ public class Game implements Runnable
 	 */
 	public void render()
 	{
+		//Get the Canvas's BufferStrategy
 		bs = display.getFloorPanel().getCanvas().getBufferStrategy();
+		
+		//Create new BufferStrategy if one hasn't been made, happens on launch
 		if(bs == null)
-		{	//Happens on launch
+		{
 			display.getFloorPanel().getCanvas().createBufferStrategy(3);
 			System.out.println("Buffer Strategy Created");
 			return; //Skip the rest of render();
@@ -144,7 +148,10 @@ public class Game implements Runnable
 		
 		//End Drawing
 		
+		//Show what was drawn
 		bs.show();
+		
+		//Get rid of Graphics object, new one is made next frame
 		g.dispose();
 	}
 	

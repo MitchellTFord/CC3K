@@ -59,11 +59,11 @@ public class Creature extends Entity
 			if(animationOffsetX > 0)
 			{
 				//System.out.println("animationOffsetX -= " + Math.min((float) Tile.TILE_WIDTH * Tile.TILE_SCALE / Game.fps, animationOffsetX));
-				animationOffsetX -= Math.min((float) Tile.TILE_WIDTH * Tile.TILE_SCALE / Game.fps, animationOffsetX);
+				animationOffsetX -= Math.min((float) Tile.TILE_WIDTH * Tile.TILE_SCALE / Game.fps * 2, animationOffsetX);
 			} else if(animationOffsetX < 0)
 			{
 				//System.out.println("animationOffsetX += " + Math.min((float) Tile.TILE_WIDTH * Tile.TILE_SCALE / Game.fps, animationOffsetX));
-				animationOffsetX += Math.max((float) Tile.TILE_WIDTH * Tile.TILE_SCALE / Game.fps, animationOffsetX);
+				animationOffsetX += Math.max((float) Tile.TILE_WIDTH * Tile.TILE_SCALE / Game.fps * 2, animationOffsetX);
 			}
 		}
 		
@@ -77,10 +77,10 @@ public class Creature extends Entity
 		{
 			if(animationOffsetY > 0)
 			{
-				animationOffsetY -= Math.min((float) Tile.TILE_HEIGHT * Tile.TILE_SCALE / Game.fps, animationOffsetY);
+				animationOffsetY -= Math.min((float) Tile.TILE_HEIGHT * Tile.TILE_SCALE / Game.fps * 2, animationOffsetY);
 			} else if(animationOffsetY < 0)
 			{
-				animationOffsetY += Math.max((float) Tile.TILE_HEIGHT * Tile.TILE_SCALE / Game.fps, animationOffsetY);
+				animationOffsetY += Math.max((float) Tile.TILE_HEIGHT * Tile.TILE_SCALE / Game.fps * 2, animationOffsetY);
 			}
 		}
 		
