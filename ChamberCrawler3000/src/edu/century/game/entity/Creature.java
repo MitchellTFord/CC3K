@@ -31,8 +31,8 @@ public class Creature extends Entity
 	// the sprite representing this Character
 	protected BufferedImage characterSprite;
 	
-	//
-	protected float animationOffsetX, animationOffsetY;
+	//Rendering offsets for movement animations
+	protected float animationOffsetX = 0, animationOffsetY = 0;
 	
 	public Creature(Cell currentCell, Race race)
 	{
@@ -48,20 +48,47 @@ public class Creature extends Entity
 	}
 
 	@Override
-	public void render(Graphics g, int x, int y)
+	public void render(Graphics g, int renderX, int renderY)
 	{
 		//Temp
-		g.drawImage(Assets.tempPlayer, (int) (x * Tile.TILE_SCALE /*+ animationOffsetX*/), (int) (y * Tile.TILE_SCALE /*+ animationOffsetY*/), 64, 64, null);
+		g.drawImage(Assets.tempPlayer, (int) (renderX + animationOffsetX), (int) (renderY + animationOffsetY), 
+				(int) (Tile.TILE_WIDTH * Tile.TILE_SCALE), (int) (Tile.TILE_HEIGHT * Tile.TILE_SCALE), null);
 		
-//		if(animationOffsetX != 0)
-//		{
-//			animationOffsetX -= Math.min((Math.abs(animationOffsetX) / animationOffsetX) / Game.fps, (Math.abs(animationOffsetX) / animationOffsetX));
-//		}
-//		if(animationOffsetY != 0)
-//		{
-//			animationOffsetY -= Math.min((Math.abs(animationOffsetY) / animationOffsetY) / Game.fps, (Math.abs(animationOffsetY) / animationOffsetY));
-//		}
+		if(animationOffsetX != 0)
+		{
+			if(animationOffsetX > 0)
+			{
+				//System.out.println("animationOffsetX -= " + Math.min((float) Tile.TILE_WIDTH * Tile.TILE_SCALE / Game.fps, animationOffsetX));
+				animationOffsetX -= Math.min((float) Tile.TILE_WIDTH * Tile.TILE_SCALE / Game.fps, animationOffsetX);
+			} else if(animationOffsetX < 0)
+			{
+				//System.out.println("animationOffsetX += " + Math.min((float) Tile.TILE_WIDTH * Tile.TILE_SCALE / Game.fps, animationOffsetX));
+				animationOffsetX += Math.max((float) Tile.TILE_WIDTH * Tile.TILE_SCALE / Game.fps, animationOffsetX);
+			}
+		}
 		
+		//Prevents stuttering from offset over-compensation
+		if(Math.abs(animationOffsetX) < 1)
+		{
+			animationOffsetX = 0;
+		}
+		
+		if(animationOffsetY != 0)
+		{
+			if(animationOffsetY > 0)
+			{
+				animationOffsetY -= Math.min((float) Tile.TILE_HEIGHT * Tile.TILE_SCALE / Game.fps, animationOffsetY);
+			} else if(animationOffsetY < 0)
+			{
+				animationOffsetY += Math.max((float) Tile.TILE_HEIGHT * Tile.TILE_SCALE / Game.fps, animationOffsetY);
+			}
+		}
+		
+		//Prevents stuttering from offset over-compensation
+		if(Math.abs(animationOffsetY) < 1)
+		{
+			animationOffsetY = 0;
+		}
 	}
 
 	/**
@@ -88,6 +115,7 @@ public class Creature extends Entity
 
 	public void move(Cell destCell)
 	{
+		//Checking whether of not the Cells are adjacent is redundant so long as only a DPad-type system is used to control movement
 		if (currentCell.isAdjecent(destCell) && destCell.getSpaceOpen())
 		{
 			Cell prevCell = currentCell;
