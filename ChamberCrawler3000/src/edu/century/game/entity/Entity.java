@@ -12,7 +12,10 @@ public abstract class Entity
 	public Entity(Cell currentCell)
 	{
 		this.currentCell = currentCell;
-		currentCell.setOccupant(this);
+		if(currentCell != null)
+		{
+			currentCell.setOccupant(this);
+		}
 	}
 	
 	public abstract void render(Graphics g, int offsetX, int offsetY);

@@ -25,19 +25,25 @@ public class GameState extends State
 		this.player = player;
 		this.g = g;
 		this.floor = floor;
+		
+		floor.getCell(floor.getPlayerSpawnX(), floor.getPlayerSpawnY()).setOccupant(player);
+		
 		currentTurnHolder = player;
+		player.startTurn();
 	}
 
 	@Override
 	public void update()
 	{
-
+		
 	}
 
 	@Override
 	public void render(Graphics g)
 	{
 		floor.render(g, 0, 0);
+		
+		game.getDisplay().updatePlayerInfoPanel(player);
 	}
 
 	public void takePlayerDPadInput(int xComponent, int yComponent)

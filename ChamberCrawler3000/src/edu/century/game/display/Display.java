@@ -6,13 +6,15 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import edu.century.game.Game;
-import edu.century.game.entity.Player;
+import edu.century.game.entity.Creature;
 
 public class Display extends JFrame
 {
 	private int width, height;
 	
 	private FloorDisplay floorPanel;
+	
+	private PlayerInfoPanel playerInfoPanel;
 	
 	private Game game;
 	
@@ -44,16 +46,18 @@ public class Display extends JFrame
 		floorPanel = new FloorDisplay(width * 2/3, height);
 		add(floorPanel, BorderLayout.CENTER);
 		
+		leftPanel = new JPanel();
+		leftPanel.setLayout(new BorderLayout());
+		add(leftPanel, BorderLayout.WEST);
+		
 		if(useDPad)
 		{
-			leftPanel = new JPanel();
-			leftPanel.setLayout(new BorderLayout(2, 1));
-			
 			dPad = new DirectionalPad(game);
 			leftPanel.add(dPad, BorderLayout.SOUTH);
-			
-			add(leftPanel, BorderLayout.WEST);
 		}
+		
+		playerInfoPanel = new PlayerInfoPanel(width / 3, height);
+		leftPanel.add(playerInfoPanel, BorderLayout.CENTER);
 		
 		pack();
 	}
@@ -61,5 +65,10 @@ public class Display extends JFrame
 	public FloorDisplay getFloorPanel()
 	{
 		return this.floorPanel;
+	}
+	
+	public void updatePlayerInfoPanel(Creature player)
+	{
+		playerInfoPanel.updatePlayerInfo(player);
 	}
 }

@@ -1,10 +1,22 @@
 package edu.century.game.entity.race;
 
-import edu.century.game.effect.*;
+import javax.swing.JLabel;
+
+import edu.century.game.effect.Effect;
 import edu.century.game.entity.Creature;
 
 public abstract class Race
 {
+	public static String[] playerRaceStrings =
+		{"Shade", "Drow", "Goblin", "Troll", "Vampire"};
+	
+	public static final String[] playerRaceDescriptions = 
+		{"Shade: 125 HP, 25 Atk, 25 Def", 
+				"Drow: 150 HP, 25 Atk, 15 Def, all potions have their effect magnified by 1.5", 
+				"Goblin: 110 HP, 15 Atk, 20 Def, steals 5 gold from every slain enemy", 
+				"Troll: 120 HP, 25 Atk, 15 Def, regains 5 HP every turn; HP is capped at 120", 
+				"Vampire: 50 HP, 25 Atk, 25 Def, gains 5 HP every successful attack and has no maximum HP "};
+	
 	// The name of this Race
 	protected String raceName;
 
@@ -53,11 +65,16 @@ public abstract class Race
 	 */
 
 	/*
-	 * Races as defined in the CC3K document 0 Shade: 125 HP, 25 Atk, 25 Def 1
-	 * Drow: 150 HP, 25 Atk, 15 Def, all potions have their effect magnified by
-	 * 1.5 2 Vampire: 50 HP, 25 Atk, 25 Def, gains 5 HP every successful attack
-	 * and has no maximum HP 3 Troll: 120 HP, 25 Atk, 15 Def, regains 5 HP every
-	 * turn; HP is capped at 120 HP 4 Goblin: 110 HP, 15 Atk, 20 Def, steals 5
-	 * gold from every slain enemy
+	 * Races as defined in the CC3K document 
+	 * 
+	 * 0 Shade: 125 HP, 25 Atk, 25 Def 
+	 * 
+	 * 1 Drow: 150 HP, 25 Atk, 15 Def, all potions have their effect magnified by 1.5
+	 * 
+	 * 2 Vampire: 50 HP, 25 Atk, 25 Def, gains 5 HP every successful attack and has no maximum HP 
+	 * 
+	 * 3 Troll: 120 HP, 25 Atk, 15 Def, regains 5 HP every turn; HP is capped at 120 
+	 * 
+	 * 4 Goblin: 110 HP, 15 Atk, 20 Def, steals 5 gold from every slain enemy
 	 */
 }

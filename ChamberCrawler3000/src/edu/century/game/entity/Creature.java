@@ -12,6 +12,9 @@ import edu.century.game.tiles.Tile;
 
 public class Creature extends Entity
 {
+	//This creature's name
+	protected String name;
+	
 	// this character's various stats
 	protected double health, maxHealth, attack, defence, potionPower, healthOnKill;
 	protected int goldOnKill;
@@ -253,8 +256,8 @@ public class Creature extends Entity
 	{
 		// Set all stats to base values
 		maxHealth = 125 + race.getHealthMod();
-		attack = race.getAttackMod();
-		defence = race.getDefenceMod();
+		attack = 25 + race.getAttackMod();
+		defence = 25 + race.getDefenceMod();
 		potionPower = 1;
 		healthOnKill = 0;
 		goldOnKill = 0;
@@ -297,7 +300,7 @@ public class Creature extends Entity
 			if (effects[i].getDuration() == 0)
 			{
 				// TODO: Destroy Effect object
-
+				
 				// Remove object from effects array
 				effects[i] = null;
 			}
@@ -371,5 +374,52 @@ public class Creature extends Entity
 	public double getDefence()
 	{
 		return defence;
+	}
+
+	public Race getRace()
+	{
+		return race;
+	}
+
+	public double getHealth()
+	{
+		return health;
+	}
+
+	public double getMaxHealth()
+	{
+		return maxHealth;
+	}
+
+	public int getGold()
+	{
+		return gold;
+	}
+
+	public Item getArmor()
+	{
+		return armor;
+	}
+
+	public Item getWeapon()
+	{
+		return weapon;
+	}
+	
+	@Override
+	public String toString()
+	{
+		String str =
+			  "Name: " + name + "\n"
+			+ "Race: " + race.getRaceName() + "\n"
+			+ "Health: " + (int) health + "/" + (int) maxHealth + "\n"
+			+ "Attack: " + (int) attack + "\n"
+			+ "Defence: " + (int) defence + "\n"
+			+ "Gold: " + gold + "\n"
+			+ "Health on Kill: " + (int) healthOnKill + "\n"
+			+ "Gold on Kill: " + goldOnKill + "\n";
+			;
+		
+		return str;
 	}
 }

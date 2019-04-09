@@ -188,4 +188,14 @@ public class Floor
 	{
 		return gridHeight;
 	}
+
+	public int getPlayerSpawnX()
+	{
+		return playerSpawnX;
+	}
+	
+	public int getPlayerSpawnY()
+	{
+		return playerSpawnY;
+	}
 }

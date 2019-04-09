@@ -4,13 +4,13 @@ import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
 import edu.century.game.display.Display;
-import edu.century.game.entity.race.Race;
+import edu.century.game.entity.Creature;
+import edu.century.game.entity.Player;
 import edu.century.game.entity.race.player_races.Shade;
 import edu.century.game.floor.Floor;
 import edu.century.game.graphics.Assets;
 import edu.century.game.state.GameState;
 import edu.century.game.state.State;
-import edu.century.game.entity.*;
 
 public class Game implements Runnable
 {
@@ -48,8 +48,9 @@ public class Game implements Runnable
 	private State state;
 	
 	//Temp
-	public Floor testFloor;
-	public Creature testPlayer;
+	private Floor testFloor;
+	
+	public Player player;
 	
 	/**
 	 * Game constructor
@@ -58,12 +59,13 @@ public class Game implements Runnable
 	 * @param height the height of the game window
 	 * @param useDPad whether of a DPad should be used
 	 */
-	public Game(String title, int width, int height, boolean useDPad)
+	public Game(String title, int width, int height, boolean useDPad, Player player)
 	{
 		this.width = width;
 		this.height = height;
 		this.title = title;
 		this.useDPad = useDPad;
+		this.player = player;
 	}
 	
 	/**
@@ -199,21 +201,22 @@ public class Game implements Runnable
 		testFloor = new Floor(6, 5, null);
 		System.out.println("Test Floor Created");
 		
-		//Temp
-		testPlayer = new Creature(testFloor.getCell(2, 2), new Shade());
-		System.out.println("Test Player Created");
-		
 		//Create the display
 		display = new Display(this, title, width, height, useDPad);
 		System.out.println("Display Created");
 		
 		//Create a game state
-		state = new GameState(this, testPlayer, g, testFloor);
+		state = new GameState(this, player, g, testFloor);
 		System.out.println("GameState Created");
 	}
 	
 	public State getState()
 	{
 		return state;
+	}
+
+	public Display getDisplay()
+	{
+		return display;
 	}
 }

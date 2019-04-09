@@ -2,6 +2,7 @@ package edu.century.game.display;
 
 import java.awt.BorderLayout;
 import java.awt.Canvas;
+import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.JPanel;
@@ -21,6 +22,8 @@ public class FloorDisplay extends JPanel
 	
 	private void init()
 	{
+		setBackground(Color.cyan);
+		
 		canvas = new Canvas();
 		canvas.setPreferredSize(new Dimension(width, height));
 		canvas.setMaximumSize(new Dimension(width, height));
