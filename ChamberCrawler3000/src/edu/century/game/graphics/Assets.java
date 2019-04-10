@@ -47,7 +47,7 @@ public class Assets
 			try
 			{
 				//Attempt to return a special "missing texture" sprite
-				return ImageIO.read(Assets.class.getResourceAsStream("/textures/MissingTexture.png"));
+				return ImageIO.read(Assets.class.getResource("/textures/MissingTexture.png"));
 			}
 			catch (Exception f)
 			{

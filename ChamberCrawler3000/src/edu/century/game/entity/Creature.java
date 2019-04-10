@@ -71,7 +71,7 @@ public class Creature extends Entity
 		}
 		
 		//Prevents stuttering from offset over-compensation
-		if(Math.abs(animationOffsetX) < 1)
+		if(Math.abs(animationOffsetX) < 1 / Game.fps)
 		{
 			animationOffsetX = 0;
 		}
@@ -88,7 +88,7 @@ public class Creature extends Entity
 		}
 		
 		//Prevents stuttering from offset over-compensation
-		if(Math.abs(animationOffsetY) < 1)
+		if(Math.abs(animationOffsetY) < 1 / Game.fps)
 		{
 			animationOffsetY = 0;
 		}
@@ -116,11 +116,17 @@ public class Creature extends Entity
 		// turnController.NextCharactersTurn()
 	}
 
-	public void move(Cell destCell)
+	/**
+	 * Moves this Creature to a different Cell if possible
+	 * @param destCell
+	 * @return whether this operation was successful or not
+	 */
+	public boolean move(Cell destCell)
 	{
 		//Checking whether of not the Cells are adjacent is redundant so long as only a DPad-type system is used to control movement
 		if (currentCell.isAdjecent(destCell) && destCell.getSpaceOpen())
 		{
+			//Store the origin Cell temporarily
 			Cell prevCell = currentCell;
 			
 			//Assign this Character to its destination Cell
@@ -130,10 +136,20 @@ public class Creature extends Entity
 				//Remove this Character from its current Cell
 				prevCell.setOccupant(null);
 			
+				//Set movement animation offsets
 				animationOffsetX += Tile.TILE_SCALE * Tile.TILE_WIDTH * (prevCell.getGridX() - currentCell.getGridX());
 				animationOffsetY += Tile.TILE_SCALE * Tile.TILE_HEIGHT * (prevCell.getGridY() - currentCell.getGridY());
-			
+				
+				return true;
 			}
+			else
+			{
+				return false;
+			}
+		}
+		else
+		{
+			return false;
 		}
 	}
 
@@ -143,15 +159,17 @@ public class Creature extends Entity
 	 * 
 	 * @param gridX the x index of the destination Cell in the floor's cells array
 	 * @param gridY the y index of the destination Cell in the floor's cells array
+	 * @return whether this operation was successful or not
 	 */
-	public void move(int gridX, int gridY)
+	public boolean move(int gridX, int gridY)
 	{
+		//Check to see if the passed in coordinates are within the bounds of the floor
 		if(gridX >= 0 && gridX < currentCell.getFloor().getGridWidth()
 				&& gridY >= 0 && gridY < currentCell.getFloor().getGridHeight())
 		{
-			move(currentCell.getFloor().getCell(gridX, gridY));
+			return move(currentCell.getFloor().getCell(gridX, gridY));
 		}
-		
+		return false;
 	}
 
 	/**

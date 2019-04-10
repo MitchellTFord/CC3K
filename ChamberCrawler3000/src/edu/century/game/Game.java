@@ -27,10 +27,11 @@ public class Game implements Runnable
 	private boolean useDPad;
 	
 	//Desired FPS
-	public static final int fps = 60;
+	public static int fps = 60;
 	
 	//Maximum time in nanoseconds between updates to meet desired FPS
-	private final double timePerTick = 1000000000 / fps;
+	private static double timePerRender = 1000000000 / fps;
+	private static double timePerUpdate = 1000000000 / 30;
 	
 	//Status of the game
 	private boolean running = false;
@@ -59,13 +60,15 @@ public class Game implements Runnable
 	 * @param height the height of the game window
 	 * @param useDPad whether of a DPad should be used
 	 */
-	public Game(String title, int width, int height, boolean useDPad, Player player)
+	public Game(String title, int width, int height, boolean useDPad, Player player, int fps)
 	{
 		this.width = width;
 		this.height = height;
 		this.title = title;
 		this.useDPad = useDPad;
 		this.player = player;
+		Game.fps = fps;
+		Game.timePerRender = (double) 1000000000 / fps;
 	}
 	
 	/**
@@ -77,7 +80,8 @@ public class Game implements Runnable
 		
 		init();
 		
-		double delta = 0;
+		double updateDelta = 0;
+		double renderDelta = 0;
 		
 		//Current system time
 		long now;
@@ -87,28 +91,39 @@ public class Game implements Runnable
 		
 		//For FPS counter
 		long timer = 0;
-		int ticks = 0;
+		int updateTicks = 0;
+		int renderTicks = 0;
 		
 		while(running)
 		{
 			now = System.nanoTime();
-			delta += (now - lastTime) / timePerTick;
+			updateDelta += (now - lastTime) / timePerUpdate;
+			renderDelta += (now - lastTime) / timePerRender;
 			timer += now - lastTime;
 			lastTime = now;
 			
-			if(delta >= 1)
+			if(updateDelta >= 1)
 			{
 				update();
-				render();
-				ticks++;
-				delta--;
+				updateTicks++;
+				updateDelta--;
+			}
+			
+			if(renderDelta >= 1)
+			{
+				render();				
+				renderTicks++;
+				renderDelta--;
 			}
 			
 			//Console FPS counter
 			if(timer >= 1000000000)
 			{
-				//System.out.println("FPS: " + ticks);
-				ticks = 0;
+				//System.out.println("Updates / Sec: " + updateTicks);
+				//System.out.println("Renders / Sec: " + renderTicks);
+				
+				updateTicks = 0;
+				renderTicks = 0;
 				timer = 0;
 			}
 		}
@@ -119,7 +134,7 @@ public class Game implements Runnable
 	
 	public void update()
 	{
-		
+		state.update();
 	}
 	
 	/**

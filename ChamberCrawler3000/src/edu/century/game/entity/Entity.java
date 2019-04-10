@@ -9,16 +9,30 @@ public abstract class Entity
 	// The Cell this Entity occupies
 	protected Cell currentCell;
 
+	/**
+	 * Entity constructor
+	 * @param currentCell 
+	 * 			the Cell this Entity occupies, a null value indicates that 
+	 * 			this Entity should be placed at the Floor's player spawn location
+	 */
 	public Entity(Cell currentCell)
 	{
 		this.currentCell = currentCell;
+		
+		//If currentCell is null, placement of this entity MUST be handled by the State
 		if(currentCell != null)
 		{
 			currentCell.setOccupant(this);
 		}
 	}
 	
-	public abstract void render(Graphics g, int offsetX, int offsetY);
+	/**
+	 * Derived classes must implement a render method
+	 * @param g the Graphics object to render with
+	 * @param x the x position to render at
+	 * @param y the y position to render at
+	 */
+	public abstract void render(Graphics g, int x, int y);
 
 	/**
 	 * @return this Entity's currentCell

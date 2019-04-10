@@ -169,31 +169,50 @@ public class Floor
 		characters = newCharacters;
 	}
 	
+	/**
+	 * Sorts the characters array
+	 */
 	public void sortCharacters()
 	{
 		//TODO: implement sortCharacters()
 	}
 	
+	/**
+	 * @return this Floor's characters array
+	 */
 	public Character[] getCharacters()
 	{
 		return this.characters;
 	}
 	
+	/**
+	 * @return the number of Cells wide this Floor is
+	 */
 	public int getGridWidth()
 	{
 		return gridWidth;
 	}
 	
+	/**
+	 * @return the number of Cells tall this Floor is
+	 */
 	public int getGridHeight()
 	{
 		return gridHeight;
 	}
 
+	/**
+	 * @return the gridX coordinate that the player should spawn at
+	 */
 	public int getPlayerSpawnX()
 	{
 		return playerSpawnX;
 	}
 	
+	
+	/**
+	 * @return the gridY coordinate that the player should spawn at
+	 */
 	public int getPlayerSpawnY()
 	{
 		return playerSpawnY;

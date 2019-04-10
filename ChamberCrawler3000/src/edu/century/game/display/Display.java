@@ -6,7 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import edu.century.game.Game;
-import edu.century.game.entity.Creature;
+import edu.century.game.entity.Player;
 
 public class Display extends JFrame
 {
@@ -67,7 +67,7 @@ public class Display extends JFrame
 		return this.floorPanel;
 	}
 	
-	public void updatePlayerInfoPanel(Creature player)
+	public void updatePlayerInfoPanel(Player player)
 	{
 		playerInfoPanel.updatePlayerInfo(player);
 	}
