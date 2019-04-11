@@ -18,12 +18,17 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import edu.century.game.display.CombinedPanel;
 import edu.century.game.display.ComboboxToolTipRenderer;
 import edu.century.game.entity.Player;
 import edu.century.game.entity.race.Race;
-import edu.century.game.entity.race.player_races.*;
+import edu.century.game.entity.race.player_races.Drow;
+import edu.century.game.entity.race.player_races.Goblin;
+import edu.century.game.entity.race.player_races.Shade;
+import edu.century.game.entity.race.player_races.Troll;
+import edu.century.game.entity.race.player_races.Vampire;
 
 public class Launcher extends JFrame implements ActionListener
 {
@@ -62,11 +67,13 @@ public class Launcher extends JFrame implements ActionListener
 	//The main method for this whole project
 	public static void main(String[] args)
 	{
-		//Creates a new Launcher object
-		launcher = new Launcher(400, 400);
-
-		// Game game = new Game("Chamber Crawler 3000", 640, 360, true);
-		// game.start();
+		SwingUtilities.invokeLater(new Runnable()
+			{
+				public void run()
+				{
+					launcher = new Launcher(400, 400);
+				}
+			});
 	}
 
 	/**
