@@ -2,7 +2,6 @@ package edu.century.game.floor;
 
 import java.awt.Graphics;
 
-import edu.century.game.graphics.Assets;
 import edu.century.game.tiles.Tile;
 
 public class Floor
@@ -54,7 +53,7 @@ public class Floor
 				else
 				{
 					//Assign all created Cells Tile.dirtTile
-					cells[gridX][gridY] = new Cell(this, gridX, gridY, Tile.dirtTile);
+					cells[gridX][gridY] = new Cell(this, gridX, gridY, getRandomTile());
 				}
 			}
 		}
@@ -76,6 +75,17 @@ public class Floor
 		this(gridWidth, gridHeight, Math.round(gridWidth / 2), Math.round(gridHeight / 2), tiles);
 	}
 
+	/**
+	 * Floor constructor without playerSpawns or tiles
+	 * @param gridWidth the number of Cells wide this Floor should be
+	 * @param gridHeight the number of Cells tall this Floor should be
+	 */
+	public Floor(int gridWidth, int gridHeight)
+	{
+		//Passes in null for tiles for you
+		this(gridWidth, gridHeight, null);
+	}
+	
 	public void render(Graphics g, int offsetX, int offsetY)
 	{
 		// Render Tile textures
@@ -103,6 +113,12 @@ public class Floor
 		}
 	}
 
+	private Tile getRandomTile()
+	{
+		int maxIndex = Tile.numTiles - 1;
+		return Tile.tileIDs[(int) Math.round(Math.random() * (Tile.numTiles - 1))];
+	}
+	
 	public Cell getCell(int gridX, int gridY)
 	{
 		// Checks to see if the given gridX and gridY values are within the
@@ -208,7 +224,6 @@ public class Floor
 	{
 		return playerSpawnX;
 	}
-	
 	
 	/**
 	 * @return the gridY coordinate that the player should spawn at

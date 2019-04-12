@@ -6,14 +6,16 @@ public class SampleFloor extends Floor
 {
 	public static final Tile[][] sampleTiles = 
 		{
-			{Tile.dirtTile, Tile.dirtTile, Tile.dirtTile, Tile.dirtTile},
-			{Tile.dirtTile, Tile.dirtTile, Tile.dirtTile, Tile.dirtTile},
-			{Tile.dirtTile, Tile.dirtTile, Tile.dirtTile, Tile.dirtTile},
-			{Tile.dirtTile, Tile.dirtTile, Tile.dirtTile, Tile.dirtTile},
+			{Tile.dirtTile, Tile.dirtTile, Tile.dirtTile, Tile.dirtTile, Tile.stoneTile, Tile.stoneTile},
+			{Tile.dirtTile, Tile.stoneTile, Tile.dirtTile, Tile.dirtTile, Tile.stoneTile, Tile.dirtTile},
+			{Tile.dirtTile, Tile.dirtTile, Tile.stoneTile, Tile.dirtTile, Tile.dirtTile, Tile.dirtTile},
+			{Tile.dirtTile, Tile.dirtTile, Tile.stoneTile ,Tile.dirtTile, Tile.dirtTile, Tile.dirtTile},
+			{Tile.dirtTile, Tile.dirtTile, Tile.stoneTile, Tile.dirtTile, Tile.dirtTile, Tile.dirtTile},
+			{Tile.dirtTile, Tile.stoneTile, Tile.dirtTile, Tile.dirtTile, Tile.stoneTile, Tile.dirtTile}
 		};
 	
 	public SampleFloor()
 	{
-		super(4, 4, sampleTiles);
+		super(6, 6, sampleTiles);
 	}
 }

@@ -298,7 +298,6 @@ public class Launcher extends JFrame implements ActionListener
 			// Launch the game
 			startGame(640, 360, useDPad, player);
 		} else if(actionSource.equals(floorEditorButton))
-			;
 		{
 			// Launch the floor editor
 			startFloorEditor();

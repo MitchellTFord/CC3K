@@ -53,9 +53,9 @@ public class SpriteSheet
 	 */
 	public void makeSprites()
 	{
-		for(int y = 0; y < numSpritesTall - 1; y++)
+		for(int y = 0; y < numSpritesTall; y++)
 		{
-			for(int x = 0; x < numSpritesWide - 1; x++)
+			for(int x = 0; x < numSpritesWide; x++)
 			{
 				sprites[x][y] = crop(spriteWidth * x, spriteHeight * y, spriteWidth, spriteHeight);
 			}

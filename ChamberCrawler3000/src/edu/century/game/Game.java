@@ -7,56 +7,60 @@ import edu.century.game.display.Display;
 import edu.century.game.entity.Creature;
 import edu.century.game.entity.Player;
 import edu.century.game.floor.Floor;
+import edu.century.game.floor.SampleFloor;
 import edu.century.game.graphics.Assets;
 import edu.century.game.state.GameState;
 import edu.century.game.state.State;
 
 public class Game implements Runnable
 {
-	//The AWT Display object the game is being displayed on
+	// The AWT Display object the game is being displayed on
 	private Display display;
-	
-	//The width/height in pixels of the game window
+
+	// The width/height in pixels of the game window
 	private int width, height;
-	
-	//The title of the game window
+
+	// The title of the game window
 	private String title;
-	
-	//Whether or not a D-Pad should be used
+
+	// Whether or not a D-Pad should be used
 	private boolean useDPad;
-	
-	//Desired FPS, 30 by default
+
+	// Desired FPS, 30 by default
 	public static int fps = 30;
-	
-	//Maximum time in nanoseconds between updates to meet desired FPS
+
+	// Maximum time in nanoseconds between renders to meet desired FPS
 	public static double timePerRender = 1000000000 / fps;
+
+	// Maximum time in nanoseconds between updates to meet 30 updates per second
 	private static double timePerUpdate = 1000000000 / 30;
-	
-	//Status of the game
+
+	// Status of the game
 	private boolean running = false;
-	
-	//The thread the game is running on
+
+	// The thread the game is running on
 	private Thread thread;
-	
-	//The BufferStrategy used by the game
+
+	// The BufferStrategy used by the game
 	private BufferStrategy bs;
-	
-	//The AWT Graphics objects used by the game
+
+	// The AWT Graphics objects used by the game
 	private Graphics g;
-	
-	//The current state
+
+	// The current state
 	private State state;
-	
-	//Temp
+
+	// Temp
 	private Floor testFloor;
-	
+
 	public Player player;
-	
+
 	/**
 	 * Game constructor
-	 * @param title the title of the game window
-	 * @param width the width of the game window
-	 * @param height the height of the game window
+	 * 
+	 * @param title   the title of the game window
+	 * @param width   the width of the game window
+	 * @param height  the height of the game window
 	 * @param useDPad whether of a DPad should be used
 	 */
 	public Game(String title, int width, int height, boolean useDPad, Player player, int fps)
@@ -69,30 +73,30 @@ public class Game implements Runnable
 		Game.fps = fps;
 		Game.timePerRender = (double) 1000000000 / fps;
 	}
-	
+
 	/**
 	 * Called when the game thread is opened
 	 */
 	public void run()
 	{
 		System.out.println("Thread Created");
-		
+
 		init();
-		
+
 		double updateDelta = 0;
 		double renderDelta = 0;
-		
-		//Current system time
+
+		// Current system time
 		long now;
-		
-		//Time of last update
+
+		// Time of last update
 		long lastTime = System.nanoTime();
-		
-		//For FPS counter
+
+		// For FPS counter
 		long timer = 0;
 		int updateTicks = 0;
 		int renderTicks = 0;
-		
+
 		while(running)
 		{
 			now = System.nanoTime();
@@ -100,130 +104,130 @@ public class Game implements Runnable
 			renderDelta += (now - lastTime) / timePerRender;
 			timer += now - lastTime;
 			lastTime = now;
-			
+
 			if(updateDelta >= 1)
 			{
 				update();
 				updateTicks++;
 				updateDelta--;
 			}
-			
+
 			if(renderDelta >= 1)
 			{
-				render();				
+				render();
 				renderTicks++;
 				renderDelta--;
 			}
-			
-			//Console FPS counter
+
+			// Console FPS counter
 			if(timer >= 1000000000)
 			{
-				//System.out.println("Updates / Sec: " + updateTicks);
-				//System.out.println("Renders / Sec: " + renderTicks);
-				
+				// System.out.println("Updates / Sec: " + updateTicks);
+				// System.out.println("Renders / Sec: " + renderTicks);
+
 				updateTicks = 0;
 				renderTicks = 0;
 				timer = 0;
 			}
 		}
-		
-		//End the program
+
+		// End the program
 		stop();
 	}
-	
+
 	public void update()
 	{
 		state.update();
 	}
-	
+
 	/**
 	 * Renders the display
 	 */
 	public void render()
 	{
-		//Get the Canvas's BufferStrategy
+		// Get the Canvas's BufferStrategy
 		bs = display.getFloorPanel().getCanvas().getBufferStrategy();
-		
-		//Create new BufferStrategy if one hasn't been made, happens on launch
+
+		// Create new BufferStrategy if one hasn't been made, happens on launch
 		if(bs == null)
 		{
 			display.getFloorPanel().getCanvas().createBufferStrategy(3);
 			System.out.println("Buffer Strategy Created");
-			return; //Skip the rest of render();
+			return; // Skip the rest of render();
 		}
-		
-		//Set g to the draw object of the BufferStrategy
+
+		// Set g to the draw object of the BufferStrategy
 		g = bs.getDrawGraphics();
-		
-		//Clear Screen
+
+		// Clear Screen
 		g.clearRect(0, 0, width, height);
-		
-		//Start Drawing
-		
+
+		// Start Drawing
+
 		state.render(g);
-		
-		//End Drawing
-		
-		//Show what was drawn
+
+		// End Drawing
+
+		// Show what was drawn
 		bs.show();
-		
-		//Get rid of Graphics object, new one is made next frame
+
+		// Get rid of Graphics object, new one is made next frame
 		g.dispose();
 	}
-	
+
 	/**
 	 * Starts the game's thread
 	 */
 	public synchronized void start()
 	{
 		if(running)
-		{	//Shouldn't happen
+		{ // Shouldn't happen
 			return;
 		}
 		running = true;
 		thread = new Thread(this);
-		thread.start(); //Automatically calls run()
+		thread.start(); // Automatically calls run()
 	}
-	
+
 	/**
 	 * Ends the game's thread
 	 */
 	public synchronized void stop()
 	{
 		if(!running)
-		{	//Shouldn't happen
+		{ // Shouldn't happen
 			return;
 		}
 		try
 		{
 			thread.join();
-		} catch (InterruptedException e)
+		} catch(InterruptedException e)
 		{
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Initialize the display and other objects
 	 */
 	private void init()
 	{
-		//Load image assets into memory
+		// Load image assets into memory
 		Assets.init();
-		
-		//Temp
-		testFloor = new Floor(6, 5, null);
+
+		// Temp
+		testFloor = new Floor(8, 8);
 		System.out.println("Test Floor Created");
-		
-		//Create the display
+
+		// Create the display
 		display = new Display(this, title, width, height, useDPad);
 		System.out.println("Display Created");
-		
-		//Create a game state
+
+		// Create a game state
 		state = new GameState(this, player, g, testFloor);
 		System.out.println("GameState Created");
 	}
-	
+
 	public State getState()
 	{
 		return state;

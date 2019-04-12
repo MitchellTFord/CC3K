@@ -4,9 +4,9 @@ import java.awt.image.BufferedImage;
 
 import edu.century.game.graphics.Assets;
 
-public class DirtTile extends Tile
+public class SandstoneTile extends Tile
 {
-	public DirtTile(int id)
+	public SandstoneTile(int id)
 	{
 		super(id, true);
 	}
@@ -14,6 +14,6 @@ public class DirtTile extends Tile
 	@Override
 	public BufferedImage getTexture()
 	{
-		return Assets.tileSprites.getSprite(1, 5);
+		return Assets.tileSprites.getSprite(2, 5);
 	}
 }

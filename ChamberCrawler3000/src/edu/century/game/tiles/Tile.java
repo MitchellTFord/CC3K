@@ -22,8 +22,13 @@ public class Tile
 	//Array of Tile derived classes
 	public static Tile[] tileIDs = new Tile[256];
 	
+	//Number of derived Tile classes
+	public static int numTiles = 0;
+	
 	//Tile derived classes
 	public static Tile dirtTile = new DirtTile(0);
+	public static Tile stoneTile = new StoneTile(1);
+	public static Tile sandTile = new SandstoneTile(2);
 	
 	public Tile(int id, boolean occupiable)
 	{
@@ -32,6 +37,9 @@ public class Tile
 		
 		//Add this Tile to tileIDs array
 		tileIDs[id] = this;
+		
+		//Increment the number of Tiles
+		numTiles++;
 	}
 	
 	/**
