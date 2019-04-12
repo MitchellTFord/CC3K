@@ -6,7 +6,6 @@ import java.awt.image.BufferStrategy;
 import edu.century.game.display.Display;
 import edu.century.game.entity.Creature;
 import edu.century.game.entity.Player;
-import edu.century.game.entity.race.player_races.Shade;
 import edu.century.game.floor.Floor;
 import edu.century.game.graphics.Assets;
 import edu.century.game.state.GameState;
@@ -26,11 +25,11 @@ public class Game implements Runnable
 	//Whether or not a D-Pad should be used
 	private boolean useDPad;
 	
-	//Desired FPS
-	public static int fps = 60;
+	//Desired FPS, 30 by default
+	public static int fps = 30;
 	
 	//Maximum time in nanoseconds between updates to meet desired FPS
-	private static double timePerRender = 1000000000 / fps;
+	public static double timePerRender = 1000000000 / fps;
 	private static double timePerUpdate = 1000000000 / 30;
 	
 	//Status of the game

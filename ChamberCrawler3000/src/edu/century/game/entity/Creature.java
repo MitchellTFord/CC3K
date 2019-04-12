@@ -12,9 +12,9 @@ import edu.century.game.tiles.Tile;
 
 public class Creature extends Entity
 {
-	//This creature's name
+	// This creature's name
 	protected String name;
-	
+
 	// this character's various stats
 	protected double health, maxHealth, attack, defence, potionPower, healthOnKill;
 	protected int goldOnKill;
@@ -33,10 +33,10 @@ public class Creature extends Entity
 
 	// the sprite representing this Character
 	protected BufferedImage characterSprite;
-	
-	//Rendering offsets for movement animations
+
+	// Rendering offsets for movement animations
 	protected float animationOffsetX = 0, animationOffsetY = 0;
-	
+
 	public Creature(Cell currentCell, Race race)
 	{
 		super(currentCell);
@@ -57,7 +57,7 @@ public class Creature extends Entity
 		g.drawImage(Assets.tempPlayer, (int) (renderX + animationOffsetX), (int) (renderY + animationOffsetY), 
 				(int) (Tile.TILE_WIDTH * Tile.TILE_SCALE), (int) (Tile.TILE_HEIGHT * Tile.TILE_SCALE), null);
 		
-		if(animationOffsetX != 0)
+		if((Math.abs(animationOffsetX) >= (double) 1 / Game.fps))
 		{
 			if(animationOffsetX > 0)
 			{
@@ -69,14 +69,13 @@ public class Creature extends Entity
 				animationOffsetX += Math.max((float) Tile.TILE_WIDTH * Tile.TILE_SCALE / Game.fps * 2, animationOffsetX);
 			}
 		}
-		
-		//Prevents stuttering from offset over-compensation
-		if(Math.abs(animationOffsetX) < 1 / Game.fps)
+		else
 		{
+			//Prevents stuttering from offset over-compensation
 			animationOffsetX = 0;
 		}
-		
-		if(animationOffsetY != 0)
+
+		if(Math.abs(animationOffsetY) >= (double) 1 / Game.fps)
 		{
 			if(animationOffsetY > 0)
 			{
@@ -86,10 +85,9 @@ public class Creature extends Entity
 				animationOffsetY += Math.max((float) Tile.TILE_HEIGHT * Tile.TILE_SCALE / Game.fps * 2, animationOffsetY);
 			}
 		}
-		
-		//Prevents stuttering from offset over-compensation
-		if(Math.abs(animationOffsetY) < 1 / Game.fps)
+		else
 		{
+			//Prevents stuttering from offset over-compensation
 			animationOffsetY = 0;
 		}
 	}
@@ -118,36 +116,36 @@ public class Creature extends Entity
 
 	/**
 	 * Moves this Creature to a different Cell if possible
+	 * 
 	 * @param destCell
 	 * @return whether this operation was successful or not
 	 */
 	public boolean move(Cell destCell)
 	{
-		//Checking whether of not the Cells are adjacent is redundant so long as only a DPad-type system is used to control movement
-		if (currentCell.isAdjecent(destCell) && destCell.getSpaceOpen())
+		// Checking whether of not the Cells are adjacent is redundant so long as only a
+		// DPad-type system is used to control movement
+		if(currentCell.isAdjecent(destCell) && destCell.getSpaceOpen())
 		{
-			//Store the origin Cell temporarily
+			// Store the origin Cell temporarily
 			Cell prevCell = currentCell;
-			
-			//Assign this Character to its destination Cell
-			//currentCell is automatically updated by setOccupant()
+
+			// Assign this Character to its destination Cell
+			// currentCell is automatically updated by setOccupant()
 			if(destCell.setOccupant(this))
 			{
-				//Remove this Character from its current Cell
+				// Remove this Character from its current Cell
 				prevCell.setOccupant(null);
-			
-				//Set movement animation offsets
+
+				// Set movement animation offsets
 				animationOffsetX += Tile.TILE_SCALE * Tile.TILE_WIDTH * (prevCell.getGridX() - currentCell.getGridX());
 				animationOffsetY += Tile.TILE_SCALE * Tile.TILE_HEIGHT * (prevCell.getGridY() - currentCell.getGridY());
-				
+
 				return true;
-			}
-			else
+			} else
 			{
 				return false;
 			}
-		}
-		else
+		} else
 		{
 			return false;
 		}
@@ -163,9 +161,9 @@ public class Creature extends Entity
 	 */
 	public boolean move(int gridX, int gridY)
 	{
-		//Check to see if the passed in coordinates are within the bounds of the floor
-		if(gridX >= 0 && gridX < currentCell.getFloor().getGridWidth()
-				&& gridY >= 0 && gridY < currentCell.getFloor().getGridHeight())
+		// Check to see if the passed in coordinates are within the bounds of the floor
+		if(gridX >= 0 && gridX < currentCell.getFloor().getGridWidth() && gridY >= 0
+				&& gridY < currentCell.getFloor().getGridHeight())
 		{
 			return move(currentCell.getFloor().getCell(gridX, gridY));
 		}
@@ -177,13 +175,13 @@ public class Creature extends Entity
 	 * into takeDamage() depending on damageType when it’s called
 	 * 
 	 * @param caster
-	 *            the Character doing the damage
+	 *                   the Character doing the damage
 	 * @param target
-	 *            the Character taking the damage
+	 *                   the Character taking the damage
 	 * @param damageType
-	 *            the damageType of the attack
+	 *                   the damageType of the attack
 	 * @param damage
-	 *            the amount of damage before armor is taken into account
+	 *                   the amount of damage before armor is taken into account
 	 */
 	public static void doDamage(Creature caster, Creature target, DamageType damageType, double damage)
 	{
@@ -206,16 +204,16 @@ public class Creature extends Entity
 	 * attempt to call targetKilled(damager)
 	 * 
 	 * @param amount
-	 *            the amount of health to remove
+	 *                the amount of health to remove
 	 * @param damager
-	 *            the Character that did the damage
+	 *                the Character that did the damage
 	 */
 	public void takeDamage(double amount, Creature damager)
 	{
 		this.health -= amount;
 
 		// Check if dead, handle it
-		if (health <= 0)
+		if(health <= 0)
 		{
 			// Tell the killer that they killed you
 			try
@@ -237,7 +235,7 @@ public class Creature extends Entity
 	 * Increments health by the amount parameter, up to maxHealth
 	 * 
 	 * @param amount
-	 *            the amount of health to gain
+	 *               the amount of health to gain
 	 */
 	public void takeHeal(double amount)
 	{
@@ -251,11 +249,11 @@ public class Creature extends Entity
 	 */
 	public void addEffect(Effect effect)
 	{
-		if (effect != null)
+		if(effect != null)
 		{
 			for(int i = 0; i < effects.length; i++)
 			{
-				if (effects[i] == null)
+				if(effects[i] == null)
 				{
 					effects[i] = effect;
 					return;
@@ -282,7 +280,7 @@ public class Creature extends Entity
 
 		for(int i = 0; i < effects.length; i++)
 		{
-			if (effects[i] != null)
+			if(effects[i] != null)
 			{
 				effects[i].applyStatChange();
 			}
@@ -296,7 +294,7 @@ public class Creature extends Entity
 	{
 		for(int i = 0; i < effects.length; i++)
 		{
-			if (effects[i] != null)
+			if(effects[i] != null)
 			{
 				effects[i].applyEffect();
 			}
@@ -315,10 +313,10 @@ public class Creature extends Entity
 		{
 			effects[i].decrementDuration();
 
-			if (effects[i].getDuration() == 0)
+			if(effects[i].getDuration() == 0)
 			{
 				// TODO: Destroy Effect object
-				
+
 				// Remove object from effects array
 				effects[i] = null;
 			}
@@ -329,7 +327,7 @@ public class Creature extends Entity
 	 * Apply this character’s xxxOnKill variables
 	 * 
 	 * @param target
-	 *            the Character that was killed, needed for vampire/dwarf rule
+	 *               the Character that was killed, needed for vampire/dwarf rule
 	 */
 	public void targetKilled(Creature target)
 	{
@@ -346,9 +344,9 @@ public class Creature extends Entity
 	 * Increment the given Stat by the given amount
 	 * 
 	 * @param amount
-	 *            the amount to modify the given Stat by
+	 *               the amount to modify the given Stat by
 	 * @param stat
-	 *            the Stat to be modified
+	 *               the Stat to be modified
 	 */
 	public void modStat(double amount, Stat stat)
 	{
@@ -423,21 +421,16 @@ public class Creature extends Entity
 	{
 		return weapon;
 	}
-	
+
 	@Override
 	public String toString()
 	{
-		String str =
-			  "Name: " + name + "\n"
-			+ "Race: " + race.getRaceName() + "\n"
-			+ "Health: " + (int) health + "/" + (int) maxHealth + "\n"
-			+ "Attack: " + (int) attack + "\n"
-			+ "Defence: " + (int) defence + "\n"
-			+ "Gold: " + gold + "\n"
-			+ "Health on Kill: " + (int) healthOnKill + "\n"
-			+ "Gold on Kill: " + goldOnKill + "\n";
-			;
-		
+		String str = "Name: " + name + "\n" + "Race: " + race.getRaceName() + "\n" + "Health: " + (int) health + "/"
+				+ (int) maxHealth + "\n" + "Attack: " + (int) attack + "\n" + "Defence: " + (int) defence + "\n"
+				+ "Gold: " + gold + "\n" + "Health on Kill: " + (int) healthOnKill + "\n" + "Gold on Kill: "
+				+ goldOnKill + "\n";
+		;
+
 		return str;
 	}
 }

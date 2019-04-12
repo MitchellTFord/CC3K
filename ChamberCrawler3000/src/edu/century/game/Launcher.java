@@ -32,25 +32,26 @@ import edu.century.game.entity.race.player_races.Vampire;
 
 public class Launcher extends JFrame implements ActionListener
 {
-	//The Launcher object that will be used
+	// The Launcher object that will be used
 	private static Launcher launcher;
 
-	//Whether or not a directional pad should be used
+	// Whether or not a directional pad should be used
 	boolean useDPad = true;
 
-	//The player object that will be passed into the new Game object
+	// The player object that will be passed into the new Game object
 	private Player player;
-	
-	//The name of the new Player's Race
+
+	// The name of the new Player's Race
 	private String playerName;
-	
-	//The new Player's Race object
+
+	// The new Player's Race object
 	private Race playerRace;
-	
-	//The number of frames that should be rendered per second in game
+
+	// The number of frames that should be rendered per second in game
 	private int fps;
 
-	JPanel inputPanel, optionsPanel, characterPanel, bottomPanel, bottomLeftPanel, bottomRightPanel, playerNamePanel, fpsPanel;
+	JPanel inputPanel, optionsPanel, characterPanel, bottomPanel, bottomLeftPanel, bottomRightPanel, playerNamePanel,
+			fpsPanel;
 	JLabel optionsLabel;
 	JButton startButton, floorEditorButton;
 	JCheckBox useDPadCheckBox;
@@ -58,27 +59,28 @@ public class Launcher extends JFrame implements ActionListener
 	JComboBox<Integer> fpsComboBox;
 	JTextField playerNameField;
 
-	//The width/height of the launcher in pixels
+	// The width/height of the launcher in pixels
 	private int launcherWidth, launcherHeight;
-	
-	//The width/height of the game in pixels
+
+	// The width/height of the game in pixels
 	private int gameWidth, gameHeight;
 
-	//The main method for this whole project
+	// The main method for this whole project
 	public static void main(String[] args)
 	{
 		SwingUtilities.invokeLater(new Runnable()
+		{
+			public void run()
 			{
-				public void run()
-				{
-					launcher = new Launcher(400, 400);
-				}
-			});
+				launcher = new Launcher(400, 400);
+			}
+		});
 	}
 
 	/**
 	 * Constructor for Launcher
-	 * @param width the width of the launcher in pixels
+	 * 
+	 * @param width  the width of the launcher in pixels
 	 * @param height the height of the launcher in pixels
 	 */
 	public Launcher(int width, int height)
@@ -89,7 +91,7 @@ public class Launcher extends JFrame implements ActionListener
 
 		buildLauncher();
 	}
-	
+
 	/**
 	 * Build the GUI elements of the launcher
 	 */
@@ -106,17 +108,18 @@ public class Launcher extends JFrame implements ActionListener
 		inputPanel.setLayout(new GridLayout(2, 1));
 		add(inputPanel, BorderLayout.NORTH);
 
-		//Build the options panel
+		// Build the options panel
 		buildOptionsPanel();
-		
-		//Build the character-creation panel
+
+		// Build the character-creation panel
 		buildCharacterPanel();
 
-		//Build the panel at the bottom which contains the floor editor and start buttons
+		// Build the panel at the bottom which contains the floor editor and start
+		// buttons
 		buildBottomPanel();
 
-		//Set this window to visible
-		//This must be at the end of this method or GUI elements may not appear
+		// Set this window to visible
+		// This must be at the end of this method or GUI elements may not appear
 		setVisible(true);
 	}
 
@@ -132,17 +135,17 @@ public class Launcher extends JFrame implements ActionListener
 		bottomLeftPanel = new JPanel();
 		bottomLeftPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		bottomPanel.add(bottomLeftPanel);
-		
-		//Floor editor button
+
+		// Floor editor button
 		floorEditorButton = new JButton("Launch Floor Editor");
 		floorEditorButton.addActionListener(this);
 		bottomLeftPanel.add(floorEditorButton);
-		
+
 		bottomRightPanel = new JPanel();
 		bottomRightPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		bottomPanel.add(bottomRightPanel);
-		
-		//Start game button
+
+		// Start game button
 		startButton = new JButton("Start Game");
 		startButton.addActionListener(this);
 		bottomRightPanel.add(startButton);
@@ -159,22 +162,22 @@ public class Launcher extends JFrame implements ActionListener
 		optionsPanel.setPreferredSize(new Dimension(launcherWidth - 16, 100));
 		inputPanel.add(optionsPanel);
 
-		//Use DPad check box
+		// Use DPad check box
 		useDPadCheckBox = new JCheckBox("Use DPad");
 		useDPadCheckBox.setSelected(true);
 		useDPadCheckBox.addActionListener(this);
 		optionsPanel.add(useDPadCheckBox);
 
-		//FPS combo box
-		Integer[] fpsOptions = {15, 30, 45, 60};
+		// FPS combo box
+		Integer[] fpsOptions = { 15, 30, 45, 60 };
 		fpsComboBox = new JComboBox<Integer>(fpsOptions);
 		fpsComboBox.setEditable(false);
 		fpsComboBox.setSelectedIndex(1);
 		fpsComboBox.addActionListener(this);
 		fpsPanel = new CombinedPanel(new JLabel("FPS"), fpsComboBox);
-		optionsPanel.add(fpsPanel);		
-		
-		//Temporary place-holders
+		optionsPanel.add(fpsPanel);
+
+		// Temporary place-holders
 		optionsPanel.add(new JLabel("placeholder"));
 		optionsPanel.add(new JLabel("placeholder"));
 		optionsPanel.add(new JLabel("placeholder"));
@@ -191,15 +194,15 @@ public class Launcher extends JFrame implements ActionListener
 		characterPanel.setBorder(BorderFactory.createTitledBorder("Character Creation"));
 		characterPanel.setPreferredSize(new Dimension(launcherWidth - 16, 20));
 		inputPanel.add(characterPanel);
-		
-		//Character name field with label
+
+		// Character name field with label
 		playerNameField = new JTextField("Adventurer");
 		playerNameField.addActionListener(this);
 		playerNameField.setColumns(12);
 		playerNamePanel = new CombinedPanel(new JLabel("Name"), playerNameField);
 		characterPanel.add(playerNamePanel);
 
-		//Character race combo box with tooltips
+		// Character race combo box with tooltips
 		raceComboBox = new JComboBox<String>();
 		ComboboxToolTipRenderer raceComboBoxRenderer = new ComboboxToolTipRenderer();
 		raceComboBox.setRenderer(raceComboBoxRenderer);
@@ -218,54 +221,56 @@ public class Launcher extends JFrame implements ActionListener
 
 	/**
 	 * Start the game with the given parameters, dispose of this launcher window
-	 * @param width the width of the Game window in pixels
-	 * @param height the height of the Game window in pixels
+	 * 
+	 * @param width   the width of the Game window in pixels
+	 * @param height  the height of the Game window in pixels
 	 * @param useDPad whether or not a DPad should be used
-	 * @param player the new player object
+	 * @param player  the new player object
 	 */
 	private void startGame(int width, int height, boolean useDPad, Player player)
 	{
-		//Make this window invisible
+		// Make this window invisible
 		this.setVisible(false);
 
-		//Create a new Game object and invoke its start() method
+		// Create a new Game object and invoke its start() method
 		Game game = new Game("Chamber Crawler 3000", width, height, useDPad, player, fps);
 		game.start();
 
-		//Dispose of this launcher object
+		// Dispose of this launcher object
 		this.dispose();
 	}
-	
+
 	/**
 	 * Launches the floor editor
 	 */
 	private void startFloorEditor()
 	{
-		//TODO: implement a floor editor
+		// TODO: implement a floor editor
 	}
 
 	/**
 	 * Resolves a String to a Race
+	 * 
 	 * @param str the string to resolve a Race object from
 	 * @return a new Race object corresponding to the given string
 	 */
 	private Race resolvePlayerRace(String str)
 	{
-		if (str.equals("Drow"))
+		if(str.equals("Drow"))
 		{
 			return new Drow();
-		} else if (str.equals("Goblin"))
+		} else if(str.equals("Goblin"))
 		{
 			return new Goblin();
-		} else if (str.equals("Troll"))
+		} else if(str.equals("Troll"))
 		{
 			return new Troll();
-		} else if (str.equals("Vampire"))
+		} else if(str.equals("Vampire"))
 		{
 			return new Vampire();
 		} else
 		{
-			//Return a new Shade object by default
+			// Return a new Shade object by default
 			return new Shade();
 		}
 	}
@@ -276,12 +281,12 @@ public class Launcher extends JFrame implements ActionListener
 	 */
 	public void actionPerformed(ActionEvent actionEvent)
 	{
-		//The component that the ActionEvent came from
+		// The component that the ActionEvent came from
 		JComponent actionSource = (JComponent) actionEvent.getSource();
-		
-		//Determines which component the ActionEvent came from
-		//and executes the appropriate code
-		if (actionSource.equals(startButton))
+
+		// Determines which component the ActionEvent came from
+		// and executes the appropriate code
+		if(actionSource.equals(startButton))
 		{
 			playerName = playerNameField.getText();
 			playerRace = resolvePlayerRace((String) raceComboBox.getSelectedItem());
@@ -290,11 +295,12 @@ public class Launcher extends JFrame implements ActionListener
 			player = new Player(null, playerRace, playerName);
 
 			// TODO: have this invocation use width and height variables
-			//Launch the game
+			// Launch the game
 			startGame(640, 360, useDPad, player);
-		} else if(actionSource.equals(floorEditorButton));
+		} else if(actionSource.equals(floorEditorButton))
+			;
 		{
-			//Launch the floor editor
+			// Launch the floor editor
 			startFloorEditor();
 		}
 	}
