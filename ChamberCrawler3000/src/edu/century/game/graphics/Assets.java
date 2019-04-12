@@ -15,6 +15,7 @@ public class Assets
 	
 	public static BufferedImage missingSprite;
 	public static BufferedImage tempPlayer;
+	public static BufferedImage tempEnemy;
 	
 	/**
 	 * Loads all needed image resources into memory and assigns them to variables
@@ -27,6 +28,7 @@ public class Assets
 		
 		missingSprite = loadImage("/textures/MissingTexture.png");
 		tempPlayer = loadImage("/textures/TempPlayer.png");
+		tempEnemy = loadImage("/textures/AngryFace.png");
 		
 		System.out.println("Asset Loading Complete");
 	}

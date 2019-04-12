@@ -14,13 +14,10 @@ public class Cell
 	// The indices of this Cell's position on floor's cells array
 	private int gridX, gridY;
 
-	// The x and y values of the position that render() should use
-	private int x, y;
-
 	// The texture of the colored border around this Cell
 	private BufferedImage cellBorder;
-	
-	//The texture assigned to this Cell by a Tile
+
+	// The texture assigned to this Cell by a Tile
 	private BufferedImage tileTexture;
 
 	// Whether or not this cell can have an occupant, determined by tile
@@ -32,13 +29,13 @@ public class Cell
 	/**
 	 * 
 	 * @param floor
-	 *            the floor this Cell is in
+	 *              the floor this Cell is in
 	 * @param gridX
-	 *            the x index of this Cell's position in floor's cells array
+	 *              the x index of this Cell's position in floor's cells array
 	 * @param gridY
-	 *            the y index of this Cell's position in floor's cells array
+	 *              the y index of this Cell's position in floor's cells array
 	 * @param tile
-	 *            the Tile this Cell with inherit its properties from
+	 *              the Tile this Cell with inherit its properties from
 	 */
 	public Cell(Floor floor, int gridX, int gridY, Tile tile)
 	{
@@ -51,32 +48,31 @@ public class Cell
 
 	public void render(Graphics g, int renderX, int renderY)
 	{
-		//TODO: prevent non-visible Cells from rendering
-		
-		//Render cellBorder if it is something other than null
+		// TODO: prevent non-visible Cells from rendering
+
+		// Render cellBorder if it is something other than null
 		if(cellBorder != null)
 		{
-			g.drawImage(cellBorder, (int) renderX, (int) renderY, 
-					(int) (Tile.TILE_WIDTH * Tile.TILE_SCALE), (int) (Tile.TILE_HEIGHT * Tile.TILE_SCALE), null);
+			g.drawImage(cellBorder, (int) renderX, (int) renderY, (int) (Tile.TILE_WIDTH * Tile.TILE_SCALE),
+					(int) (Tile.TILE_HEIGHT * Tile.TILE_SCALE), null);
 		}
 	}
 
 	public void renderTile(Graphics g, int renderX, int renderY)
-	{	
-		//Render tile texture
-		g.drawImage(tileTexture, (int) renderX, (int) renderY, 
-				(int) (Tile.TILE_WIDTH * Tile.TILE_SCALE), (int) (Tile.TILE_HEIGHT * Tile.TILE_SCALE), null);
+	{
+		// Render tile texture
+		g.drawImage(tileTexture, (int) renderX, (int) renderY, (int) (Tile.TILE_WIDTH * Tile.TILE_SCALE),
+				(int) (Tile.TILE_HEIGHT * Tile.TILE_SCALE), null);
 	}
-	
+
 	public void renderOccupant(Graphics g, int renderX, int renderY)
 	{
 		// Calls occupant's render() method if this Cell has an occupant
-		if (occupant != null)
+		if(occupant != null)
 		{
 			occupant.render(g, renderX, renderY);
 		}
 	}
-	
 
 	/**
 	 * @return this Cell's occupant
@@ -91,7 +87,7 @@ public class Cell
 	 * occupant's currentCell
 	 * 
 	 * @param occupant
-	 *            the Entity to make this Cell's occupant
+	 *                 the Entity to make this Cell's occupant
 	 */
 	public boolean setOccupant(Entity newOccupant)
 	{
@@ -100,18 +96,17 @@ public class Cell
 		// anyway
 		if(newOccupant != null)
 		{
-			if (this.occupant == null && this.occupiable)
+			if(this.occupant == null && this.occupiable)
 			{
 				this.occupant = newOccupant;
-	
+
 				// Tells the new occupant what cell it now belongs to
 				newOccupant.setCurrentCell(this);
-				
+
 				return true;
 			}
 			return false;
-		}
-		else
+		} else
 		{
 			this.occupant = null;
 			return true;
@@ -132,7 +127,7 @@ public class Cell
 	 */
 	public boolean getSpaceOpen()
 	{
-		return(this.occupant == null && this.occupiable);
+		return (this.occupant == null && this.occupiable);
 	}
 
 	/**
@@ -163,7 +158,7 @@ public class Cell
 	 * Checks whether this Cell is adjacent to the passed in cell
 	 * 
 	 * @param otherCell
-	 *            the cell with which to test adjacency
+	 *                  the cell with which to test adjacency
 	 * @return true if this Cell is adjacent to the passed in Cell otherCell
 	 */
 	public boolean isAdjecent(Cell otherCell)

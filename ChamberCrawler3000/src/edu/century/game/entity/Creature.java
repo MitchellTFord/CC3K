@@ -45,16 +45,18 @@ public class Creature extends Entity
 
 		this.health = this.maxHealth = 125 + this.race.getHealthMod();
 		this.attack = 25 + this.race.getAttackMod();
-		this.defence = 25 + this.race.getDefenceMod();
+		this.defence = 25 + this.race.getDefenseMod();
 
+		this.characterSprite = race.getRaceSprite();
+		
 		this.addEffect(race.getEffect(this));
 	}
 
 	@Override
 	public void render(Graphics g, int renderX, int renderY)
 	{
-		//Temp
-		g.drawImage(Assets.tempPlayer, (int) (renderX + animationOffsetX), (int) (renderY + animationOffsetY), 
+		//System.out.println(race.getRaceSprite());
+		g.drawImage(characterSprite, (int) (renderX + animationOffsetX), (int) (renderY + animationOffsetY), 
 				(int) (Tile.TILE_WIDTH * Tile.TILE_SCALE), (int) (Tile.TILE_HEIGHT * Tile.TILE_SCALE), null);
 		
 		if((Math.abs(animationOffsetX) >= (double) 1 / Game.fps))
@@ -273,7 +275,7 @@ public class Creature extends Entity
 		// Set all stats to base values
 		maxHealth = 125 + race.getHealthMod();
 		attack = 25 + race.getAttackMod();
-		defence = 25 + race.getDefenceMod();
+		defence = 25 + race.getDefenseMod();
 		potionPower = 1;
 		healthOnKill = 0;
 		goldOnKill = 0;

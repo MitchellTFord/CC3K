@@ -3,16 +3,13 @@ package edu.century.game.entity.race.player_races;
 import edu.century.game.effect.Effect;
 import edu.century.game.entity.Creature;
 import edu.century.game.entity.race.Race;
+import edu.century.game.graphics.Assets;
 
 public class Vampire extends Race
 {
 	public Vampire()
 	{
-		raceName = "Vampire";
-		
-		healthMod = -75;
-		attackMod = 0;
-		defenceMod = 0;
+		super("Vampire", Assets.tempPlayer, -75, 0, 0);
 	}
 	
 	@Override
@@ -21,30 +18,6 @@ public class Vampire extends Race
 		//Gains 5 health on kill, no maximum health
 		//TODO: implement vampire racial effect
 		return null;
-	}
-
-	@Override
-	public String getRaceName()
-	{
-		return raceName;
-	}
-
-	@Override
-	public double getHealthMod()
-	{
-		return healthMod;
-	}
-
-	@Override
-	public double getAttackMod()
-	{
-		return attackMod;
-	}
-
-	@Override
-	public double getDefenceMod()
-	{
-		return defenceMod;
 	}
 }
 

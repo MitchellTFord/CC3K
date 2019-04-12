@@ -29,6 +29,7 @@ import edu.century.game.entity.race.player_races.Goblin;
 import edu.century.game.entity.race.player_races.Shade;
 import edu.century.game.entity.race.player_races.Troll;
 import edu.century.game.entity.race.player_races.Vampire;
+import edu.century.game.graphics.Assets;
 
 public class Launcher extends JFrame implements ActionListener
 {
@@ -89,6 +90,10 @@ public class Launcher extends JFrame implements ActionListener
 		this.launcherWidth = width;
 		this.launcherHeight = height;
 
+		System.out.println("Launcher created");
+		
+		Assets.init();
+		
 		buildLauncher();
 	}
 
@@ -231,7 +236,7 @@ public class Launcher extends JFrame implements ActionListener
 	{
 		// Make this window invisible
 		this.setVisible(false);
-
+		
 		// Create a new Game object and invoke its start() method
 		Game game = new Game("Chamber Crawler 3000", width, height, useDPad, player, fps);
 		game.start();

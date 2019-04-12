@@ -213,7 +213,7 @@ public class Game implements Runnable
 	private void init()
 	{
 		// Load image assets into memory
-		Assets.init();
+		//Assets.init();
 
 		// Temp
 		testFloor = new Floor(8, 8);

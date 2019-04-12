@@ -3,16 +3,13 @@ package edu.century.game.entity.race.player_races;
 import edu.century.game.effect.Effect;
 import edu.century.game.entity.Creature;
 import edu.century.game.entity.race.Race;
+import edu.century.game.graphics.Assets;
 
 public class Troll extends Race
 {
 	public Troll()
 	{
-		raceName = "Troll";
-		
-		healthMod = -5;
-		attackMod = 0;
-		defenceMod = 0;
+		super("Troll", Assets.tempPlayer, -5, 0, 0);
 	}
 	
 	@Override
@@ -23,30 +20,6 @@ public class Troll extends Race
 		
 		//TODO: implement troll racial effect
 		return null;
-	}
-
-	@Override
-	public String getRaceName()
-	{
-		return raceName;
-	}
-
-	@Override
-	public double getHealthMod()
-	{
-		return healthMod;
-	}
-
-	@Override
-	public double getAttackMod()
-	{
-		return attackMod;
-	}
-
-	@Override
-	public double getDefenceMod()
-	{
-		return defenceMod;
 	}
 }
 

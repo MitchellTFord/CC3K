@@ -1,9 +1,10 @@
 package edu.century.game.entity.race;
 
-import javax.swing.JLabel;
+import java.awt.image.BufferedImage;
 
 import edu.century.game.effect.Effect;
 import edu.century.game.entity.Creature;
+import edu.century.game.graphics.Assets;
 
 public abstract class Race
 {
@@ -21,33 +22,70 @@ public abstract class Race
 	
 	// The name of this Race
 	protected String raceName;
+	
+	//Sprite to render creatures of this Race as
+	protected BufferedImage raceSprite;
 
 	// The changes in stats the Race causes
-	protected double healthMod, attackMod, defenceMod;
+	protected double healthMod, attackMod, defenseMod;
 
 	// The Effect applied to Characters of this Race
 	protected Effect raceEffect;
 
 	/**
+	 * Race constructor
+	 * @param raceName the name of this race
+	 * @param raceSprite the sprite to render creatures of this Race with
+	 * @param healthMod the amount this Race modifies a Creature's max health
+	 * @param attackMod the amount this Race modifies a Creature's attack
+	 * @param defenceMod the amount this Race modifies a Creature's defense
+	 */
+	public Race(String raceName, BufferedImage raceSprite, double healthMod, double attackMod, double defenceMod)
+	{
+		this.raceName = raceName;
+		this.raceSprite = raceSprite;
+		this.healthMod = healthMod;
+		this.attackMod = attackMod;
+		this.defenseMod = defenceMod;
+	}
+	
+	/**
 	 * @return this Race's name
 	 */
-	public abstract String getRaceName();
+	public String getRaceName()
+	{
+		return raceName;
+	}
 
 	/**
 	 * @return this Race's healthMod
 	 */
-	public abstract double getHealthMod();
+	public double getHealthMod()
+	{
+		return healthMod;
+	}
 
 	/**
 	 * @return this Race's attackMod
 	 */
-	public abstract double getAttackMod();
+	public double getAttackMod()
+	{
+		return attackMod;
+	}
 
 	/**
 	 * @return this Race's defenceMod
 	 */
-	public abstract double getDefenceMod();
+	public double getDefenseMod()
+	{
+		return defenseMod;
+	}
 
+	public BufferedImage getRaceSprite()
+	{
+		return raceSprite;
+	}
+	
 	/**
 	 * @param character
 	 *            the Character this Effect is being applied to

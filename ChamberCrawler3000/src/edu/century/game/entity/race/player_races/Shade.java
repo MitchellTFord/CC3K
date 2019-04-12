@@ -3,17 +3,14 @@ package edu.century.game.entity.race.player_races;
 import edu.century.game.effect.Effect;
 import edu.century.game.entity.Creature;
 import edu.century.game.entity.race.Race;
+import edu.century.game.graphics.Assets;
 
 public class Shade extends Race
 {
 	public Shade()
 	{
-		raceName = "Shade";
-		
-		//Shade is the baseline class
-		healthMod = 0;
-		attackMod = 0;
-		defenceMod = 0;
+		//Shade is the baseline race
+		super("Shade", Assets.tempPlayer, 0, 0, 0);
 	}
 	
 	@Override
@@ -27,24 +24,6 @@ public class Shade extends Race
 	public String getRaceName()
 	{
 		return raceName;
-	}
-
-	@Override
-	public double getHealthMod()
-	{
-		return healthMod;
-	}
-
-	@Override
-	public double getAttackMod()
-	{
-		return attackMod;
-	}
-
-	@Override
-	public double getDefenceMod()
-	{
-		return defenceMod;
 	}
 }
 

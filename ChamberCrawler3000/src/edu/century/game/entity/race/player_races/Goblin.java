@@ -5,16 +5,13 @@ import edu.century.game.effect.Effect;
 import edu.century.game.entity.Creature;
 import edu.century.game.entity.Stat;
 import edu.century.game.entity.race.Race;
+import edu.century.game.graphics.Assets;
 
 public class Goblin extends Race
 {
 	public Goblin()
 	{
-		raceName = "Goblin";
-		
-		healthMod = -15;
-		attackMod = -5;
-		defenceMod = 0;
+		super("Goblin", Assets.tempPlayer, -15, -5, 0);
 	}
 	
 	@Override
@@ -22,30 +19,6 @@ public class Goblin extends Race
 	{
 		//Gains 5 gold on kill
 		return new BoostStat(character, "Goblin Greed", 5, -1, Stat.GOLD_ON_KILL);
-	}
-
-	@Override
-	public String getRaceName()
-	{
-		return raceName;
-	}
-
-	@Override
-	public double getHealthMod()
-	{
-		return healthMod;
-	}
-
-	@Override
-	public double getAttackMod()
-	{
-		return attackMod;
-	}
-
-	@Override
-	public double getDefenceMod()
-	{
-		return defenceMod;
 	}
 }
 
