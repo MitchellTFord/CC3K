@@ -95,8 +95,8 @@ public class Floor
 			{
 				// Calls renderTile() for each Cell object in cells using passed in
 				// offset values
-				cells[gridX][gridY].renderTile(g, (int) (gridX * Tile.TILE_WIDTH * Tile.TILE_SCALE), 
-						(int) (gridY * Tile.TILE_HEIGHT * Tile.TILE_SCALE));
+				cells[gridX][gridY].renderTile(g, (int) (gridX * Tile.TILE_WIDTH * Tile.TILE_SCALE + offsetX), 
+						(int) (gridY * Tile.TILE_HEIGHT * Tile.TILE_SCALE + offsetY));
 			}
 		}
 		
@@ -107,8 +107,8 @@ public class Floor
 			{
 				// Calls renderOccupant() for each Cell object in cells using passed in
 				// offset values
-				cells[gridX][gridY].renderOccupant(g, (int) (gridX * Tile.TILE_WIDTH * Tile.TILE_SCALE), 
-						(int) (gridY * Tile.TILE_HEIGHT * Tile.TILE_SCALE));;
+				cells[gridX][gridY].renderOccupant(g, (int) (gridX * Tile.TILE_WIDTH * Tile.TILE_SCALE + offsetX), 
+						(int) (gridY * Tile.TILE_HEIGHT * Tile.TILE_SCALE + offsetY));;
 			}
 		}
 	}

@@ -7,6 +7,7 @@ import edu.century.game.entity.Creature;
 import edu.century.game.entity.Player;
 import edu.century.game.floor.Floor;
 import edu.century.game.floor.SampleFloor;
+import edu.century.game.graphics.Camera;
 
 /**
  * The State where most or all gameplay occurs
@@ -17,19 +18,20 @@ public class GameState extends State
 	private Player player;
 	private Floor floor;
 	private Graphics g;
+	private Camera camera;
 	private Creature currentTurnHolder;
 
-	/**
-	 * Constructor for GameState without Floor parameter
-	 * @param game the game object
-	 * @param player the player object
-	 * @param g the Graphics object to render things with
-	 */
-	public GameState(Game game, Player player, Graphics g)
-	{
-		//Calls the other GameState constructor with a new SampleFloor as its floor parameter
-		this(game, player, g, new SampleFloor());
-	}
+//	/**
+//	 * Constructor for GameState without Floor parameter
+//	 * @param game the game object
+//	 * @param player the player object
+//	 * @param g the Graphics object to render things with
+//	 */
+//	public GameState(Game game, Player player, Graphics g, Camera camera)
+//	{
+//		//Calls the other GameState constructor with a new SampleFloor as its floor parameter
+//		this(game, player, g, new SampleFloor(), camera);
+//	}
 
 	/**
 	 * Constructor for GameState
@@ -38,14 +40,18 @@ public class GameState extends State
 	 * @param g the Graphics object to render things with
 	 * @param floor the floor object to manage and render
 	 */
-	public GameState(Game game, Player player, Graphics g, Floor floor)
+	public GameState(Game game, Player player, Graphics g, Floor floor, Camera camera)
 	{
 		super(game);
 		this.player = player;
 		this.g = g;
 		this.floor = floor;
+		this.camera = camera;
 		
+		//Spawn the player in the Floor
 		floor.getCell(floor.getPlayerSpawnX(), floor.getPlayerSpawnY()).setOccupant(player);
+		
+		camera.setTargetCreature(player);
 		
 		currentTurnHolder = player;
 		player.startTurn();
@@ -66,8 +72,11 @@ public class GameState extends State
 	 */
 	public void render(Graphics g)
 	{
+		//Update rendering offsets
+		camera.updateCamera();
+		
 		//Render the floor
-		floor.render(g, 0, 0);
+		floor.render(g, camera.getViewX(), camera.getViewY());
 		
 		//Update the PlayerInfoPanel
 		game.getDisplay().updatePlayerInfoPanel(player);

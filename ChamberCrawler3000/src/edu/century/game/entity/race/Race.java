@@ -95,17 +95,7 @@ public abstract class Race
 	public abstract Effect getEffect(Creature character);
 
 	/*
-	 * Races before being redone as separate classes 
-	 * public static Race shade = new Race("Shade", 0, 0, 0, null, 0); public static Race drow = new
-	 * Race("Drow", 25, 0, -10, EffectType.POTION_POWER, 0.5); public static
-	 * Race vampire = new Race("Vampire", -75, 0, 0, EffectType.VAMPIRE_RACIAL,
-	 * 0); public static Race troll = new Race("Troll", -5, 0, 0,
-	 * EffectType.REGENERATION, 5); public static Race goblin = new
-	 * Race("Goblin", -15, -5, 0, EffectType.GOLD_ON_KILL, 5);
-	 */
-
-	/*
-	 * Races as defined in the CC3K document 
+	 * Player Races as defined in the CC3K document 
 	 * 
 	 * 0 Shade: 125 HP, 25 Atk, 25 Def 
 	 * 
@@ -116,5 +106,25 @@ public abstract class Race
 	 * 3 Troll: 120 HP, 25 Atk, 15 Def, regains 5 HP every turn; HP is capped at 120 
 	 * 
 	 * 4 Goblin: 110 HP, 15 Atk, 20 Def, steals 5 gold from every slain enemy
+	 */
+	
+	/*
+	 * Enemy Races as defined in the CC3K document 
+	 * 
+	 * 0 Human: 140 HP, 20 Atk, 20 Def, drops 2 normal gold piles
+	 * 
+	 * 1 Dwarf: 100 HP, 20 Atk, 30 Def, Vampires lose rather than gain 5 health on kill
+	 * 
+	 * 2 Elf: 140 HP, 30 Atk, 10 Def, gets 2 attacks against every race except Drow 
+	 * 
+	 * 3 Orc: 180 HP, 30 Atk, 25 Def, does 50% more damage to goblins
+	 * 
+	 * 4 Dragon: 150 HP, 20 Atk, 29 Def, only spawns next to treasure hoards
+	 * 
+	 * 5 Halfling: 100 HP, 15 Atk, 20 Def, 50% evasion
+	 */
+	
+	/*
+	 * ? Merchant: 30 HP, 70 Atk, 5 Def, can trade with the player
 	 */
 }

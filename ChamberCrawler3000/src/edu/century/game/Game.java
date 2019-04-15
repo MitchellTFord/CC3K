@@ -4,11 +4,9 @@ import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
 import edu.century.game.display.Display;
-import edu.century.game.entity.Creature;
 import edu.century.game.entity.Player;
 import edu.century.game.floor.Floor;
-import edu.century.game.floor.SampleFloor;
-import edu.century.game.graphics.Assets;
+import edu.century.game.graphics.Camera;
 import edu.century.game.state.GameState;
 import edu.century.game.state.State;
 
@@ -49,6 +47,9 @@ public class Game implements Runnable
 
 	// The current state
 	private State state;
+	
+	//The game Camera
+	private Camera camera;
 
 	// Temp
 	private Floor testFloor;
@@ -223,8 +224,11 @@ public class Game implements Runnable
 		display = new Display(this, title, width, height, useDPad);
 		System.out.println("Display Created");
 
+		//Create the Camera
+		camera = new Camera(display.getFloorPanel().getWidth(), display.getFloorPanel().getHeight());
+		
 		// Create a game state
-		state = new GameState(this, player, g, testFloor);
+		state = new GameState(this, player, g, testFloor, camera);
 		System.out.println("GameState Created");
 	}
 

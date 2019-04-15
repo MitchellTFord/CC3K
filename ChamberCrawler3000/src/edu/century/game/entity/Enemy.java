@@ -1,8 +1,7 @@
-package edu.century.game.entity.enemy;
+package edu.century.game.entity;
 
 import java.awt.image.BufferedImage;
 
-import edu.century.game.entity.Creature;
 import edu.century.game.entity.race.Race;
 import edu.century.game.floor.Cell;
 import edu.century.game.graphics.Assets;
