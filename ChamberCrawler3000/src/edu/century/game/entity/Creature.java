@@ -37,7 +37,7 @@ public class Creature extends Entity
 	// Rendering offsets for movement animations
 	protected float animationOffsetX = 0, animationOffsetY = 0;
 	
-	protected int renderingPosX, renderingPosY;
+	protected int posX, posY;
 
 	public Creature(Cell currentCell, Race race)
 	{
@@ -55,14 +55,15 @@ public class Creature extends Entity
 	}
 
 	@Override
-	public void render(Graphics g, int renderX, int renderY)
+	public void render(Graphics g, double offsetX, double offsetY)
 	{
 		//System.out.println(race.getRaceSprite());
-		g.drawImage(characterSprite, (int) (renderX + animationOffsetX), (int) (renderY + animationOffsetY), 
+		g.drawImage(characterSprite, (int) (offsetX + currentCell.getGridX() * Tile.TILE_WIDTH * Tile.TILE_SCALE + animationOffsetX), 
+				(int) (offsetY + currentCell.getGridY() * Tile.TILE_HEIGHT * Tile.TILE_SCALE + animationOffsetY), 
 				(int) (Tile.TILE_WIDTH * Tile.TILE_SCALE), (int) (Tile.TILE_HEIGHT * Tile.TILE_SCALE), null);
 		
-		renderingPosX = (int) (renderX + animationOffsetX);
-		renderingPosY = (int) (renderY + animationOffsetY);
+		posX = (int) (currentCell.getGridX() * Tile.TILE_WIDTH * Tile.TILE_SCALE + animationOffsetX);
+		posY = (int) (currentCell.getGridY() * Tile.TILE_HEIGHT * Tile.TILE_SCALE + animationOffsetY);
 		
 		if((Math.abs(animationOffsetX) >= (double) 1 / Game.fps))
 		{
@@ -429,14 +430,14 @@ public class Creature extends Entity
 		return weapon;
 	}
 
-	public int getRenderingPosX()
+	public int getPosX()
 	{
-		return renderingPosX;
+		return posX;
 	}
 
-	public int getRenderingPosY()
+	public int getPosY()
 	{
-		return renderingPosY;
+		return posY;
 	}
 	
 	@Override

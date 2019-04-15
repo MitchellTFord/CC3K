@@ -58,19 +58,21 @@ public class Cell
 		}
 	}
 
-	public void renderTile(Graphics g, int renderX, int renderY)
+	public void renderTile(Graphics g, double offsetX, double offsetY)
 	{
 		// Render tile texture
-		g.drawImage(tileTexture, (int) renderX, (int) renderY, (int) (Tile.TILE_WIDTH * Tile.TILE_SCALE),
+		g.drawImage(tileTexture, (int) (gridX * Tile.TILE_WIDTH * Tile.TILE_SCALE + offsetX), 
+				(int) (gridY * Tile.TILE_HEIGHT * Tile.TILE_SCALE + offsetY), 
+				(int) (Tile.TILE_WIDTH * Tile.TILE_SCALE),
 				(int) (Tile.TILE_HEIGHT * Tile.TILE_SCALE), null);
 	}
 
-	public void renderOccupant(Graphics g, int renderX, int renderY)
+	public void renderOccupant(Graphics g, double offsetX, double offsetY)
 	{
 		// Calls occupant's render() method if this Cell has an occupant
 		if(occupant != null)
 		{
-			occupant.render(g, renderX, renderY);
+			occupant.render(g, offsetX, offsetY);
 		}
 	}
 

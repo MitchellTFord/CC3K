@@ -76,7 +76,7 @@ public class GameState extends State
 		camera.updateCamera();
 		
 		//Render the floor
-		floor.render(g, camera.getViewX(), camera.getViewY());
+		floor.render(g, camera.getOffsetX(), camera.getOffsetY());
 		
 		//Update the PlayerInfoPanel
 		game.getDisplay().updatePlayerInfoPanel(player);

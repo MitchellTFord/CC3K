@@ -32,7 +32,7 @@ public abstract class Entity
 	 * @param x the x position to render at
 	 * @param y the y position to render at
 	 */
-	public abstract void render(Graphics g, int x, int y);
+	public abstract void render(Graphics g, double x, double y);
 
 	/**
 	 * @return this Entity's currentCell

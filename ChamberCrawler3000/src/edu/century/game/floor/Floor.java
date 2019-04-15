@@ -86,7 +86,7 @@ public class Floor
 		this(gridWidth, gridHeight, null);
 	}
 	
-	public void render(Graphics g, int offsetX, int offsetY)
+	public void render(Graphics g, double offsetX, double offsetY)
 	{
 		// Render Tile textures
 		for(int gridY = 0; gridY < gridHeight; gridY++)
@@ -95,8 +95,7 @@ public class Floor
 			{
 				// Calls renderTile() for each Cell object in cells using passed in
 				// offset values
-				cells[gridX][gridY].renderTile(g, (int) (gridX * Tile.TILE_WIDTH * Tile.TILE_SCALE + offsetX), 
-						(int) (gridY * Tile.TILE_HEIGHT * Tile.TILE_SCALE + offsetY));
+				cells[gridX][gridY].renderTile(g, offsetX, offsetY);
 			}
 		}
 		
@@ -107,15 +106,13 @@ public class Floor
 			{
 				// Calls renderOccupant() for each Cell object in cells using passed in
 				// offset values
-				cells[gridX][gridY].renderOccupant(g, (int) (gridX * Tile.TILE_WIDTH * Tile.TILE_SCALE + offsetX), 
-						(int) (gridY * Tile.TILE_HEIGHT * Tile.TILE_SCALE + offsetY));;
+				cells[gridX][gridY].renderOccupant(g, offsetX, offsetY);
 			}
 		}
 	}
 
 	private Tile getRandomTile()
 	{
-		int maxIndex = Tile.numTiles - 1;
 		return Tile.tileIDs[(int) Math.round(Math.random() * (Tile.numTiles - 1))];
 	}
 	

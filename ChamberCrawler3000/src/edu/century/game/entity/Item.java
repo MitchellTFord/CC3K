@@ -44,7 +44,7 @@ public class Item extends Entity
 		this.defenceMod = defenceMod;
 	}
 	
-	public void render(Graphics g, int xOffset, int offsetY)
+	public void render(Graphics g, double offsetX, double offsetY)
 	{
 		
 	}

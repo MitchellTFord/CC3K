@@ -13,7 +13,7 @@ public class Camera
 	private int viewWidth, viewHeight;
 
 	// The x and y coordinates of the top left corner of the viewport
-	private int viewX, viewY;
+	private double offsetX, offsetY;
 
 	// The Creature the Camera should follow
 	private Creature targetCreature;
@@ -38,8 +38,8 @@ public class Camera
 			int floorPixelWidth = (int) (floor.getGridWidth() * Tile.TILE_WIDTH * Tile.TILE_SCALE);
 			int floorPixelHeight = (int) (floor.getGridHeight() * Tile.TILE_HEIGHT * Tile.TILE_SCALE);
 
-			viewX = targetCreature.getRenderingPosX() - (floorPixelWidth / 2) - viewX;
-			viewY = targetCreature.getRenderingPosY() - (floorPixelHeight / 2) - viewY;
+			offsetX = viewWidth / 2 - targetCreature.getPosX() - (Tile.TILE_WIDTH + Tile.TILE_SCALE) / 2;
+			offsetY = viewHeight / 2 - targetCreature.getPosY() - (Tile.TILE_HEIGHT + Tile.TILE_SCALE) / 2;
 		}
 
 //		if(targetCreature.getRenderingPosX() + (floorPixelWidth / 2) < 0)
@@ -52,14 +52,14 @@ public class Camera
 //		}
 	}
 	
-	public int getViewX()
+	public double getOffsetX()
 	{
-		return viewX;
+		return offsetX;
 	}
 	
-	public int getViewY()
+	public double getOffsetY()
 	{
-		return viewY;
+		return offsetY;
 	}
 	
 	public void setTargetCreature(Creature targetCreature)
