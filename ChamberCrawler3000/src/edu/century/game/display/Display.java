@@ -1,6 +1,7 @@
 package edu.century.game.display;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -15,6 +16,8 @@ public class Display extends JFrame
 	private FloorDisplay floorPanel;
 	
 	private PlayerInfoPanel playerInfoPanel;
+	
+	private LogPanel logPanel;
 	
 	private Game game;
 	
@@ -43,11 +46,14 @@ public class Display extends JFrame
 		
 		setLayout(new BorderLayout());
 		
-		floorPanel = new FloorDisplay(width * 2/3, height);
+		floorPanel = new FloorDisplay(width * 1/2, height);
 		add(floorPanel, BorderLayout.CENTER);
 		
 		leftPanel = new JPanel();
 		leftPanel.setLayout(new BorderLayout());
+		leftPanel.setPreferredSize(new Dimension(width * 1/4, height));
+		leftPanel.setMaximumSize(new Dimension(width * 1/4, height));
+		leftPanel.setMinimumSize(new Dimension(width * 1/4, height));
 		add(leftPanel, BorderLayout.WEST);
 		
 		if(useDPad)
@@ -56,8 +62,11 @@ public class Display extends JFrame
 			leftPanel.add(dPad, BorderLayout.SOUTH);
 		}
 		
-		playerInfoPanel = new PlayerInfoPanel(width / 3, height);
+		playerInfoPanel = new PlayerInfoPanel(width * 1/4, height);
 		leftPanel.add(playerInfoPanel, BorderLayout.CENTER);
+		
+		logPanel = new LogPanel(width * 1/4, height);
+		add(logPanel, BorderLayout.EAST);
 		
 		pack();
 	}

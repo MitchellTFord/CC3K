@@ -1,6 +1,7 @@
 package edu.century.game.graphics;
 
 import java.awt.image.BufferedImage;
+import java.awt.image.RasterFormatException;
 
 /**
  * SpriteSheets are collections of sprites created from a single image file
@@ -23,7 +24,7 @@ public class SpriteSheet
 	 * @param spriteWidth the width of sprites in pixels
 	 * @param spriteHeight the height of sprites in pixels
 	 * @param numSpritesWide the number of sprites wide the original sheet is
-	 * @param numSpritesTallthe number of sprites tall the original sheet is
+	 * @param numSpritesTall the number of sprites tall the original sheet is
 	 */
 	public SpriteSheet(BufferedImage sheet, int spriteWidth, int spriteHeight, int numSpritesWide, int numSpritesTall)
 	{
@@ -52,12 +53,27 @@ public class SpriteSheet
 	 * Populates the sprites array
 	 */
 	public void makeSprites()
-	{
+	{	
 		for(int y = 0; y < numSpritesTall; y++)
 		{
 			for(int x = 0; x < numSpritesWide; x++)
 			{
-				sprites[x][y] = crop(spriteWidth * x, spriteHeight * y, spriteWidth, spriteHeight);
+				try
+				{
+					sprites[x][y] = crop(spriteWidth * x, spriteHeight * y, spriteWidth, spriteHeight);
+				}
+				catch(RasterFormatException e)
+				{
+					System.err.println(
+							  "Attemped to crop " + spriteWidth + " x " + spriteHeight + " sub-image \n"
+							+ "\t" + "at coordinates (" + (spriteWidth) + ", " + (spriteHeight) + "), "
+							+ "(" + (spriteWidth * (x + 1)) + ", " + (spriteHeight * (y + 1)) + ") \n"
+							+ "\t" + "but spritesheet image is " + sheet.getWidth() + " x " + sheet.getHeight() + "\n"
+							);
+					
+					e.printStackTrace();
+					System.exit(1);
+				}
 			}
 		}
 	}

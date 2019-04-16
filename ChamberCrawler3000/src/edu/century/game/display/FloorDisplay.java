@@ -36,7 +36,7 @@ public class FloorDisplay extends JPanel
 	private void init()
 	{
 		//Temp
-		setBackground(Color.cyan);
+		setBackground(Color.black);
 		
 		//Create the Canvas
 		canvas = new Canvas();
