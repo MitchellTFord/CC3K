@@ -4,10 +4,12 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import edu.century.game.Game;
+import edu.century.game.graphics.Assets;
 
 /**
  * A 3x3 Directional Pad
@@ -26,20 +28,22 @@ public class DirectionalPad extends JPanel
 		//3x3 grid
 		setLayout(new GridLayout(3, 3));
 		
+		
+		
 		//Top row
-		add(new MovementButton("NW", -1, -1, this));
-		add(new MovementButton("N", 0, -1, this));
-		add(new MovementButton("NE", 1, -1, this));
+		add(new MovementButton(Assets.dPadButtons.getSpriteAsIcon(0, 0), -1, -1, this));
+		add(new MovementButton(Assets.dPadButtons.getSpriteAsIcon(1, 0), 0, -1, this));
+		add(new MovementButton(Assets.dPadButtons.getSpriteAsIcon(2, 0), 1, -1, this));
 		
 		//Middle row
-		add(new MovementButton("W", -1, 0, this));
-		add(new MovementButton("*", 0, 0, this));
-		add(new MovementButton("E", 1, 0, this));
+		add(new MovementButton(Assets.dPadButtons.getSpriteAsIcon(0, 1), -1, 0, this));
+		add(new MovementButton(Assets.dPadButtons.getSpriteAsIcon(1, 1), 0, 0, this));
+		add(new MovementButton(Assets.dPadButtons.getSpriteAsIcon(2, 1), 1, 0, this));
 		
 		//Bottom row
-		add(new MovementButton("SW", -1, 1, this));
-		add(new MovementButton("S", 0, 1, this));
-		add(new MovementButton("SE", 1, 1, this));	
+		add(new MovementButton(Assets.dPadButtons.getSpriteAsIcon(0, 2), -1, 1, this));
+		add(new MovementButton(Assets.dPadButtons.getSpriteAsIcon(1, 2), 0, 1, this));
+		add(new MovementButton(Assets.dPadButtons.getSpriteAsIcon(2, 2), 1, 1, this));	
 	}
 	
 	/**
@@ -68,10 +72,10 @@ public class DirectionalPad extends JPanel
 		 * @param yMove the y position of this button on the DPad
 		 * @param dPad the DPad that this button is a part of
 		 */
-		private MovementButton(String text, int xMove, int yMove, DirectionalPad dPad)
+		private MovementButton(ImageIcon image, int xMove, int yMove, DirectionalPad dPad)
 		{
 			//Invokes JButton constructor
-			super(text);
+			super(image);
 			
 			this.xMove = xMove;
 			this.yMove = yMove;

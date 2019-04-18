@@ -26,7 +26,7 @@ public class Assets
 		//cellBorders = new SpriteSheet(loadImage("/textures/CellBorders.png"), Tile.TILE_WIDTH, Tile.TILE_HEIGHT, 1);
 		//dirtSprites = new SpriteSheet(loadImage("/textures/DirtSprites.png"), Tile.TILE_WIDTH, Tile.TILE_HEIGHT, 6, 1);
 		tileSprites = new SpriteSheet(loadImage("/textures/TileSprites.png"), 32, 32, 6, 7);
-		dPadButtons = new SpriteSheet(loadImage("textures/DPadButtons.png"), 9, 9, 3, 3);
+		dPadButtons = new SpriteSheet(loadImage("/textures/DPadButtons.png"), 9, 9, 3, 3);
 		
 		missingSprite = loadImage("/textures/MissingTexture.png");
 		tempPlayer = loadImage("/textures/TempPlayer.png");

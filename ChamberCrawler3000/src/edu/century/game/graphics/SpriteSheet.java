@@ -2,6 +2,9 @@ package edu.century.game.graphics;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.RasterFormatException;
+import java.util.Arrays;
+
+import javax.swing.ImageIcon;
 
 /**
  * SpriteSheets are collections of sprites created from a single image file
@@ -47,6 +50,11 @@ public class SpriteSheet
 	public BufferedImage getSprite(int x, int y)
 	{
 		return sprites[x][y];
+	}
+	
+	public ImageIcon getSpriteAsIcon(int x, int y)
+	{
+		return new ImageIcon(getSprite(x, y));
 	}
 
 	/**
@@ -107,5 +115,13 @@ public class SpriteSheet
 	public int getNumSpritesWide()
 	{
 		return numSpritesWide;
+	}
+
+	@Override
+	public String toString() 
+	{
+		return "SpriteSheet [sheet=" + sheet + ", sprites=" + Arrays.toString(sprites) + ", spriteHeight="
+				+ spriteHeight + ", spriteWidth=" + spriteWidth + ", numSpritesTall=" + numSpritesTall
+				+ ", numSpritesWide=" + numSpritesWide + "]";
 	}
 }
