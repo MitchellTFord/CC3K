@@ -41,6 +41,10 @@ public abstract class Race
 	// The Effect applied to Characters of this Race
 	protected Effect raceEffect;
 
+	/**
+	 * Must be implemented by Race derived classes
+	 * @return the sprite to render creatures of this Race as
+	 */
 	public abstract BufferedImage getRaceSprite();
 	
 	/**
