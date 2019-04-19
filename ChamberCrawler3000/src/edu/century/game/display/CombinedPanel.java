@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 public class CombinedPanel extends JPanel
 {
 	/**
-	 * Constructor for CombinedPanel
+	 * 2 component constructor for CombinedPanel
 	 * @param a The component to be put on the left
 	 * @param b The component to be put on the right
 	 */
@@ -20,5 +20,18 @@ public class CombinedPanel extends JPanel
 		super(new FlowLayout(FlowLayout.CENTER));
 		add(a);
 		add(b);
+	}
+	
+	/**
+	 * 3 component constructor for CombinedPanel
+	 * @param a The component to be put on the left
+	 * @param b The component to be put on the right
+	 */
+	public CombinedPanel(JComponent a, JComponent b, JComponent c)
+	{
+		super(new FlowLayout(FlowLayout.CENTER));
+		add(a);
+		add(b);
+		add(c);
 	}
 }

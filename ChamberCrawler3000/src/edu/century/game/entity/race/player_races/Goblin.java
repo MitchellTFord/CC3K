@@ -1,5 +1,7 @@
 package edu.century.game.entity.race.player_races;
 
+import java.awt.image.BufferedImage;
+
 import edu.century.game.effect.BoostStat;
 import edu.century.game.effect.Effect;
 import edu.century.game.entity.Creature;
@@ -11,7 +13,7 @@ public class Goblin extends Race
 {
 	public Goblin()
 	{
-		super("Goblin", Assets.tempPlayer, -15, -5, 0);
+		super("Goblin", -15, -5, 0);
 	}
 	
 	@Override
@@ -19,6 +21,12 @@ public class Goblin extends Race
 	{
 		//Gains 5 gold on kill
 		return new BoostStat(character, "Goblin Greed", 5, -1, Stat.GOLD_ON_KILL);
+	}
+	
+	@Override
+	public BufferedImage getRaceSprite() 
+	{
+		return Assets.raceSprites.getSprite(0, 6);
 	}
 }
 

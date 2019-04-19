@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -53,12 +54,13 @@ public class Launcher extends JFrame implements ActionListener
 
 	JPanel inputPanel, optionsPanel, characterPanel, bottomPanel, bottomLeftPanel, bottomRightPanel, playerNamePanel,
 			fpsPanel;
-	JLabel optionsLabel;
+	JLabel optionsLabel, raceIconLabel;
 	JButton startButton, floorEditorButton;
 	JCheckBox useDPadCheckBox;
 	JComboBox<String> raceComboBox;
 	JComboBox<Integer> fpsComboBox;
 	JTextField playerNameField;
+	ImageIcon raceLabel;
 
 	// The width/height of the launcher in pixels
 	private int launcherWidth, launcherHeight;
@@ -195,7 +197,7 @@ public class Launcher extends JFrame implements ActionListener
 	private void buildCharacterPanel()
 	{
 		characterPanel = new JPanel();
-		characterPanel.setLayout(new GridLayout(0, 2));
+		characterPanel.setLayout(new GridLayout(1, 2));
 		characterPanel.setBorder(BorderFactory.createTitledBorder("Character Creation"));
 		characterPanel.setPreferredSize(new Dimension(launcherWidth - 16, 20));
 		inputPanel.add(characterPanel);
@@ -221,7 +223,10 @@ public class Launcher extends JFrame implements ActionListener
 		raceComboBox.setEditable(false);
 		raceComboBox.setSelectedIndex(0);
 		raceComboBox.addActionListener(this);
-		characterPanel.add(new CombinedPanel(new JLabel("Race"), raceComboBox));
+		
+		raceIconLabel = new JLabel(Race.playerRaceIcons[raceComboBox.getSelectedIndex()]);
+		
+		characterPanel.add(new CombinedPanel(new JLabel("Race"), raceComboBox, raceIconLabel));
 	}
 
 	/**
@@ -306,6 +311,9 @@ public class Launcher extends JFrame implements ActionListener
 		{
 			// Launch the floor editor
 			startFloorEditor();
+		} else if(actionSource.equals(raceComboBox))
+		{
+			raceIconLabel.setIcon(Race.playerRaceIcons[raceComboBox.getSelectedIndex()]);
 		}
 	}
 }

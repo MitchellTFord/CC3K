@@ -1,5 +1,7 @@
 package edu.century.game.entity.race.enemy_races;
 
+import java.awt.image.BufferedImage;
+
 import edu.century.game.effect.*;
 import edu.century.game.entity.Creature;
 import edu.century.game.entity.Stat;
@@ -10,7 +12,7 @@ public class Drow extends Race
 {
 	public Drow()
 	{
-		super("Drow", Assets.tempPlayer, 25, 0, -10);
+		super("Drow", 25, 0, -10);
 	}
 	
 	@Override
@@ -18,5 +20,11 @@ public class Drow extends Race
 	{
 		//Potion power is increased by 50%
 		return new BoostStat(character, "Drow Potion Proficiency", 0.5, -1, Stat.POTION_POWER);
+	}
+	
+	@Override
+	public BufferedImage getRaceSprite() 
+	{
+		return Assets.missingSprite;
 	}
 }

@@ -1,5 +1,6 @@
 package edu.century.game.abilities;
 
+import edu.century.game.entity.Creature;
 import edu.century.game.floor.Cell;
 
 public abstract class Ability
@@ -13,5 +14,5 @@ public abstract class Ability
 		this.abilityName = abilityName;
 	}
 	
-	public abstract boolean validTargetCell(Cell cell);
+	public abstract boolean validTargetCell(Creature caster, Cell cell);
 }

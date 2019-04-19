@@ -1,5 +1,7 @@
 package edu.century.game.entity.race.player_races;
 
+import java.awt.image.BufferedImage;
+
 import edu.century.game.effect.Effect;
 import edu.century.game.entity.Creature;
 import edu.century.game.entity.race.Race;
@@ -9,7 +11,7 @@ public class Vampire extends Race
 {
 	public Vampire()
 	{
-		super("Vampire", Assets.tempPlayer, -75, 0, 0);
+		super("Vampire", -75, 0, 0);
 	}
 	
 	@Override
@@ -18,6 +20,12 @@ public class Vampire extends Race
 		//Gains 5 health on kill, no maximum health
 		//TODO: implement vampire racial effect
 		return null;
+	}
+	
+	@Override
+	public BufferedImage getRaceSprite() 
+	{
+		return Assets.raceSprites.getSprite(0, 4);
 	}
 }
 

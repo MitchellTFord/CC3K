@@ -13,6 +13,7 @@ public class Assets
 	public static SpriteSheet dirtSprites;
 	public static SpriteSheet tileSprites;
 	public static SpriteSheet dPadButtons;
+	public static SpriteSheet raceSprites;
 	
 	public static BufferedImage missingSprite;
 	public static BufferedImage tempPlayer;
@@ -27,6 +28,7 @@ public class Assets
 		//dirtSprites = new SpriteSheet(loadImage("/textures/DirtSprites.png"), Tile.TILE_WIDTH, Tile.TILE_HEIGHT, 6, 1);
 		tileSprites = new SpriteSheet(loadImage("/textures/TileSprites.png"), 32, 32, 6, 7);
 		dPadButtons = new SpriteSheet(loadImage("/textures/DPadButtons.png"), 9, 9, 3, 3);
+		raceSprites = new SpriteSheet(loadImage("/textures/RaceCreatureSprites.png"), 32, 32, 1, 7);
 		
 		missingSprite = loadImage("/textures/MissingTexture.png");
 		tempPlayer = loadImage("/textures/TempPlayer.png");

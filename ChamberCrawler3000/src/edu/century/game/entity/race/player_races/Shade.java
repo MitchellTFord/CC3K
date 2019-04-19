@@ -1,5 +1,7 @@
 package edu.century.game.entity.race.player_races;
 
+import java.awt.image.BufferedImage;
+
 import edu.century.game.effect.Effect;
 import edu.century.game.entity.Creature;
 import edu.century.game.entity.race.Race;
@@ -10,7 +12,7 @@ public class Shade extends Race
 	public Shade()
 	{
 		//Shade is the baseline race
-		super("Shade", Assets.tempPlayer, 0, 0, 0);
+		super("Shade", 0, 0, 0);
 	}
 	
 	@Override
@@ -24,6 +26,12 @@ public class Shade extends Race
 	public String getRaceName()
 	{
 		return raceName;
+	}
+	
+	@Override
+	public BufferedImage getRaceSprite() 
+	{
+		return Assets.raceSprites.getSprite(0, 2);
 	}
 }
 

@@ -2,6 +2,8 @@ package edu.century.game.entity.race;
 
 import java.awt.image.BufferedImage;
 
+import javax.swing.ImageIcon;
+
 import edu.century.game.effect.Effect;
 import edu.century.game.entity.Creature;
 import edu.century.game.graphics.Assets;
@@ -20,6 +22,13 @@ public abstract class Race
 			"Troll: 120 HP, 25 Atk, 15 Def, regains 5 HP every turn; HP is capped at 120", 
 			"Vampire: 50 HP, 25 Atk, 25 Def, gains 5 HP every successful attack and has no maximum HP "};
 	
+	public static final ImageIcon[] playerRaceIcons =
+		{Assets.raceSprites.getSpriteAsIcon(0, 2), 
+				Assets.raceSprites.getSpriteAsIcon(0, 3),
+				Assets.raceSprites.getSpriteAsIcon(0, 6),
+				Assets.raceSprites.getSpriteAsIcon(0, 5),
+				Assets.raceSprites.getSpriteAsIcon(0, 4)};
+	
 	// The name of this Race
 	protected String raceName;
 	
@@ -32,18 +41,18 @@ public abstract class Race
 	// The Effect applied to Characters of this Race
 	protected Effect raceEffect;
 
+	public abstract BufferedImage getRaceSprite();
+	
 	/**
 	 * Race constructor
 	 * @param raceName the name of this race
-	 * @param raceSprite the sprite to render creatures of this Race with
 	 * @param healthMod the amount this Race modifies a Creature's max health
 	 * @param attackMod the amount this Race modifies a Creature's attack
 	 * @param defenceMod the amount this Race modifies a Creature's defense
 	 */
-	public Race(String raceName, BufferedImage raceSprite, double healthMod, double attackMod, double defenceMod)
+	public Race(String raceName, double healthMod, double attackMod, double defenceMod)
 	{
 		this.raceName = raceName;
-		this.raceSprite = raceSprite;
 		this.healthMod = healthMod;
 		this.attackMod = attackMod;
 		this.defenseMod = defenceMod;
@@ -79,11 +88,6 @@ public abstract class Race
 	public double getDefenseMod()
 	{
 		return defenseMod;
-	}
-
-	public BufferedImage getRaceSprite()
-	{
-		return raceSprite;
 	}
 	
 	/**
