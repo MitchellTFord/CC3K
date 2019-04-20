@@ -2,6 +2,8 @@ package edu.century.game.entity.race.player_races;
 
 import java.awt.image.BufferedImage;
 
+import javax.swing.ImageIcon;
+
 import edu.century.game.effect.*;
 import edu.century.game.entity.Creature;
 import edu.century.game.entity.Stat;
@@ -12,7 +14,7 @@ public class Drow extends Race
 {
 	public Drow()
 	{
-		super("Drow", 25, 0, -10);
+		super("Drow", 25, 0, -10, "all potions have their effect magnified by 1.5");
 	}
 	
 	@Override
@@ -26,5 +28,11 @@ public class Drow extends Race
 	public BufferedImage getRaceSprite() 
 	{
 		return Assets.raceSprites.getSprite(0, 3);
+	}
+	
+	@Override
+	public ImageIcon getRaceIcon() 
+	{
+		return Assets.raceSprites.getSpriteAsIcon(0, 3);
 	}
 }

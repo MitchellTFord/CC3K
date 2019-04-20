@@ -2,6 +2,8 @@ package edu.century.game.entity.race.enemy_races;
 
 import java.awt.image.BufferedImage;
 
+import javax.swing.ImageIcon;
+
 import edu.century.game.effect.*;
 import edu.century.game.entity.Creature;
 import edu.century.game.entity.Stat;
@@ -12,7 +14,7 @@ public class Human extends Race
 {
 	public Human()
 	{
-		super("Human", 15, -5, -5);
+		super("Human", 15, -5, -5, null);
 	}
 	
 	@Override
@@ -25,5 +27,11 @@ public class Human extends Race
 	public BufferedImage getRaceSprite() 
 	{
 		return Assets.missingSprite;
+	}
+	
+	@Override
+	public ImageIcon getRaceIcon() 
+	{
+		return null;
 	}
 }

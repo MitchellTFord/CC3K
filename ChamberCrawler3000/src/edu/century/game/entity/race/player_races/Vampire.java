@@ -2,6 +2,8 @@ package edu.century.game.entity.race.player_races;
 
 import java.awt.image.BufferedImage;
 
+import javax.swing.ImageIcon;
+
 import edu.century.game.effect.Effect;
 import edu.century.game.entity.Creature;
 import edu.century.game.entity.race.Race;
@@ -11,7 +13,7 @@ public class Vampire extends Race
 {
 	public Vampire()
 	{
-		super("Vampire", -75, 0, 0);
+		super("Vampire", -75, 0, 0, "gains 5 HP every successful attack and has no maximum HP");
 	}
 	
 	@Override
@@ -26,6 +28,12 @@ public class Vampire extends Race
 	public BufferedImage getRaceSprite() 
 	{
 		return Assets.raceSprites.getSprite(0, 4);
+	}
+	
+	@Override
+	public ImageIcon getRaceIcon() 
+	{
+		return Assets.raceSprites.getSpriteAsIcon(0, 4);
 	}
 }
 

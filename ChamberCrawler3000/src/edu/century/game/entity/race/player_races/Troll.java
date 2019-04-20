@@ -2,6 +2,8 @@ package edu.century.game.entity.race.player_races;
 
 import java.awt.image.BufferedImage;
 
+import javax.swing.ImageIcon;
+
 import edu.century.game.effect.Effect;
 import edu.century.game.entity.Creature;
 import edu.century.game.entity.race.Race;
@@ -11,7 +13,7 @@ public class Troll extends Race
 {
 	public Troll()
 	{
-		super("Troll", -5, 0, 0);
+		super("Troll", -5, 0, 0, "regains 5 HP every turn; HP is capped at 120");
 	}
 	
 	@Override
@@ -28,6 +30,12 @@ public class Troll extends Race
 	public BufferedImage getRaceSprite() 
 	{
 		return Assets.raceSprites.getSprite(0, 5);
+	}
+	
+	@Override
+	public ImageIcon getRaceIcon() 
+	{
+		return Assets.raceSprites.getSpriteAsIcon(0, 5);
 	}
 }
 

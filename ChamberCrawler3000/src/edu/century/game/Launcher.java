@@ -214,17 +214,17 @@ public class Launcher extends JFrame implements ActionListener
 		ComboboxToolTipRenderer raceComboBoxRenderer = new ComboboxToolTipRenderer();
 		raceComboBox.setRenderer(raceComboBoxRenderer);
 		List<String> raceComboBoxTooltips = new ArrayList<String>();
-		for(int i = 0; i < Race.playerRaceStrings.length; i++)
+		for(int i = 0; i < Race.playerRaces.length; i++)
 		{
-			raceComboBox.addItem(Race.playerRaceStrings[i]);
-			raceComboBoxTooltips.add(Race.playerRaceDescriptions[i]);
+			raceComboBox.addItem(Race.playerRaces[i].getRaceName());
+			raceComboBoxTooltips.add(Race.playerRaces[i].toString());
 		}
 		raceComboBoxRenderer.setTooltips(raceComboBoxTooltips);
 		raceComboBox.setEditable(false);
 		raceComboBox.setSelectedIndex(0);
 		raceComboBox.addActionListener(this);
 		
-		raceIconLabel = new JLabel(Race.playerRaceIcons[raceComboBox.getSelectedIndex()]);
+		raceIconLabel = new JLabel(Race.playerRaces[raceComboBox.getSelectedIndex()].getRaceIcon());
 		
 		characterPanel.add(new CombinedPanel(new JLabel("Race"), raceComboBox, raceIconLabel));
 	}
@@ -268,20 +268,20 @@ public class Launcher extends JFrame implements ActionListener
 	{
 		if(str.equals("Drow"))
 		{
-			return new Drow();
+			return Race.playerRaces[1];
 		} else if(str.equals("Goblin"))
 		{
-			return new Goblin();
+			return Race.playerRaces[2];
 		} else if(str.equals("Troll"))
 		{
-			return new Troll();
+			return Race.playerRaces[3];
 		} else if(str.equals("Vampire"))
 		{
-			return new Vampire();
+			return Race.playerRaces[4];
 		} else
 		{
-			// Return a new Shade object by default
-			return new Shade();
+			// Return Shade by default
+			return Race.playerRaces[0];
 		}
 	}
 
@@ -313,7 +313,7 @@ public class Launcher extends JFrame implements ActionListener
 			startFloorEditor();
 		} else if(actionSource.equals(raceComboBox))
 		{
-			raceIconLabel.setIcon(Race.playerRaceIcons[raceComboBox.getSelectedIndex()]);
+			raceIconLabel.setIcon(Race.playerRaces[raceComboBox.getSelectedIndex()].getRaceIcon());
 		}
 	}
 }

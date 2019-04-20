@@ -2,6 +2,8 @@ package edu.century.game.entity.race.player_races;
 
 import java.awt.image.BufferedImage;
 
+import javax.swing.ImageIcon;
+
 import edu.century.game.effect.BoostStat;
 import edu.century.game.effect.Effect;
 import edu.century.game.entity.Creature;
@@ -13,7 +15,7 @@ public class Goblin extends Race
 {
 	public Goblin()
 	{
-		super("Goblin", -15, -5, 0);
+		super("Goblin", -15, -5, 0, "steals 5 gold from every slain enemy");
 	}
 	
 	@Override
@@ -27,6 +29,12 @@ public class Goblin extends Race
 	public BufferedImage getRaceSprite() 
 	{
 		return Assets.raceSprites.getSprite(0, 6);
+	}
+	
+	@Override
+	public ImageIcon getRaceIcon() 
+	{
+		return Assets.raceSprites.getSpriteAsIcon(0, 6);
 	}
 }
 
