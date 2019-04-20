@@ -8,18 +8,17 @@ import edu.century.game.entity.Stat;
 import edu.century.game.entity.race.Race;
 import edu.century.game.graphics.Assets;
 
-public class Drow extends Race
+public class Human extends Race
 {
-	public Drow()
+	public Human()
 	{
-		super("Drow", 25, 0, -10);
+		super("Human", 15, -5, -5);
 	}
 	
 	@Override
 	public Effect getEffect(Creature character)
 	{
-		//Potion power is increased by 50%
-		return new BoostStat(character, "Drow Potion Proficiency", 0.5, -1, Stat.POTION_POWER);
+		return null;
 	}
 	
 	@Override

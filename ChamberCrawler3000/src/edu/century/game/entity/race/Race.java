@@ -127,7 +127,7 @@ public abstract class Race
 	 * 
 	 * 3 Orc: 180 HP, 30 Atk, 25 Def, does 50% more damage to goblins
 	 * 
-	 * 4 Dragon: 150 HP, 20 Atk, 29 Def, only spawns next to treasure hoards
+	 * 4 Dragon: 150 HP, 20 Atk, 30 Def, only spawns next to treasure hoards
 	 * 
 	 * 5 Halfling: 100 HP, 15 Atk, 20 Def, 50% evasion
 	 */
