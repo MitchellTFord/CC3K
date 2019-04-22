@@ -1,9 +1,19 @@
 package edu.century.game.floor;
 
 import java.awt.Graphics;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+import java.util.regex.Pattern;
 
 import edu.century.game.tiles.Tile;
 
+/**
+ * 
+ * @author Mitchell Ford
+ *
+ */
 public class Floor
 {
 	// The number of cells wide/tall this Floor is
@@ -86,6 +96,44 @@ public class Floor
 		this(gridWidth, gridHeight, null);
 	}
 	
+	public Floor(File file) throws FloorFormatException
+	{		
+		try
+		{
+			// Open a new input stream
+			Scanner fileInput = new Scanner(new FileInputStream(file));
+			
+			if(fileInput.hasNext("\\d+,\\d+\\n"))
+			{
+				String[] dimensionTokens = fileInput.nextLine().split(",");
+				gridWidth = Integer.parseInt(dimensionTokens[0]);
+				gridHeight = Integer.parseInt(dimensionTokens[1]);
+			}
+			
+			if(fileInput.hasNext("\\d+,\\d+\\n"))
+			{
+				String[] playerSpawnTokens = fileInput.nextLine().split(",");
+				playerSpawnX = Integer.parseInt(playerSpawnTokens[0]);
+				playerSpawnY = Integer.parseInt(playerSpawnTokens[1]);
+			}
+			
+			String linePattern = "((\\d+|(\\d:\\d)),){" + (gridWidth - 1) + "}(\\d+|(\\d:\\d))";
+			
+			String filePattern = "(" + linePattern + "\\n)" + "{" + (gridHeight - 1) + "}" + linePattern;
+			
+			if(fileInput.hasNext(filePattern))
+			{
+				System.out.println("Good format");
+			}
+			
+			fileInput.close();
+		}
+		catch(FileNotFoundException e)
+		{
+			
+		}
+	}
+
 	public void render(Graphics g, double offsetX, double offsetY)
 	{
 		// Render Tile textures
@@ -132,63 +180,71 @@ public class Floor
 		}
 	}
 	
-	public void addCharacter(Character newCharacter)
+//	public void addCharacter(Character newCharacter)
+//	{
+//		sortCharacters();
+//		
+//		if(numCharacters >= characters.length)
+//		{
+//			expandCharacters();
+//		}
+//		
+//		for(int i = 0; i < characters.length; i++)
+//		{
+//			if(characters[i] == null)
+//			{
+//				characters[i] = newCharacter;
+//				
+//				return;
+//			}
+//		}
+//	}
+	
+//	public void removeCharacter(Character removeCharacter)
+//	{
+//		sortCharacters();
+//		
+//		for(int i = 0; i < characters.length; i++)
+//		{
+//			if(characters[i].equals(removeCharacter))
+//			{
+//				characters[i] = null;
+//				
+//				return;
+//			}
+//		}
+//	}
+	
+//	public void expandCharacters()
+//	{
+//		//Temporary array of twice the size
+//		Character[] newCharacters = new Character[numCharacters * 2];
+//		
+//		//Duplicate the items from the original array to the new array
+//		for(int i = 0; i < numCharacters; i++)
+//		{
+//			newCharacters[i] = characters[i];
+//		}
+//		
+//		//Set the reference to the original array to the temporary array
+//		characters = newCharacters;
+//	}
+	
+	public class FloorFormatException extends Exception
 	{
-		sortCharacters();
-		
-		if(numCharacters >= characters.length)
+		private FloorFormatException(String errorMessage)
 		{
-			expandCharacters();
-		}
-		
-		for(int i = 0; i < characters.length; i++)
-		{
-			if(characters[i] == null)
-			{
-				characters[i] = newCharacter;
-				
-				return;
-			}
+			super(errorMessage);
 		}
 	}
 	
-	public void removeCharacter(Character removeCharacter)
-	{
-		sortCharacters();
-		
-		for(int i = 0; i < characters.length; i++)
-		{
-			if(characters[i].equals(removeCharacter))
-			{
-				characters[i] = null;
-				
-				return;
-			}
-		}
-	}
-	
-	public void expandCharacters()
-	{
-		//Temporary array of twice the size
-		Character[] newCharacters = new Character[numCharacters * 2];
-		
-		//Duplicate the items from the original array to the new array
-		for(int i = 0; i < numCharacters; i++)
-		{
-			newCharacters[i] = characters[i];
-		}
-		
-		//Set the reference to the original array to the temporary array
-		characters = newCharacters;
-	}
-	
-	/**
-	 * Sorts the characters array
-	 */
-	public void sortCharacters()
-	{
-		//TODO: implement sortCharacters()
-	}
+//	/**
+//	 * Sorts the characters array
+//	 */
+//	public void sortCharacters()
+//	{
+//		//TODO: implement sortCharacters()
+//	}
 	
 	/**
 	 * @return this Floor's characters array

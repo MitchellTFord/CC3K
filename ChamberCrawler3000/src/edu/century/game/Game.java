@@ -2,10 +2,12 @@ package edu.century.game;
 
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
+import java.io.File;
 
 import edu.century.game.display.Display;
 import edu.century.game.entity.Player;
 import edu.century.game.floor.Floor;
+import edu.century.game.floor.Floor.FloorFormatException;
 import edu.century.game.graphics.Camera;
 import edu.century.game.state.GameState;
 import edu.century.game.state.State;
@@ -216,9 +218,18 @@ public class Game implements Runnable
 		// Load image assets into memory
 		//Assets.init();
 
-		// Temp
-		testFloor = new Floor(8, 8);
-		System.out.println("Test Floor Created");
+//		// Temp
+//		testFloor = new Floor(8, 8);
+//		System.out.println("Test Floor Created");
+		
+		try
+		{
+			testFloor = new Floor(new File("/floors/TestFloor1.txt"));
+		} catch(FloorFormatException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		// Create the display
 		display = new Display(this, title, width, height, useDPad);
