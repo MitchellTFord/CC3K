@@ -3,6 +3,7 @@ package edu.century.game;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.io.File;
+import java.io.FileNotFoundException;
 
 import edu.century.game.display.Display;
 import edu.century.game.entity.Player;
@@ -53,10 +54,9 @@ public class Game implements Runnable
 	//The game Camera
 	private Camera camera;
 
-	// Temp
-	private Floor testFloor;
+	private Player player;
 
-	public Player player;
+	private Floor floor;
 
 	/**
 	 * Game constructor
@@ -65,8 +65,10 @@ public class Game implements Runnable
 	 * @param width   the width of the game window
 	 * @param height  the height of the game window
 	 * @param useDPad whether of a DPad should be used
+	 * @param fps	  the desired rendering framerate
+	 * @param floor	  the chosen Floor
 	 */
-	public Game(String title, int width, int height, boolean useDPad, Player player, int fps)
+	public Game(String title, int width, int height, boolean useDPad, Player player, int fps, Floor floor)
 	{
 		this.width = width;
 		this.height = height;
@@ -75,6 +77,7 @@ public class Game implements Runnable
 		this.player = player;
 		Game.fps = fps;
 		Game.timePerRender = (double) 1000000000 / fps;
+		this.floor = floor;
 	}
 
 	/**
@@ -221,15 +224,6 @@ public class Game implements Runnable
 //		// Temp
 //		testFloor = new Floor(8, 8);
 //		System.out.println("Test Floor Created");
-		
-		try
-		{
-			testFloor = new Floor(new File("/floors/TestFloor1.txt"));
-		} catch(FloorFormatException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 
 		// Create the display
 		display = new Display(this, title, width, height, useDPad);
@@ -239,7 +233,7 @@ public class Game implements Runnable
 		camera = new Camera(display.getFloorPanel().getWidth(), display.getFloorPanel().getHeight());
 		
 		// Create a game state
-		state = new GameState(this, player, g, testFloor, camera);
+		state = new GameState(this, player, g, floor, camera);
 		System.out.println("GameState Created");
 	}
 
