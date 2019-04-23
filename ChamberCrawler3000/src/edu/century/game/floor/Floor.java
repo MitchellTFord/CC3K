@@ -54,30 +54,7 @@ public class Floor
 		characters = new Character[gridWidth * gridHeight];
 	}
 	
-	/**
-	 * Floor constructor without playerSpawns
-	 * @param gridWidth the number of Cells wide this Floor should be
-	 * @param gridHeight the number of Cells tall this Floor should be
-	 * @param tiles the two dimensional array of Tile objects that the Cells in this Floor should inherit their textures and occupiability from
-	 */
-	public Floor(int gridWidth,  int gridHeight, Tile[][] tiles)
-	{
-		//Set playerSpawn to the center of the Floor
-		this(gridWidth, gridHeight, Math.round(gridWidth / 2), Math.round(gridHeight / 2), tiles);
-	}
-
-	/**
-	 * Floor constructor without playerSpawns or tiles
-	 * @param gridWidth the number of Cells wide this Floor should be
-	 * @param gridHeight the number of Cells tall this Floor should be
-	 */
-	public Floor(int gridWidth, int gridHeight)
-	{
-		//Passes in null for tiles for you
-		this(gridWidth, gridHeight, null);
-	}
-	
-	public Floor(File file) throws FloorFormatException, FileNotFoundException
+	public Floor(File file) throws FloorFormatException, FileNotFoundException, NumberFormatException
 	{		
 		// Open a new input stream
 		Scanner fileInput = new Scanner(new FileInputStream(file));
@@ -105,8 +82,6 @@ public class Floor
 			fileInput.close();
 			throw new FloorFormatException("Missing playerSpawnX or playerSpawnY tokens");
 		}
-			
-		String linePattern = "((\\d+|(\\d+:\\d+)),){" + (gridWidth - 1) + "}(\\d+|(\\d+:\\d+))";
 		
 		String[] fileLines = new String[gridHeight];
 		int linesRead = 0;

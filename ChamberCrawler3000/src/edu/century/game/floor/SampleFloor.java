@@ -16,6 +16,6 @@ public class SampleFloor extends Floor
 	
 	public SampleFloor()
 	{
-		super(6, 6, sampleTiles);
+		super(6, 6, 0, 0, sampleTiles);
 	}
 }

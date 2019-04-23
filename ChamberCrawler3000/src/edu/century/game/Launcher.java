@@ -349,9 +349,11 @@ public class Launcher extends JFrame implements ActionListener
 			fps = (Integer) fpsComboBox.getSelectedItem();
 			player = new Player(null, playerRace, playerName);
 
-			// TODO: have this invocation use width and height variables
-			// Launch the game
-			startGame(640, 360, useDPad, player, floor);
+			if(floor != null)
+			{
+				// Launch the game
+				startGame(640, 360, useDPad, player, floor);
+			}
 		} else if(actionSource.equals(floorEditorButton))
 		{
 			// Launch the floor editor
@@ -375,10 +377,7 @@ public class Launcher extends JFrame implements ActionListener
 				
 				try {
 					floor = new Floor(floorFile);
-				} catch (FileNotFoundException e) 
-				{
-					e.printStackTrace();
-				} catch (FloorFormatException e)
+				} catch (FileNotFoundException | FloorFormatException e) 
 				{
 					e.printStackTrace();
 				}
