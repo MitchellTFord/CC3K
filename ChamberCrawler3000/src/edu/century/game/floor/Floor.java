@@ -83,10 +83,16 @@ public class Floor
 			throw new FloorFormatException("Missing playerSpawnX or playerSpawnY tokens");
 		}
 		
+		//Array of lines in the file as strings with the expected number of lines as its length
 		String[] fileLines = new String[gridHeight];
+		
+		//Keeps track of the number of lines read
 		int linesRead = 0;
+		
+		//While there are unread lines
 		while(fileInput.hasNextLine())
 		{
+			//If there is room in the fileLines array
 			if(linesRead < fileLines.length)
 			{
 				fileLines[linesRead++] = fileInput.nextLine();
@@ -97,32 +103,49 @@ public class Floor
 				throw new FloorFormatException("Too many lines in file");
 			}
 		}
+		
+		//If there were less lines than expected
 		if(linesRead < gridHeight)
 		{
 			fileInput.close();
 			throw new FloorFormatException("Not enough lines in file");
 		}
 		
+		//Close the input
 		fileInput.close();
 		
+		//A 2D array of Tile objects with dimensions gridWidth x gridHeight
 		Tile[][] tiles = new Tile[gridWidth][gridHeight];
+		
+		//A 2D array of Race objects to be given to enemy creatures (gridWidth x gridHeight)
 		Race[][] enemies = new Race[gridWidth][gridHeight];
 		for(int line = 0; line < fileLines.length; line++)
 		{
-			String[] lineTokens = fileLines[line].split(",");
+			//String array from tokens that were separated by commas
+			String[] cellTokens = fileLines[line].split(",");
+			
+			//Check if the number of tokens in cellTokens is the same as gridWidth
+			if(cellTokens.length != gridWidth)
+			{
+				throw new FloorFormatException("Wrong number of tokens in line #" + line);
+			}
+			
+			//Parse any colon separated tokens within the cell
 			for(int tokenInLine = 0; tokenInLine < gridWidth; tokenInLine++)
 			{
-				String[] tokensWithinTokenInLine = lineTokens[tokenInLine].split(":");
-				tiles[tokenInLine][line] = Tile.tileIDs[Integer.parseInt(tokensWithinTokenInLine[0])];
-				if(tokensWithinTokenInLine.length > 1)
+				String[] tokensInCell = cellTokens[tokenInLine].split(":");
+				tiles[tokenInLine][line] = Tile.tiles[Integer.parseInt(tokensInCell[0])];
+				if(tokensInCell.length > 1)
 				{
-					enemies[tokenInLine][line] = Race.enemyRaces[Integer.parseInt(tokensWithinTokenInLine[1])];
+					enemies[tokenInLine][line] = Race.enemyRaces[Integer.parseInt(tokensInCell[1])];
 				}
 			}
 		}
 			
+		//Temp
 		System.out.println("Floor File Loaded");
 		
+		//Initialize the cells array of this Floor using the created tiles and enemies arrays
 		initCells(tiles, enemies);
 	}
 
@@ -198,6 +221,7 @@ public class Floor
 					cells[gridX][gridY] = new Cell(this, gridX, gridY, getRandomTile());
 				}
 				
+				//Create a new enemy creature if there is something at this position in the enemies array
 				if(enemies[gridX][gridY] != null)
 				{
 					cells[gridX][gridY].setOccupant(new Enemy(cells[gridX][gridY], enemies[gridX][gridY]));
@@ -206,11 +230,19 @@ public class Floor
 		}
 	}
 	
+	/**
+	 * @return A random Tile object from the Tile.tiles array
+	 */
 	private Tile getRandomTile()
 	{
-		return Tile.tileIDs[(int) Math.round(Math.random() * (Tile.numTiles - 1))];
+		return Tile.tiles[(int) Math.round(Math.random() * (Tile.numTiles - 1))];
 	}
 	
+	/**
+	 * @param gridX the x index to access
+	 * @param gridY the y index to access
+	 * @return the cell at these indices in the cells array
+	 */
 	public Cell getCell(int gridX, int gridY)
 	{
 		// Checks to see if the given gridX and gridY values are within the
