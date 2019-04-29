@@ -20,7 +20,7 @@ public class Tile
 	protected boolean occupiable;
 	
 	//Array of Tile derived classes
-	public static Tile[] tileIDs = new Tile[256];
+	public static Tile[] tiles = new Tile[256];
 	
 	//Number of derived Tile classes
 	public static int numTiles = 0;
@@ -36,7 +36,7 @@ public class Tile
 		this.occupiable = occupiable;
 		
 		//Add this Tile to tileIDs array
-		tileIDs[id] = this;
+		tiles[id] = this;
 		
 		//Increment the number of Tiles
 		numTiles++;

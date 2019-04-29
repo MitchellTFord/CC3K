@@ -6,6 +6,8 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,21 +17,20 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import edu.century.game.display.CombinedPanel;
 import edu.century.game.display.ComboboxToolTipRenderer;
 import edu.century.game.entity.Player;
 import edu.century.game.entity.race.Race;
-import edu.century.game.entity.race.player_races.Drow;
-import edu.century.game.entity.race.player_races.Goblin;
-import edu.century.game.entity.race.player_races.Shade;
-import edu.century.game.entity.race.player_races.Troll;
-import edu.century.game.entity.race.player_races.Vampire;
+import edu.century.game.floor.Floor;
+import edu.century.game.floor.Floor.FloorFormatException;
 import edu.century.game.graphics.Assets;
 
 public class Launcher extends JFrame implements ActionListener
@@ -51,15 +52,25 @@ public class Launcher extends JFrame implements ActionListener
 
 	// The number of frames that should be rendered per second in game
 	private int fps;
+	
+	//The loaded Floor
+	private Floor floor;
+	
+	//The location of the Floor file
+	private String floorFilePath;
+	
+	//The File containing Floor data
+	private File floorFile;
 
-	JPanel inputPanel, optionsPanel, characterPanel, bottomPanel, bottomLeftPanel, bottomRightPanel, playerNamePanel,
+	JPanel inputPanel, optionsPanel, characterPanel, floorPanel, bottomPanel, bottomLeftPanel, bottomRightPanel, playerNamePanel,
 			fpsPanel;
 	JLabel optionsLabel, raceIconLabel;
-	JButton startButton, floorEditorButton;
+	JButton startButton, floorEditorButton, floorBrowseButton;
 	JCheckBox useDPadCheckBox;
 	JComboBox<String> raceComboBox;
 	JComboBox<Integer> fpsComboBox;
-	JTextField playerNameField;
+	JTextField playerNameField, floorFileTextField;
+	JFileChooser floorFileChooser;
 	ImageIcon raceLabel;
 
 	// The width/height of the launcher in pixels
@@ -121,6 +132,9 @@ public class Launcher extends JFrame implements ActionListener
 		// Build the character-creation panel
 		buildCharacterPanel();
 
+		//Build the floor panel
+		buildFloorPanel();
+		
 		// Build the panel at the bottom which contains the floor editor and start
 		// buttons
 		buildBottomPanel();
@@ -228,6 +242,37 @@ public class Launcher extends JFrame implements ActionListener
 		
 		characterPanel.add(new CombinedPanel(new JLabel("Race"), raceComboBox, raceIconLabel));
 	}
+	
+	private void buildFloorPanel()
+	{
+		floorPanel = new JPanel();
+		floorPanel.setLayout(new GridLayout(1, 2));
+		floorPanel.setBorder(BorderFactory.createTitledBorder("Floor Selection"));
+		floorPanel.setPreferredSize(new Dimension(launcherWidth - 16, 120));
+		
+		JPanel floorPanelRow0 = new JPanel(new FlowLayout());
+		floorPanel.add(floorPanelRow0);
+		
+		floorFilePath = null;
+	
+		//Floor file browse button
+		floorBrowseButton = new JButton("Browse");
+		floorBrowseButton.addActionListener(this);
+		floorPanelRow0.add(floorBrowseButton);
+		
+		//File name text field
+		floorFileTextField = new JTextField();
+		floorFileTextField.setEditable(false);
+		floorFileTextField.setColumns(10);
+		floorPanelRow0.add(floorFileTextField);
+		
+		// File chooser
+		floorFileChooser = new JFileChooser();
+		floorFileChooser.setFileFilter(new FileNameExtensionFilter("Floor Files", "txt", "floor"));
+		floorFileChooser.addActionListener(this);
+		
+		add(floorPanel);
+	}
 
 	/**
 	 * Start the game with the given parameters, dispose of this launcher window
@@ -237,13 +282,13 @@ public class Launcher extends JFrame implements ActionListener
 	 * @param useDPad whether or not a DPad should be used
 	 * @param player  the new player object
 	 */
-	private void startGame(int width, int height, boolean useDPad, Player player)
+	private void startGame(int width, int height, boolean useDPad, Player player, Floor floor)
 	{
 		// Make this window invisible
 		this.setVisible(false);
 		
 		// Create a new Game object and invoke its start() method
-		Game game = new Game("Chamber Crawler 3000", width, height, useDPad, player, fps);
+		Game game = new Game("Chamber Crawler 3000", width, height, useDPad, player, fps, floor);
 		game.start();
 
 		// Dispose of this launcher object
@@ -304,9 +349,11 @@ public class Launcher extends JFrame implements ActionListener
 			fps = (Integer) fpsComboBox.getSelectedItem();
 			player = new Player(null, playerRace, playerName);
 
-			// TODO: have this invocation use width and height variables
-			// Launch the game
-			startGame(640, 360, useDPad, player);
+			if(floor != null)
+			{
+				// Launch the game
+				startGame(640, 360, useDPad, player, floor);
+			}
 		} else if(actionSource.equals(floorEditorButton))
 		{
 			// Launch the floor editor
@@ -314,6 +361,27 @@ public class Launcher extends JFrame implements ActionListener
 		} else if(actionSource.equals(raceComboBox))
 		{
 			raceIconLabel.setIcon(Race.playerRaces[raceComboBox.getSelectedIndex()].getRaceIcon());
+		} else if(actionSource.equals(floorBrowseButton))
+		{
+			// Open the file chooser and get the return value
+			int returnValue = floorFileChooser.showOpenDialog(getParent());
+
+			// If the user pressed "OK" in the file chooser dialog
+			if(returnValue == JFileChooser.APPROVE_OPTION)
+			{
+				// Store the chosen file as a file object
+				floorFile = floorFileChooser.getSelectedFile();
+
+				//Set the text of floorFileTextField to the name of the chosen file
+				floorFileTextField.setText(floorFile.getName());
+				
+				try {
+					floor = new Floor(floorFile);
+				} catch (FileNotFoundException | FloorFormatException e) 
+				{
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 }

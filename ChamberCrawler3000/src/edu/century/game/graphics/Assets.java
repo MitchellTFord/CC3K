@@ -1,11 +1,9 @@
 package edu.century.game.graphics;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
+import java.io.File;
 
 import javax.imageio.ImageIO;
-
-import edu.century.game.tiles.Tile;
 
 public class Assets
 {
