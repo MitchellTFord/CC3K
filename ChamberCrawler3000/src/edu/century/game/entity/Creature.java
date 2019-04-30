@@ -42,9 +42,11 @@ public class Creature extends Entity
 	public Creature(Cell currentCell, Race race)
 	{
 		super(currentCell);
-
+		
 		this.race = race;
-
+		
+		this.name = race.getRaceName();
+		
 		this.health = this.maxHealth = 125 + this.race.getHealthMod();
 		this.attack = 25 + this.race.getAttackMod();
 		this.defence = 25 + this.race.getDefenseMod();
@@ -52,6 +54,12 @@ public class Creature extends Entity
 		this.characterSprite = race.getRaceSprite();
 		
 		this.addEffect(race.getEffect(this));
+		
+		//Only do this if not dealing with the player
+		if(currentCell != null)
+		{
+			currentCell.getFloor().addCreature(this);
+		}
 	}
 
 	@Override
@@ -196,9 +204,9 @@ public class Creature extends Entity
 		switch(damageType)
 		{
 		case PHYSICAL:
-			// Damage(defender) =
-			// ceiling((100/(100+Def(defender)))*Atk(Attacker))
-			target.takeDamage(Math.ceil((100 / (100 + target.getDefence())) * damage), caster);
+			double damageDone = Math.ceil((100 / (100 + target.getDefence())) * damage);
+			System.out.println(caster.getName() + " attacked " + target.getName() + " for " + damageDone + " health");
+			target.takeDamage(damageDone, caster);
 			break;
 		case ELEMENTAL:
 			target.takeDamage(damage, caster);
@@ -236,6 +244,8 @@ public class Creature extends Entity
 
 			// TODO: destroy instance
 			// TODO: handle player death
+			
+			currentCell.getFloor().removeCreature(this);
 		}
 	}
 
@@ -398,6 +408,11 @@ public class Creature extends Entity
 	public double getDefence()
 	{
 		return defence;
+	}
+
+	public String getName() 
+	{
+		return name;
 	}
 
 	public Race getRace()

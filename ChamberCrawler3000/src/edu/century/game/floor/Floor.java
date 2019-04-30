@@ -4,8 +4,10 @@ import java.awt.Graphics;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
+import edu.century.game.entity.Creature;
 import edu.century.game.entity.Enemy;
 import edu.century.game.entity.race.Race;
 import edu.century.game.tiles.Tile;
@@ -24,7 +26,7 @@ public class Floor
 	protected Cell[][] cells;
 
 	// Keeps track of all the Character objects on this Floor
-	protected Character[] characters;
+	protected ArrayList<Creature> creatures;
 	
 	//Number of Characters currently in the characters array
 	protected int numCharacters;
@@ -51,7 +53,7 @@ public class Floor
 
 		// Initializes the characters array with a length long enough to keep
 		// track of a Character object in every Cell object in cells
-		characters = new Character[gridWidth * gridHeight];
+		creatures = new ArrayList<Creature>();
 	}
 	
 	public Floor(File file) throws FloorFormatException, FileNotFoundException, NumberFormatException
@@ -134,7 +136,16 @@ public class Floor
 			for(int tokenInLine = 0; tokenInLine < gridWidth; tokenInLine++)
 			{
 				String[] tokensInCell = cellTokens[tokenInLine].split(":");
-				tiles[tokenInLine][line] = Tile.tiles[Integer.parseInt(tokensInCell[0])];
+				
+				if(Integer.parseInt(tokensInCell[0]) < Tile.numTiles)
+				{
+					tiles[tokenInLine][line] = Tile.tiles[Integer.parseInt(tokensInCell[0])];
+				}
+				else
+				{
+					throw new FloorFormatException("TileID token invalid");
+				}
+				
 				if(tokensInCell.length > 1)
 				{
 					enemies[tokenInLine][line] = Race.enemyRaces[Integer.parseInt(tokensInCell[1])];
@@ -180,6 +191,8 @@ public class Floor
 		// constructor
 		cells = new Cell[gridWidth][gridHeight];
 
+		creatures = new ArrayList<Creature>();
+		
 		// Iterates through all of the positions in the cells array
 		for(int gridY = 0; gridY < gridHeight; gridY++)
 		{
@@ -204,6 +217,8 @@ public class Floor
 		// Initializes the cells array with dimensions defined by the
 		// constructor
 		cells = new Cell[gridWidth][gridHeight];
+		
+		creatures = new ArrayList<Creature>();
 
 		// Iterates through all of the positions in the cells array
 		for(int gridY = 0; gridY < gridHeight; gridY++)
@@ -257,6 +272,16 @@ public class Floor
 			// within the bounds of cells
 			return null;
 		}
+	}
+	
+	public void addCreature(Creature creature)
+	{
+		creatures.add(creature);
+	}
+	
+	public void removeCreature(Creature creature)
+	{
+		creatures.remove(creature);
 	}
 	
 //	public void addCharacter(Character newCharacter)
@@ -325,13 +350,13 @@ public class Floor
 //		//TODO: implement sortCharacters()
 //	}
 	
-	/**
-	 * @return this Floor's characters array
-	 */
-	public Character[] getCharacters()
-	{
-		return this.characters;
-	}
+//	/**
+//	 * @return this Floor's characters array
+//	 */
+//	public Character[] getCharacters()
+//	{
+//		return this.creatures;
+//	}
 	
 	/**
 	 * @return the number of Cells wide this Floor is
