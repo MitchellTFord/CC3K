@@ -4,6 +4,7 @@ import java.awt.Graphics;
 
 import edu.century.game.Game;
 import edu.century.game.entity.Creature;
+import edu.century.game.entity.DamageType;
 import edu.century.game.entity.Player;
 import edu.century.game.floor.Floor;
 import edu.century.game.floor.SampleFloor;
@@ -50,6 +51,7 @@ public class GameState extends State
 		
 		//Spawn the player in the Floor
 		floor.getCell(floor.getPlayerSpawnX(), floor.getPlayerSpawnY()).setOccupant(player);
+		floor.addCreature(player);
 		
 		camera.setTargetCreature(player);
 		
@@ -91,24 +93,38 @@ public class GameState extends State
 		//Check to see if it is the player's turn, ignore this input if it isn't
 		if (currentTurnHolder.equals(player))
 		{
-			//Make sure the player isn't trying to move outside the floor's bounds
-			if(player.getGridX() + xComponent >= 0 && player.getGridX() + xComponent < floor.getGridWidth()
-					&& player.getGridY() + yComponent >= 0 && player.getGridY() + yComponent < floor.getGridHeight())
+			//Check to see if it was the middle button that was pressed
+			if(xComponent == 0 && yComponent == 0)
 			{
-				//See if the Cell the player is trying to enter is occupied
-				if (floor.getCell(player.getGridX() + xComponent, player.getGridY() + yComponent).getSpaceOpen())
-				{
-					//Move
-					player.move(player.getGridX() + xComponent, player.getGridY() + yComponent);
-					
-					//End turn
-				}
+				
 			}
 			else
 			{
-				//attack or otherwise interact with this Cell's occupant
-				
-				//End turn
+				//Make sure the player isn't trying to move outside the floor's bounds
+				if(player.getGridX() + xComponent >= 0 && player.getGridX() + xComponent < floor.getGridWidth()
+						&& player.getGridY() + yComponent >= 0 && player.getGridY() + yComponent < floor.getGridHeight())
+				{
+					//See if the Cell the player is trying to enter is occupied
+					if (floor.getCell(player.getGridX() + xComponent, player.getGridY() + yComponent).getSpaceOpen())
+					{
+						//Move
+						player.move(player.getGridX() + xComponent, player.getGridY() + yComponent);
+						
+						//End turn
+					}
+					else
+					{
+						//attack or otherwise interact with this Cell's occupant
+						
+						if(Creature.class.isAssignableFrom(floor.getCell(player.getGridX() + xComponent, player.getGridY() + yComponent).getOccupant().getClass()))
+						{
+							//System.out.println("Target Cell's occpant is a Creature? " + Creature.class.isAssignableFrom(floor.getCell(player.getGridX() + xComponent, player.getGridY() + yComponent).getOccupant().getClass()));
+							Creature.doDamage((Creature) player, (Creature) floor.getCell(player.getGridX() + xComponent, player.getGridY() + yComponent).getOccupant(), DamageType.PHYSICAL, player.getAttack());
+						}
+						
+						//End turn
+					}
+				}
 			}
 		}
 	}
