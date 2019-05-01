@@ -29,13 +29,13 @@ public class Troll extends Race
 	@Override
 	public BufferedImage getRaceSprite() 
 	{
-		return Assets.raceSprites.getSprite(0, 5);
+		return Assets.raceSprites.getSprite(5, 0);
 	}
 	
 	@Override
 	public ImageIcon getRaceIcon() 
 	{
-		return Assets.raceSprites.getSpriteAsIcon(0, 5);
+		return Assets.raceSprites.getSpriteAsIcon(5, 0);
 	}
 }
 

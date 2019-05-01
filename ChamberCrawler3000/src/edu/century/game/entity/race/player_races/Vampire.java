@@ -27,13 +27,13 @@ public class Vampire extends Race
 	@Override
 	public BufferedImage getRaceSprite() 
 	{
-		return Assets.raceSprites.getSprite(0, 4);
+		return Assets.raceSprites.getSprite(4, 0);
 	}
 	
 	@Override
 	public ImageIcon getRaceIcon() 
 	{
-		return Assets.raceSprites.getSpriteAsIcon(0, 4);
+		return Assets.raceSprites.getSpriteAsIcon(4, 0);
 	}
 }
 

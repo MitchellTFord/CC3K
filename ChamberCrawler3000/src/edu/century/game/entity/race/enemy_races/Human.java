@@ -26,12 +26,12 @@ public class Human extends Race
 	@Override
 	public BufferedImage getRaceSprite() 
 	{
-		return Assets.missingSprite;
+		return Assets.raceSprites.getSprite(0, 1);
 	}
 	
 	@Override
 	public ImageIcon getRaceIcon() 
 	{
-		return null;
+		return Assets.raceSprites.getSpriteAsIcon(0, 1);
 	}
 }

@@ -28,13 +28,13 @@ public class Goblin extends Race
 	@Override
 	public BufferedImage getRaceSprite() 
 	{
-		return Assets.raceSprites.getSprite(0, 6);
+		return Assets.raceSprites.getSprite(6, 0);
 	}
 	
 	@Override
 	public ImageIcon getRaceIcon() 
 	{
-		return Assets.raceSprites.getSpriteAsIcon(0, 6);
+		return Assets.raceSprites.getSpriteAsIcon(6, 0);
 	}
 }
 

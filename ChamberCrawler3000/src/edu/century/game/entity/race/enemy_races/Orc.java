@@ -27,12 +27,12 @@ public class Orc extends Race
 	@Override
 	public BufferedImage getRaceSprite() 
 	{
-		return Assets.missingSprite;
+		return Assets.raceSprites.getSprite(3, 1);
 	}
 	
 	@Override
 	public ImageIcon getRaceIcon() 
 	{
-		return null;
+		return Assets.raceSprites.getSpriteAsIcon(3, 1);
 	}
 }

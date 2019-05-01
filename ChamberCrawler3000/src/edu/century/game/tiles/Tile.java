@@ -49,7 +49,7 @@ public class Tile
 	public BufferedImage getTexture()
 	{
 		//Use a special "missing texture" sprite if this method isn't overridden
-		return Assets.loadImage("textures/MissingTexture");
+		return Assets.missingSprite;
 	}
 	
 	/**

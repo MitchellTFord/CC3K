@@ -26,12 +26,13 @@ public class Dragon extends Race
 	@Override
 	public BufferedImage getRaceSprite() 
 	{
-		return Assets.missingSprite;
+		//return bootlegSpyroTheDragon
+		return Assets.raceSprites.getSprite(4, 1);
 	}
 	
 	@Override
 	public ImageIcon getRaceIcon() 
 	{
-		return null;
+		return Assets.raceSprites.getSpriteAsIcon(4, 1);
 	}
 }

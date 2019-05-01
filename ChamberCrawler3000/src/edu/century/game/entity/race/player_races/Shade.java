@@ -33,13 +33,13 @@ public class Shade extends Race
 	@Override
 	public BufferedImage getRaceSprite() 
 	{
-		return Assets.raceSprites.getSprite(0, 2);
+		return Assets.raceSprites.getSprite(2, 0);
 	}
 	
 	@Override
 	public ImageIcon getRaceIcon() 
 	{
-		return Assets.raceSprites.getSpriteAsIcon(0, 2);
+		return Assets.raceSprites.getSpriteAsIcon(2, 0);
 	}
 }
 

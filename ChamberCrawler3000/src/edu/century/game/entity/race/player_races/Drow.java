@@ -27,12 +27,12 @@ public class Drow extends Race
 	@Override
 	public BufferedImage getRaceSprite() 
 	{
-		return Assets.raceSprites.getSprite(0, 3);
+		return Assets.raceSprites.getSprite(3, 0);
 	}
 	
 	@Override
 	public ImageIcon getRaceIcon() 
 	{
-		return Assets.raceSprites.getSpriteAsIcon(0, 3);
+		return Assets.raceSprites.getSpriteAsIcon(3, 0);
 	}
 }

@@ -27,12 +27,12 @@ public class Elf extends Race
 	@Override
 	public BufferedImage getRaceSprite() 
 	{
-		return Assets.missingSprite;
+		return Assets.raceSprites.getSprite(2, 1);
 	}
 	
 	@Override
 	public ImageIcon getRaceIcon() 
 	{
-		return null;
+		return Assets.raceSprites.getSpriteAsIcon(2, 1);
 	}
 }

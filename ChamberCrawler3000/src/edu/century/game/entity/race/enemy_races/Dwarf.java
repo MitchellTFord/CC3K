@@ -26,12 +26,12 @@ public class Dwarf extends Race
 	@Override
 	public BufferedImage getRaceSprite() 
 	{
-		return Assets.missingSprite;
+		return Assets.raceSprites.getSprite(1, 1);
 	}
 	
 	@Override
 	public ImageIcon getRaceIcon() 
 	{
-		return null;
+		return Assets.raceSprites.getSpriteAsIcon(1, 1);
 	}
 }

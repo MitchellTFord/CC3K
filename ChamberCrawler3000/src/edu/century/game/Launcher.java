@@ -261,7 +261,7 @@ public class Launcher extends JFrame implements ActionListener
 		floorPanelRow0.add(floorBrowseButton);
 		
 		//File name text field
-		floorFileTextField = new JTextField();
+		floorFileTextField = new JTextField("testFloor1.floor");
 		floorFileTextField.setEditable(false);
 		floorFileTextField.setColumns(10);
 		floorPanelRow0.add(floorFileTextField);
@@ -307,7 +307,7 @@ public class Launcher extends JFrame implements ActionListener
 	 * Resolves a String to a Race
 	 * 
 	 * @param str the string to resolve a Race object from
-	 * @return a new Race object corresponding to the given string
+	 * @return a Race object corresponding to the given string
 	 */
 	private Race resolvePlayerRace(String str)
 	{
@@ -349,8 +349,18 @@ public class Launcher extends JFrame implements ActionListener
 			fps = (Integer) fpsComboBox.getSelectedItem();
 			player = new Player(null, playerRace, playerName);
 
-			if(floor != null)
+			if(floor == null)
 			{
+				try
+				{
+					floor = new Floor(Assets.testFloor1);
+				} catch(NumberFormatException | FileNotFoundException | FloorFormatException e)
+				{
+					e.printStackTrace();
+					System.exit(1);
+				}
+				
+				
 				// Launch the game
 				startGame(640, 360, useDPad, player, floor);
 			}
@@ -371,12 +381,14 @@ public class Launcher extends JFrame implements ActionListener
 			{
 				// Store the chosen file as a file object
 				floorFile = floorFileChooser.getSelectedFile();
-
-				//Set the text of floorFileTextField to the name of the chosen file
-				floorFileTextField.setText(floorFile.getName());
 				
-				try {
+				//Attempt to load the chosen floor file
+				try 
+				{
 					floor = new Floor(floorFile);
+					
+					//Set the text of floorFileTextField to the name of the chosen file
+					floorFileTextField.setText(floorFile.getName());
 				} catch (FileNotFoundException | FloorFormatException e) 
 				{
 					e.printStackTrace();
