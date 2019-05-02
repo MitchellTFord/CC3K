@@ -50,7 +50,11 @@ public class GameState extends State
 		this.camera = camera;
 		
 		//Spawn the player in the Floor
-		floor.getCell(floor.getPlayerSpawnX(), floor.getPlayerSpawnY()).setOccupant(player);
+		if(!floor.getCell(floor.getPlayerSpawnX(), floor.getPlayerSpawnY()).setOccupant(player))
+		{
+			System.err.println("Failed to place the player in the floor");
+			System.exit(1);
+		}
 		floor.addCreature(player);
 		
 		camera.setTargetCreature(player);
@@ -105,12 +109,16 @@ public class GameState extends State
 						&& player.getGridY() + yComponent >= 0 && player.getGridY() + yComponent < floor.getGridHeight())
 				{
 					//See if the Cell the player is trying to enter is occupied
-					if (floor.getCell(player.getGridX() + xComponent, player.getGridY() + yComponent).getSpaceOpen())
+					if (floor.getCell(player.getGridX() + xComponent, player.getGridY() + yComponent).getOccupant() == null)
 					{
-						//Move
-						player.move(player.getGridX() + xComponent, player.getGridY() + yComponent);
-						
-						//End turn
+						if(floor.getCell(player.getGridX() + xComponent, player.getGridY() + yComponent).getOccupiable())
+						{
+							//Move
+							
+							player.move(player.getGridX() + xComponent, player.getGridY() + yComponent);
+							
+							//End turn
+						}	
 					}
 					else
 					{

@@ -13,6 +13,8 @@ public class Tile
 	
 	public static final double TILE_SCALE = 2;
 	
+	public static final double OBSTACLE_HEIGHT_SCALE = 1.5;
+	
 	//The ID of this Tile
 	protected int id;
 	
@@ -27,8 +29,11 @@ public class Tile
 	
 	//Tile derived classes
 	public static Tile dirtTile = new DirtTile(0);
-	public static Tile stoneTile = new StoneTile(1);
-	public static Tile sandTile = new SandstoneTile(2);
+	public static Tile dirtSpireTile = new DirtSpireTile(1);
+	public static Tile stoneTile = new StoneTile(2);
+	public static Tile stoneSpireTile = new StoneSpireTile(3);
+	public static Tile sandstoneTile = new SandstoneTile(4);
+	public static Tile sandstoneSpireTile = new SandstoneSpireTile(5);
 	
 	public Tile(int id, boolean occupiable)
 	{
@@ -50,6 +55,15 @@ public class Tile
 	{
 		//Use a special "missing texture" sprite if this method isn't overridden
 		return Assets.missingSprite;
+	}
+	
+	/**
+	 * Should be overridden by Tile derived classes who have foreground textures
+	 * @return a BufferedImage to be used as this Tile's foreground texture
+	 */
+	public BufferedImage getForegroundTexture()
+	{
+		return null;
 	}
 	
 	/**

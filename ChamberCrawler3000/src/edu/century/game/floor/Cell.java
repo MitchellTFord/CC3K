@@ -20,6 +20,9 @@ public class Cell
 	// The texture assigned to this Cell by a Tile
 	private BufferedImage tileTexture;
 
+	// The texture assigned to this Cell's foreground by a Tile
+	private BufferedImage foregroundTexture = null;
+
 	// Whether or not this cell can have an occupant, determined by tile
 	private boolean occupiable;
 
@@ -44,6 +47,7 @@ public class Cell
 		this.floor = floor;
 		this.occupiable = tile.isOccupiable();
 		this.tileTexture = tile.getTexture();
+		this.foregroundTexture = tile.getForegroundTexture();
 	}
 
 	public void render(Graphics g, int renderX, int renderY)
@@ -61,9 +65,8 @@ public class Cell
 	public void renderTile(Graphics g, double offsetX, double offsetY)
 	{
 		// Render tile texture
-		g.drawImage(tileTexture, (int) (gridX * Tile.TILE_WIDTH * Tile.TILE_SCALE + offsetX), 
-				(int) (gridY * Tile.TILE_HEIGHT * Tile.TILE_SCALE + offsetY), 
-				(int) (Tile.TILE_WIDTH * Tile.TILE_SCALE),
+		g.drawImage(tileTexture, (int) (gridX * Tile.TILE_WIDTH * Tile.TILE_SCALE + offsetX),
+				(int) (gridY * Tile.TILE_HEIGHT * Tile.TILE_SCALE + offsetY), (int) (Tile.TILE_WIDTH * Tile.TILE_SCALE),
 				(int) (Tile.TILE_HEIGHT * Tile.TILE_SCALE), null);
 	}
 
@@ -73,6 +76,18 @@ public class Cell
 		if(occupant != null)
 		{
 			occupant.render(g, offsetX, offsetY);
+		}
+	}
+
+	public void renderForeground(Graphics g, double offsetX, double offsetY)
+	{
+		if(foregroundTexture != null)
+		{
+			// Render tile foreground texture
+			g.drawImage(foregroundTexture, (int) (gridX * Tile.TILE_WIDTH * Tile.TILE_SCALE + offsetX),
+					(int) (gridY * Tile.TILE_HEIGHT * Tile.TILE_SCALE - ((Tile.OBSTACLE_HEIGHT_SCALE - 1) * Tile.TILE_HEIGHT * Tile.TILE_SCALE) + offsetY),
+					(int) (Tile.TILE_WIDTH * Tile.TILE_SCALE),
+					(int) (Tile.TILE_HEIGHT * Tile.TILE_SCALE * Tile.OBSTACLE_HEIGHT_SCALE), null);
 		}
 	}
 
@@ -166,5 +181,10 @@ public class Cell
 	public boolean isAdjecent(Cell otherCell)
 	{
 		return Math.abs(gridX - otherCell.getGridX()) <= 1 && Math.abs(gridY - otherCell.getGridY()) <= 1;
+	}
+
+	public boolean hasForegroundTexture()
+	{
+		return foregroundTexture != null;
 	}
 }

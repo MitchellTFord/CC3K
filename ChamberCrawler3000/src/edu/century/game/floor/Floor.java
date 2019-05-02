@@ -37,6 +37,67 @@ public class Floor
 	// The gridX and gridY locations of the player's spawn location
 	protected int playerSpawnX, playerSpawnY;
 
+	public void render(Graphics g, Camera camera, double offsetX, double offsetY)
+	{
+		// Render Tile textures
+		for(int gridY = 0; gridY < gridHeight; gridY++)
+		{
+			for(int gridX = 0; gridX < gridWidth; gridX++)
+			{
+				if(camera.inViewPort(cells[gridX][gridY]))
+				{
+					// Calls renderTile() for each Cell object in cells using passed in
+					// offset values
+					cells[gridX][gridY].renderTile(g, offsetX, offsetY);
+				}
+			}
+		}
+
+		// Render Entity textures
+		for(int gridY = 0; gridY < gridHeight; gridY++)
+		{
+			for(int gridX = 0; gridX < gridWidth; gridX++)
+			{
+				if(cells[gridX][gridY].getOccupant() != null)
+				{
+					Entity entity = cells[gridX][gridY].getOccupant();
+					Rectangle bounds = new Rectangle();
+					bounds.setBounds((int) entity.getPosX(), (int) entity.getPosY(),
+							(int) (Tile.TILE_WIDTH * Tile.TILE_SCALE), (int) (Tile.TILE_HEIGHT * Tile.TILE_SCALE));
+					if(camera.inViewPort(bounds))
+					{
+						// Calls renderOccupant() for each Cell object in cells using passed in
+						// offset values
+						cells[gridX][gridY].renderOccupant(g, offsetX, offsetY);
+					}
+				}
+			}
+		}
+
+		// Render Entity textures
+		for(int gridY = 0; gridY < gridHeight; gridY++)
+		{
+			for(int gridX = 0; gridX < gridWidth; gridX++)
+			{
+				if(cells[gridX][gridY].hasForegroundTexture())
+				{
+					/*Rectangle bounds = new Rectangle();
+					bounds.setBounds((int) (cells[gridX][gridY].getGridX() * Tile.TILE_WIDTH * Tile.TILE_SCALE),
+							(int) (cells[gridX][gridY].getGridX() * Tile.TILE_HEIGHT * Tile.TILE_SCALE
+									- (Tile.TILE_HEIGHT * Tile.TILE_SCALE * 2)),
+							(int) (Tile.TILE_WIDTH * Tile.TILE_SCALE),
+							(int) (2 * Tile.TILE_HEIGHT * Tile.TILE_SCALE));*/
+					if(true/*camera.inViewPort(bounds)*/)
+					{
+						// Calls renderOccupant() for each Cell object in cells using passed in
+						// offset values
+						cells[gridX][gridY].renderForeground(g, offsetX, offsetY);
+					}
+				}
+			}
+		}
+	}
+
 	/**
 	 * Floor constructor with playerSpawn parameters
 	 * 
@@ -165,43 +226,6 @@ public class Floor
 		// Initialize the cells array of this Floor using the created tiles and enemies
 		// arrays
 		initCells(tiles, enemies);
-	}
-
-	public void render(Graphics g, Camera camera, double offsetX, double offsetY)
-	{
-		// Render Tile textures
-		for(int gridY = 0; gridY < gridHeight; gridY++)
-		{
-			for(int gridX = 0; gridX < gridWidth; gridX++)
-			{
-				if(camera.inViewPort(cells[gridX][gridY]))
-				{
-					// Calls renderTile() for each Cell object in cells using passed in
-					// offset values
-					cells[gridX][gridY].renderTile(g, offsetX, offsetY);
-				}
-			}
-		}
-
-		// Render Entity textures
-		for(int gridY = 0; gridY < gridHeight; gridY++)
-		{
-			for(int gridX = 0; gridX < gridWidth; gridX++)
-			{
-				if(cells[gridX][gridY].getOccupant() != null)
-				{
-					Entity entity = cells[gridX][gridY].getOccupant();
-					Rectangle bounds = new Rectangle();
-					bounds.setBounds((int) entity.getPosX(), (int) entity.getPosY(), (int) (Tile.TILE_WIDTH * Tile.TILE_SCALE), (int) (Tile.TILE_HEIGHT * Tile.TILE_SCALE));
-					if(camera.inViewPort(bounds))
-					{
-						// Calls renderOccupant() for each Cell object in cells using passed in
-						// offset values
-						cells[gridX][gridY].renderOccupant(g, offsetX, offsetY);
-					}
-				}
-			}
-		}
 	}
 
 	private void initCells(Tile[][] tiles)

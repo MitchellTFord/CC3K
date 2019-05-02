@@ -10,8 +10,9 @@ import javax.imageio.ImageIO;
 public class Assets
 {
 	public static SpriteSheet cellBorders;
-	public static SpriteSheet dirtSprites;
+
 	public static SpriteSheet tileSprites;
+	public static SpriteSheet obstacleSprites;
 	public static SpriteSheet dPadButtons;
 	public static SpriteSheet raceSprites;
 
@@ -26,17 +27,12 @@ public class Assets
 	 */
 	public static void init()
 	{
-		// cellBorders = new SpriteSheet(loadImage("/textures/CellBorders.png"),
-		// Tile.TILE_WIDTH, Tile.TILE_HEIGHT, 1);
-		// dirtSprites = new SpriteSheet(loadImage("/textures/DirtSprites.png"),
-		// Tile.TILE_WIDTH, Tile.TILE_HEIGHT, 6, 1);
 		tileSprites = new SpriteSheet(loadImage("/textures/TileSprites.png"), 32, 32, 6, 7);
+		obstacleSprites = new SpriteSheet(loadImage("/textures/ObstacleSprites.png"), 32, 48, 1, 3);
 		dPadButtons = new SpriteSheet(loadImage("/textures/DPadButtons.png"), 9, 9, 3, 3);
 		raceSprites = new SpriteSheet(loadImage("/textures/RaceCreatureSprites.png"), 32, 32, 7, 2);
 
 		missingSprite = loadImage("/textures/MissingTexture.png");
-		tempPlayer = loadImage("/textures/TempPlayer.png");
-		tempEnemy = loadImage("/textures/AngryFace.png");
 
 		testFloor1 = loadFile("/floors/testFloor1.floor");
 		
