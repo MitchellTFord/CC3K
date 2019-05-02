@@ -9,9 +9,9 @@ public class WoundStat extends Effect
 	
 	Stat stat;
 	
-	public WoundStat(Creature affectedCharacter, String effectName, double magnitude, int duration, Stat stat)
+	public WoundStat(Creature affectedCharacter, Creature caster, String effectName, double magnitude, int duration, Stat stat)
 	{
-		super(affectedCharacter, "Wound Stat", magnitude, duration);
+		super(affectedCharacter, caster, "Wound Stat", magnitude, duration, false);
 		this.stat = stat;
 		
 		//A generic effect name will be assigned to the effect if another isn't assigned
@@ -47,7 +47,7 @@ public class WoundStat extends Effect
 	@Override
 	public void applyStatChange()
 	{
-		affectedCharacter.modStat(-magnitude, stat);
+		affectedCreature.modStat(-magnitude, stat);
 	}
 	
 	@Override

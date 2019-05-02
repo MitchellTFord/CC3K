@@ -21,7 +21,7 @@ public class Drow extends Race
 	public Effect getEffect(Creature character)
 	{
 		//Potion power is increased by 50%
-		return new BoostStat(character, "Drow Potion Proficiency", 0.5, -1, Stat.POTION_POWER);
+		return new BoostStat(character, null, "Drow Potion Proficiency", 0.5, -1, Stat.POTION_POWER);
 	}
 
 	@Override

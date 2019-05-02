@@ -2,6 +2,7 @@ package edu.century.game.display;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -12,6 +13,8 @@ import edu.century.game.entity.Player;
 public class Display extends JFrame
 {
 	private int width, height;
+	
+	private BorderLayout layout;
 	
 	private FloorDisplay floorPanel;
 	
@@ -44,7 +47,10 @@ public class Display extends JFrame
 		setLocationRelativeTo(null); //Centered on screen
 		setVisible(true);
 		
-		setLayout(new BorderLayout());
+		layout = new BorderLayout();
+		layout.setHgap(0);
+		layout.setVgap(0);
+		setLayout(layout);
 		
 		floorPanel = new FloorDisplay(width * 1/2, height);
 		add(floorPanel, BorderLayout.CENTER);
@@ -58,7 +64,7 @@ public class Display extends JFrame
 		
 		if(useDPad)
 		{
-			dPad = new DirectionalPad(game);
+			dPad = new DirectionalPad(game, width * 1/8);
 			leftPanel.add(dPad, BorderLayout.SOUTH);
 		}
 		

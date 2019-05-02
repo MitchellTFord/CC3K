@@ -8,9 +8,9 @@ public class BoostStat extends Effect
 {
 	Stat stat;
 	
-	public BoostStat(Creature affectedCharacter, String effectName, double magnitude, int duration, Stat stat)
+	public BoostStat(Creature affectedCharacter, Creature caster, String effectName, double magnitude, int duration, Stat stat)
 	{
-		super(affectedCharacter, "Boost Stat", magnitude, duration);
+		super(affectedCharacter, caster, effectName, magnitude, duration, false);
 		this.stat = stat;
 		
 		//A generic effect name will be assigned to the effect if another isn't assigned
@@ -37,7 +37,7 @@ public class BoostStat extends Effect
 				effectName = "Gold on Kill";
 				break;
 			default:
-				//Shouldn't ever happen
+				effectName = "Boost Stat";
 				break;
 			}
 		}
@@ -45,7 +45,7 @@ public class BoostStat extends Effect
 	
 	public void applyStatChange()
 	{
-		affectedCharacter.modStat(magnitude, stat);
+		affectedCreature.modStat(magnitude, stat);
 	}
 	
 	@Override

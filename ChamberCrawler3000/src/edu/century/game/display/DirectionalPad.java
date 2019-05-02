@@ -1,5 +1,6 @@
 package edu.century.game.display;
 
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,16 +20,23 @@ public class DirectionalPad extends JPanel
 {
 	private Game game;
 	
-	public DirectionalPad(Game game)
+	private GridLayout layout;
+	
+	public DirectionalPad(Game game, int width)
 	{
 		super();
 		
 		this.game = game;
 		
 		//3x3 grid
-		setLayout(new GridLayout(3, 3));
+		layout = new GridLayout(3, 3);
+		layout.setHgap(0);
+		layout.setVgap(0);
+		setLayout(layout);
 		
-		
+		setPreferredSize(new Dimension(width, width));
+		setMinimumSize(new Dimension(width, width));
+		setMaximumSize(new Dimension(width, width));
 		
 		//Top row
 		add(new MovementButton(Assets.dPadButtons.getSpriteAsIcon(0, 0), -1, -1, this));

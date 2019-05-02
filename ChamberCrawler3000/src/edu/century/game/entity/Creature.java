@@ -16,7 +16,8 @@ public class Creature extends Entity
 	protected String name;
 
 	// this character's various stats
-	protected double health, maxHealth, attack, defence, potionPower, healthOnKill;
+	protected double health, maxHealth, healthHardCap, attack, defence, potionPower, healthOnKill;
+
 	protected int goldOnKill;
 
 	// the amount of gold held by this character
@@ -47,7 +48,7 @@ public class Creature extends Entity
 		
 		this.name = race.getRaceName();
 		
-		this.health = this.maxHealth = 125 + this.race.getHealthMod();
+		this.health = this.maxHealth = this.healthHardCap = 125 + this.race.getHealthMod();
 		this.attack = 25 + this.race.getAttackMod();
 		this.defence = 25 + this.race.getDefenseMod();
 
@@ -303,6 +304,16 @@ public class Creature extends Entity
 				effects[i].applyStatChange();
 			}
 		}
+		
+		if(healthHardCap != -1 && maxHealth > healthHardCap)
+		{
+			maxHealth = healthHardCap;
+		}
+		
+		if(maxHealth != -1 && health > maxHealth)
+		{
+			health = maxHealth;
+		}
 	}
 
 	/**
@@ -395,6 +406,14 @@ public class Creature extends Entity
 	}
 
 	/**
+	 * @return this player's effects array
+	 */
+	public Effect[] getEffects()
+	{
+		return effects;
+	}
+	
+	/**
 	 * @return this Character's attack
 	 */
 	public double getAttack()
@@ -430,6 +449,16 @@ public class Creature extends Entity
 		return maxHealth;
 	}
 
+	public double getHealthHardCap()
+	{
+		return healthHardCap;
+	}
+
+	public void setHealthHardCap(double healthHardCap)
+	{
+		this.healthHardCap = healthHardCap;
+	}
+	
 	public int getGold()
 	{
 		return gold;

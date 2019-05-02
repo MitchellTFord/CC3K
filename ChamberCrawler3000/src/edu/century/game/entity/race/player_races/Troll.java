@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.ImageIcon;
 
 import edu.century.game.effect.Effect;
+import edu.century.game.effect.HealPerTurn;
 import edu.century.game.entity.Creature;
 import edu.century.game.entity.race.Race;
 import edu.century.game.graphics.Assets;
@@ -19,11 +20,11 @@ public class Troll extends Race
 	@Override
 	public Effect getEffect(Creature character)
 	{
-		//Regenerates 5 health per turn
-		//Maximum health is permanently capped at 120
+		//HP is capped at 120
+		character.setHealthHardCap(120);
 		
-		//TODO: implement troll racial effect
-		return null;
+		//Regenerates 5 health per turn
+		return new HealPerTurn(character, "Ritual of Regeneration (heal per turn)", 5, -1, null);
 	}
 	
 	@Override

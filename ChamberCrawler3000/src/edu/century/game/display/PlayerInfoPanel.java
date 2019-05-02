@@ -1,23 +1,41 @@
 package edu.century.game.display;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.Icon;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import edu.century.game.effect.Effect;
 import edu.century.game.entity.Player;
  /**
   * The panel for displaying information about the player
   * @author Mitchell Ford
   */
-public class PlayerInfoPanel extends JPanel
+public class PlayerInfoPanel extends JPanel implements ActionListener
 {
 	//The width/height of the panel
 	private int width, height;
 	
+	private BorderLayout layout;
+	
 	//The text area for displaying player information
 	private JTextArea textArea;
+	
+	//Button for opening the effects pop-up
+	private JButton showEffectsButton;
+	
+	//The text that the effects pop-up should display
+	private Effect[] playerEffects;
+	
+	private Icon playerRaceIcon;
 	
 	/**
 	 * Constructor for PlayerInfoPanel
@@ -40,12 +58,18 @@ public class PlayerInfoPanel extends JPanel
 	 * Builds the panel
 	 */
 	private void init()
-	{
-		//Temp
-		setBackground(Color.gray);
+	{	
+		setPreferredSize(new Dimension(width, height));
+		setMinimumSize(new Dimension(width, 0));
+		setMaximumSize(new Dimension(width, height));
 		
-		//Sets the layout of the panel to a BorderLayout
-		setLayout(new BorderLayout());
+		layout = new BorderLayout();
+		layout.setHgap(0);
+		setLayout(layout);
+		
+		showEffectsButton = new JButton("Show Effects");
+		showEffectsButton.addActionListener(this);
+		add(showEffectsButton, BorderLayout.SOUTH);
 		
 		//Player info text area
 		textArea = new JTextArea();
@@ -61,5 +85,35 @@ public class PlayerInfoPanel extends JPanel
 	public void updatePlayerInfo(Player player)
 	{
 		textArea.setText(player.toString());
+		playerRaceIcon = player.getRace().getRaceIcon();
+		playerEffects = player.getEffects();
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent actionEvent)
+	{
+		JComponent actionSource = (JComponent) actionEvent.getSource();
+		if(actionSource.equals(showEffectsButton))
+		{
+			String effectsInfo = "";
+			for(int i = 0; i < playerEffects.length; i++)
+			{
+				if(playerEffects[i] != null)
+				{
+					effectsInfo += playerEffects[i].toString() + "\n";
+				}	
+			}
+			
+			if(effectsInfo.equals(""))
+			{
+				effectsInfo = "This character has no effects applied to it";
+			}
+			
+			JTextArea dialogTextArea = new JTextArea(6, 24);
+			dialogTextArea.setText(effectsInfo);
+			dialogTextArea.setEditable(false);
+			JScrollPane dialogScrollPane = new JScrollPane(dialogTextArea);
+			JOptionPane.showMessageDialog(this, dialogScrollPane, "Effects applied to this Character", JOptionPane.PLAIN_MESSAGE, playerRaceIcon);
+		}
 	}
 }

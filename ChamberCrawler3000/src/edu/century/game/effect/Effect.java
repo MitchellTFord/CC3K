@@ -5,7 +5,7 @@ import edu.century.game.entity.Creature;
 public abstract class Effect
 {
 	//The character that this character acts on
-	protected Creature affectedCharacter;
+	protected Creature affectedCreature;
 	
 	//The Character that applied this Effect
 	protected Creature caster;
@@ -21,20 +21,32 @@ public abstract class Effect
 	
 	//Boolean for whether this Effect is permanent or not
 	protected boolean isPermanent;
+
+	//Boolean for whether this Effect does something other than modify stats
+	protected boolean hasNonStatEffect;
 	
 	//The amount this Effect will modify various stats
 	protected double attackMod, defenceMod, healthMod, potionPowerMod;
 	
-	public Effect(Creature affectedCharacter, String effectName, double magnitude, int duration)
+	/**
+	 * Effect constructor
+	 * @param affectedCreature the character to apply this effect to
+	 * @param caster the creature that casted this effect, if applicable
+	 * @param effectName the name of this effect
+	 * @param magnitude the magnitude of this effect
+	 * @param duration the number of turns this effect should last
+	 * @param hasNonStatEffect indicates that this effect does something other than modify base stats
+	 */
+	public Effect(Creature affectedCreature, Creature caster, String effectName, double magnitude, int duration, boolean hasNonStatEffect)
 	{
-		this.affectedCharacter = affectedCharacter;
+		this.affectedCreature = affectedCreature;
 		this.effectName = effectName;
 		this.magnitude = magnitude;
+		this.hasNonStatEffect = hasNonStatEffect;
+		this.duration = duration;
 		
-		if(duration == -1)
-		{	//A duration of -1 signifies that an effect is permanent
-			isPermanent = true;
-		}
+		//A duration of -1 signifies that an effect is permanent
+		isPermanent = duration == -1;
 	}
 	
 	/**
@@ -106,4 +118,26 @@ public abstract class Effect
 	{
 		return healthMod;
 	}
+
+	@Override
+	public String toString()
+	{
+		String str = effectName + ":\n";
+		str	+= "    Magnitude: " + magnitude +  "\n";
+		if(isPermanent)
+		{
+			str += "    Duration: permanent\n";
+		}
+		else
+		{
+			str += "    Duration: " + duration + " turns";
+		}	
+		if(caster != null)
+		{
+			str += "    Caster: " + caster.getName();
+		}
+		return str;
+	}
+	
+	
 }

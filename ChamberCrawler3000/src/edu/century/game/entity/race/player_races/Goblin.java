@@ -22,7 +22,7 @@ public class Goblin extends Race
 	public Effect getEffect(Creature character)
 	{
 		//Gains 5 gold on kill
-		return new BoostStat(character, "Goblin Greed", 5, -1, Stat.GOLD_ON_KILL);
+		return new BoostStat(character, null, "Goblin Greed (gold on kill)", 5, -1, Stat.GOLD_ON_KILL);
 	}
 	
 	@Override

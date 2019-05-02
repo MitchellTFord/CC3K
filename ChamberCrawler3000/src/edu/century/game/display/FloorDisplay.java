@@ -4,20 +4,25 @@ import java.awt.BorderLayout;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 
 import javax.swing.JPanel;
+import javax.swing.LayoutStyle;
 
 /**
  * The JPanel for displaying the Floor
  * @author Mitchell Ford
  */
-public class FloorDisplay extends JPanel
+public class FloorDisplay extends JPanel implements MouseMotionListener
 {
 	//The width/height of the panel
 	private int width, height;
-	
+
 	//The Canvas in this panel
 	private Canvas canvas;
+	
+	private BorderLayout layout;
 	
 	/**
 	 * Constructor for FloorDisplay
@@ -38,6 +43,11 @@ public class FloorDisplay extends JPanel
 		//Temp
 		setBackground(Color.black);
 		
+		layout = new BorderLayout();
+		layout.setHgap(0);
+		layout.setVgap(0);
+		setLayout(layout);
+		
 		//Create the Canvas
 		canvas = new Canvas();
 		canvas.setPreferredSize(new Dimension(width, height));
@@ -45,6 +55,20 @@ public class FloorDisplay extends JPanel
 		canvas.setMinimumSize(new Dimension(width, height));
 		canvas.setFocusable(false);
 		add(canvas);
+	}
+	
+	@Override
+	public void mouseDragged(MouseEvent arg0)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent arg0)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 	
 	/**

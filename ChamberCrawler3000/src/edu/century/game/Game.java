@@ -230,7 +230,7 @@ public class Game implements Runnable
 		System.out.println("Display Created");
 
 		//Create the Camera
-		camera = new Camera(display.getFloorPanel().getWidth(), display.getFloorPanel().getHeight());
+		camera = new Camera(display.getFloorPanel().getWidth(), display.getFloorPanel().getHeight(), true);
 		
 		// Create a game state
 		state = new GameState(this, player, g, floor, camera);
