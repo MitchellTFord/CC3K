@@ -34,6 +34,9 @@ public abstract class Entity
 	 */
 	public abstract void render(Graphics g, double x, double y);
 
+	public abstract int getPosX();
+	public abstract int getPosY();
+	
 	/**
 	 * @return this Entity's currentCell
 	 */

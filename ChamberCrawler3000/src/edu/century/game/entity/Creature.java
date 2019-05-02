@@ -18,6 +18,7 @@ public class Creature extends Entity
 	// this character's various stats
 	protected double health, maxHealth, healthHardCap, attack, defence, potionPower, healthOnKill;
 
+	// the amount of gold gained on kill
 	protected int goldOnKill;
 
 	// the amount of gold held by this character

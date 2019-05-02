@@ -48,4 +48,14 @@ public class Item extends Entity
 	{
 		
 	}
+	
+	public int getPosX()
+	{
+		return 0;
+	}
+	
+	public int getPosY()
+	{
+		return 0;
+	}
 }
