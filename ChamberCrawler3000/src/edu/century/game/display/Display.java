@@ -3,14 +3,17 @@ package edu.century.game.display;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import edu.century.game.Game;
 import edu.century.game.entity.Player;
 
-public class Display extends JFrame
+public class Display extends JFrame implements WindowListener
 {
 	private int width, height;
 	
@@ -42,7 +45,7 @@ public class Display extends JFrame
 	private void init()
 	{
 		setSize(width, height);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Actually exit on close
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false); //Not resizable
 		setLocationRelativeTo(null); //Centered on screen
 		setVisible(true);
@@ -86,4 +89,28 @@ public class Display extends JFrame
 	{
 		playerInfoPanel.updatePlayerInfo(player);
 	}
+
+	@Override
+	public void windowClosing(WindowEvent e) 
+	{
+		//new ConfirmExit((JComponent) this.getContentPane());
+	}
+	
+	@Override
+	public void windowActivated(WindowEvent e) {}
+
+	@Override
+	public void windowClosed(WindowEvent e) {}
+
+	@Override
+	public void windowDeactivated(WindowEvent e) {}
+
+	@Override
+	public void windowDeiconified(WindowEvent e) {}
+
+	@Override
+	public void windowIconified(WindowEvent e) {}
+
+	@Override
+	public void windowOpened(WindowEvent e) {}
 }

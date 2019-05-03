@@ -6,6 +6,8 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -29,13 +31,14 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import edu.century.game.display.CombinedPanel;
 import edu.century.game.display.ComboboxToolTipRenderer;
+import edu.century.game.display.ConfirmExit;
 import edu.century.game.entity.Player;
 import edu.century.game.entity.race.Race;
 import edu.century.game.floor.Floor;
 import edu.century.game.floor.Floor.FloorFormatException;
 import edu.century.game.graphics.Assets;
 
-public class Launcher extends JFrame implements ActionListener
+public class Launcher extends JFrame implements ActionListener, WindowListener
 {
 	// The Launcher object that will be used
 	private static Launcher launcher;
@@ -117,7 +120,7 @@ public class Launcher extends JFrame implements ActionListener
 	private void buildLauncher()
 	{
 		setSize(launcherWidth, launcherHeight);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Actually exit on
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE); // Actually exit on
 														// close
 		setResizable(false); // Not resizable
 		setLocationRelativeTo(null); // Centered on screen
@@ -127,6 +130,9 @@ public class Launcher extends JFrame implements ActionListener
 		inputPanel.setLayout(new GridLayout(2, 1));
 		add(inputPanel, BorderLayout.NORTH);
 
+		//Add itself as a WindowListener
+		addWindowListener(this);
+		
 		// Build the options panel
 		buildOptionsPanel();
 
@@ -369,10 +375,10 @@ public class Launcher extends JFrame implements ActionListener
 					otherException.printStackTrace();
 					System.exit(1);
 				}
-				
-				// Launch the game
-				startGame(640, 360, useDPad, player, floor);
 			}
+			
+			// Launch the game
+			startGame(640, 360, useDPad, player, floor);
 		} else if(actionSource.equals(floorEditorButton))
 		{
 			// Launch the floor editor
@@ -415,4 +421,28 @@ public class Launcher extends JFrame implements ActionListener
 			}
 		}
 	}
+
+	@Override
+	public void windowClosing(WindowEvent windowEvent) 
+	{
+		new ConfirmExit((JComponent) this.getContentPane());
+	}
+	
+	@Override
+	public void windowActivated(WindowEvent e) {}
+
+	@Override
+	public void windowClosed(WindowEvent e) {}
+
+	@Override
+	public void windowDeactivated(WindowEvent e) {}
+
+	@Override
+	public void windowDeiconified(WindowEvent e) {}
+
+	@Override
+	public void windowIconified(WindowEvent e) {}
+
+	@Override
+	public void windowOpened(WindowEvent e) {}
 }
