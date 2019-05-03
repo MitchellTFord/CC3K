@@ -151,6 +151,12 @@ public class Floor
 			fileInput.close();
 			throw new FloorFormatException("Missing playerSpawnX or playerSpawnY tokens");
 		}
+		
+		if(playerSpawnX < 0 || playerSpawnX >= gridWidth || playerSpawnY < 0 || playerSpawnY >= gridHeight)
+		{
+			fileInput.close();
+			throw new FloorFormatException("Player spawn coordinates outside of Floor bounds");
+		}
 
 		// Array of lines in the file as strings with the expected number of lines as
 		// its length
@@ -218,6 +224,12 @@ public class Floor
 					enemies[tokenInLine][line] = Race.enemyRaces[Integer.parseInt(tokensInCell[1])];
 				}
 			}
+		}
+		
+		//Ensure that the player spawn position isn't obstructed
+		if(!tiles[playerSpawnX][playerSpawnY].isOccupiable() || enemies[playerSpawnX][playerSpawnY] != null)
+		{
+			throw new FloorFormatException("The player spawn location is obstructed");
 		}
 
 		// Temp

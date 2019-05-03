@@ -21,6 +21,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -56,20 +58,19 @@ public class Launcher extends JFrame implements ActionListener
 	//The loaded Floor
 	private Floor floor;
 	
-	//The location of the Floor file
-	private String floorFilePath;
-	
 	//The File containing Floor data
 	private File floorFile;
 
 	JPanel inputPanel, optionsPanel, characterPanel, floorPanel, bottomPanel, bottomLeftPanel, bottomRightPanel, playerNamePanel,
-			fpsPanel;
+			fpsPanel, floorStatusPanel;
 	JLabel optionsLabel, raceIconLabel;
 	JButton startButton, floorEditorButton, floorBrowseButton;
 	JCheckBox useDPadCheckBox;
 	JComboBox<String> raceComboBox;
 	JComboBox<Integer> fpsComboBox;
 	JTextField playerNameField, floorFileTextField;
+	JTextArea floorStatusTextField;
+	JScrollPane floorStatusScrollPane;
 	JFileChooser floorFileChooser;
 	ImageIcon raceLabel;
 
@@ -86,7 +87,7 @@ public class Launcher extends JFrame implements ActionListener
 		{
 			public void run()
 			{
-				launcher = new Launcher(400, 400);
+				launcher = new Launcher(400, 410);
 			}
 		});
 	}
@@ -246,15 +247,13 @@ public class Launcher extends JFrame implements ActionListener
 	private void buildFloorPanel()
 	{
 		floorPanel = new JPanel();
-		floorPanel.setLayout(new GridLayout(1, 2));
+		floorPanel.setLayout(new GridLayout(2, 1));
 		floorPanel.setBorder(BorderFactory.createTitledBorder("Floor Selection"));
 		floorPanel.setPreferredSize(new Dimension(launcherWidth - 16, 120));
 		
 		JPanel floorPanelRow0 = new JPanel(new FlowLayout());
 		floorPanel.add(floorPanelRow0);
-		
-		floorFilePath = null;
-	
+
 		//Floor file browse button
 		floorBrowseButton = new JButton("Browse");
 		floorBrowseButton.addActionListener(this);
@@ -270,6 +269,13 @@ public class Launcher extends JFrame implements ActionListener
 		floorFileChooser = new JFileChooser();
 		floorFileChooser.setFileFilter(new FileNameExtensionFilter("Floor Files", "txt", "floor"));
 		floorFileChooser.addActionListener(this);
+		
+		floorStatusPanel = new JPanel();
+		floorStatusTextField = new JTextArea(2, 34);
+		floorStatusTextField.setEditable(false);
+		floorStatusPanel.add(floorStatusTextField, BorderLayout.CENTER);
+		floorStatusPanel.setBorder(BorderFactory.createTitledBorder("Floor Loading Status"));
+		floorPanel.add(floorStatusPanel);
 		
 		add(floorPanel);
 	}
@@ -354,12 +360,15 @@ public class Launcher extends JFrame implements ActionListener
 				try
 				{
 					floor = new Floor(Assets.testFloor1);
-				} catch(NumberFormatException | FileNotFoundException | FloorFormatException e)
+				} catch(FloorFormatException floorException)
 				{
-					e.printStackTrace();
+					floorException.printStackTrace();
+					System.exit(1);
+				} catch(NumberFormatException | FileNotFoundException otherException)
+				{
+					otherException.printStackTrace();
 					System.exit(1);
 				}
-				
 				
 				// Launch the game
 				startGame(640, 360, useDPad, player, floor);
@@ -389,8 +398,18 @@ public class Launcher extends JFrame implements ActionListener
 					
 					//Set the text of floorFileTextField to the name of the chosen file
 					floorFileTextField.setText(floorFile.getName());
+					
+					floorStatusTextField.setText(floorFile.getName() + " was loaded successfully");
 				} catch (FileNotFoundException | FloorFormatException e) 
 				{
+					if(floorFile.getName().length() > 13)
+					{
+						floorStatusTextField.setText(floorFile.getName().substring(0, 10) + "..." + " could not be loaded.\n" + e.getMessage());
+					}	
+					else
+					{
+						floorStatusTextField.setText(floorFile.getName() + " could not be loaded.\n" + e.getMessage());
+					}		
 					e.printStackTrace();
 				}
 			}
