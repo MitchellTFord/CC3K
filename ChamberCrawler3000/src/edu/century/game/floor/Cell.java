@@ -3,6 +3,7 @@ package edu.century.game.floor;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
+import edu.century.game.entity.Creature;
 import edu.century.game.entity.Entity;
 import edu.century.game.tiles.Tile;
 
@@ -88,6 +89,17 @@ public class Cell
 					(int) (gridY * Tile.TILE_HEIGHT * Tile.TILE_SCALE - ((Tile.OBSTACLE_HEIGHT_SCALE - 1) * Tile.TILE_HEIGHT * Tile.TILE_SCALE) + offsetY),
 					(int) (Tile.TILE_WIDTH * Tile.TILE_SCALE),
 					(int) (Tile.TILE_HEIGHT * Tile.TILE_SCALE * Tile.OBSTACLE_HEIGHT_SCALE), null);
+		}
+	}
+	
+	public void renderOccupantExtras(Graphics g, double offsetX, double offsetY)
+	{
+		if(Creature.class.isAssignableFrom(occupant.getClass()))
+		{
+			if(((Creature) occupant).isAttacking())
+			{
+				((Creature) occupant).animateAttack(g, offsetX, offsetY);
+			}
 		}
 	}
 

@@ -75,7 +75,15 @@ public class GameState extends State
 	 */
 	public void update()
 	{
-		if(currentTurnHolder.isDoneWithTurn() && !currentTurnHolder.isMoving())
+		if(currentTurnHolder == null)
+		{
+			nextCharactersTurn();
+		}
+		else if(currentTurnHolder.isDead())
+		{
+			nextCharactersTurn();
+		}
+		else if(currentTurnHolder.isDoneWithTurn() && !currentTurnHolder.isMoving() && !currentTurnHolder.isAttacking())
 		{
 			waitTime += Game.timePerUpdate;
 			if(waitTime >= Game.timePerUpdate * TURN_WAIT_SEC * 30)
@@ -109,6 +117,16 @@ public class GameState extends State
 			currentTurnHolder = null;
 			//System.out.println("Next creature's turn");
 			currentTurnHolder = turnQueue.next();
+			if(currentTurnHolder == null)
+			{
+				turnQueue.remove();
+				nextCharactersTurn();
+			}
+			else if(currentTurnHolder.isDead())
+			{
+				turnQueue.remove();
+				nextCharactersTurn();
+			}
 			currentTurnHolder.startTurn(this);
 			System.out.println("It is now " + currentTurnHolder.getName() + "'s turn");
 		}
@@ -117,9 +135,13 @@ public class GameState extends State
 			turnQueue = floor.getCreatures().iterator();
 			nextCharactersTurn();
 		}
+		
 		if(currentTurnHolder != null)
 		{
-			camera.setTargetCreature(currentTurnHolder);
+			if(!currentTurnHolder.isDead())
+			{
+				camera.setTargetCreature(currentTurnHolder);
+			}
 		}
 	}
 
@@ -130,7 +152,7 @@ public class GameState extends State
 	public void takePlayerDPadInput(int xComponent, int yComponent)
 	{	
 		//Check to see if it is the player's turn, ignore this input if it isn't
-		if (currentTurnHolder.equals(player))
+		if (currentTurnHolder.equals(player) && !player.isDoneWithTurn())
 		{
 			//Check to see if it was the middle button that was pressed
 			if(xComponent == 0 && yComponent == 0)
@@ -164,6 +186,8 @@ public class GameState extends State
 						{
 							//System.out.println("Target Cell's occpant is a Creature? " + Creature.class.isAssignableFrom(floor.getCell(player.getGridX() + xComponent, player.getGridY() + yComponent).getOccupant().getClass()));
 							Creature.doDamage((Creature) player, (Creature) floor.getCell(player.getGridX() + xComponent, player.getGridY() + yComponent).getOccupant(), DamageType.PHYSICAL, player.getAttack());
+							
+							player.doAttackAnimation(-xComponent, -yComponent);
 						}
 						
 						//End turn

@@ -34,11 +34,22 @@ public class Creature extends Entity
 	// the array of effects this Character is affected by
 	protected Effect[] effects = new Effect[64];
 
+	// Indicates that this character is dead
+	protected boolean dead = false;
+	
 	// the sprite representing this Character
 	protected BufferedImage characterSprite;
 
+	protected BufferedImage[] attackAnimationFrames;
+
 	// Rendering offsets for movement animations
 	protected float animationOffsetX = 0, animationOffsetY = 0;
+
+	protected int attackAnimationFrame = -1;
+
+	protected double attackAnimationSubFrame = -1;
+
+	protected int attackDirectionX, attackDirectionY;
 
 	protected int posX, posY;
 
@@ -60,6 +71,8 @@ public class Creature extends Entity
 
 		this.characterSprite = race.getRaceSprite();
 
+		this.attackAnimationFrames = new BufferedImage[8];
+
 		this.addEffect(race.getEffect(this));
 
 		// Only do this if not dealing with the player
@@ -72,52 +85,14 @@ public class Creature extends Entity
 	@Override
 	public void render(Graphics g, double offsetX, double offsetY)
 	{
-		// System.out.println(race.getRaceSprite());
+		// Render characterSprite
 		g.drawImage(characterSprite,
 				(int) (offsetX + currentCell.getGridX() * Tile.TILE_WIDTH * Tile.TILE_SCALE + animationOffsetX),
 				(int) (offsetY + currentCell.getGridY() * Tile.TILE_HEIGHT * Tile.TILE_SCALE + animationOffsetY),
 				(int) (Tile.TILE_WIDTH * Tile.TILE_SCALE), (int) (Tile.TILE_HEIGHT * Tile.TILE_SCALE), null);
 
-		posX = (int) (currentCell.getGridX() * Tile.TILE_WIDTH * Tile.TILE_SCALE + animationOffsetX);
-		posY = (int) (currentCell.getGridY() * Tile.TILE_HEIGHT * Tile.TILE_SCALE + animationOffsetY);
-
-		if((Math.abs(animationOffsetX) >= (double) 1 / Game.fps))
-		{
-			if(animationOffsetX > 0)
-			{
-				// System.out.println("animationOffsetX -= " + Math.min((float) Tile.TILE_WIDTH
-				// * Tile.TILE_SCALE / Game.fps, animationOffsetX));
-				animationOffsetX -= Math.min((float) Tile.TILE_WIDTH * Tile.TILE_SCALE / Game.fps * 2,
-						animationOffsetX);
-			} else if(animationOffsetX < 0)
-			{
-				// System.out.println("animationOffsetX += " + Math.min((float) Tile.TILE_WIDTH
-				// * Tile.TILE_SCALE / Game.fps, animationOffsetX));
-				animationOffsetX += Math.max((float) Tile.TILE_WIDTH * Tile.TILE_SCALE / Game.fps * 2,
-						animationOffsetX);
-			}
-		} else
-		{
-			// Prevents stuttering from offset over-compensation
-			animationOffsetX = 0;
-		}
-
-		if(Math.abs(animationOffsetY) >= (double) 1 / Game.fps)
-		{
-			if(animationOffsetY > 0)
-			{
-				animationOffsetY -= Math.min((float) Tile.TILE_HEIGHT * Tile.TILE_SCALE / Game.fps * 2,
-						animationOffsetY);
-			} else if(animationOffsetY < 0)
-			{
-				animationOffsetY += Math.max((float) Tile.TILE_HEIGHT * Tile.TILE_SCALE / Game.fps * 2,
-						animationOffsetY);
-			}
-		} else
-		{
-			// Prevents stuttering from offset over-compensation
-			animationOffsetY = 0;
-		}
+		// Handle movement animation offsets
+		adjustAnimationOffsets();
 	}
 
 	/**
@@ -128,7 +103,7 @@ public class Creature extends Entity
 		this.turnController = turnController;
 
 		doneWithTurn = false;
-		
+
 		this.updateStats();
 		this.applyEffects();
 	}
@@ -143,7 +118,7 @@ public class Creature extends Entity
 		this.decrementEffectDurations(this.effects);
 		doneWithTurn = true;
 	}
-	
+
 	public void forceEndTurn()
 	{
 		endTurn();
@@ -177,11 +152,13 @@ public class Creature extends Entity
 				animationOffsetY += Tile.TILE_SCALE * Tile.TILE_HEIGHT * (prevCell.getGridY() - currentCell.getGridY());
 
 				return true;
-			} else
+			}
+			else
 			{
 				return false;
 			}
-		} else
+		}
+		else
 		{
 			return false;
 		}
@@ -206,16 +183,104 @@ public class Creature extends Entity
 		return false;
 	}
 
+	public boolean isAttacking()
+	{
+		return attackAnimationFrame != -1;
+	}
+
 	public boolean isMoving()
 	{
-		return(animationOffsetX != 0 || animationOffsetY != 0);
+		return (animationOffsetX != 0 || animationOffsetY != 0);
 	}
-	
+
 	public boolean isDoneWithTurn()
 	{
 		return doneWithTurn;
 	}
+
+	private void adjustAnimationOffsets()
+	{
+		posX = (int) (currentCell.getGridX() * Tile.TILE_WIDTH * Tile.TILE_SCALE + animationOffsetX);
+		posY = (int) (currentCell.getGridY() * Tile.TILE_HEIGHT * Tile.TILE_SCALE + animationOffsetY);
+
+		if((Math.abs(animationOffsetX) >= (double) 1 / Game.fps))
+		{
+			if(animationOffsetX > 0)
+			{
+				// System.out.println("animationOffsetX -= " + Math.min((float) Tile.TILE_WIDTH
+				// * Tile.TILE_SCALE / Game.fps, animationOffsetX));
+				animationOffsetX -= Math.min((float) Tile.TILE_WIDTH * Tile.TILE_SCALE / Game.fps * 2,
+						animationOffsetX);
+			}
+			else if(animationOffsetX < 0)
+			{
+				// System.out.println("animationOffsetX += " + Math.min((float) Tile.TILE_WIDTH
+				// * Tile.TILE_SCALE / Game.fps, animationOffsetX));
+				animationOffsetX += Math.max((float) Tile.TILE_WIDTH * Tile.TILE_SCALE / Game.fps * 2,
+						animationOffsetX);
+			}
+		}
+		else
+		{
+			// Prevents stuttering from offset over-compensation
+			animationOffsetX = 0;
+		}
+
+		if(Math.abs(animationOffsetY) >= (double) 1 / Game.fps)
+		{
+			if(animationOffsetY > 0)
+			{
+				animationOffsetY -= Math.min((float) Tile.TILE_HEIGHT * Tile.TILE_SCALE / Game.fps * 2,
+						animationOffsetY);
+			}
+			else if(animationOffsetY < 0)
+			{
+				animationOffsetY += Math.max((float) Tile.TILE_HEIGHT * Tile.TILE_SCALE / Game.fps * 2,
+						animationOffsetY);
+			}
+		}
+		else
+		{
+			// Prevents stuttering from offset over-compensation
+			animationOffsetY = 0;
+		}
+	}
+
+	public void doAttackAnimation(int dX, int dY)
+	{
+		attackAnimationFrames = new BufferedImage[8];
+		for(int i = 0; i < attackAnimationFrames.length; i++)
+		{
+			attackAnimationFrames[i] = Assets.attackSprites.getRotatedSpriteFromVector(0, i, dX, dY);
+		}
 	
+		attackAnimationFrame = 0;
+		attackAnimationSubFrame = 0;
+		attackDirectionX = dX;
+		attackDirectionY = dY;
+	}
+
+	public void animateAttack(Graphics g, double offsetX, double offsetY)
+	{
+		if(attackAnimationFrame != -1)
+		{
+			posX = (int) ((currentCell.getGridX() - (double) attackDirectionX / 2) * Tile.TILE_WIDTH * Tile.TILE_SCALE);
+			posY = (int) ((currentCell.getGridY() - (double) attackDirectionY / 2) * Tile.TILE_HEIGHT * Tile.TILE_SCALE);
+
+			g.drawImage(attackAnimationFrames[attackAnimationFrame], posX, posY,
+					(int) (Tile.TILE_WIDTH * Tile.TILE_SCALE), (int) (Tile.TILE_HEIGHT * Tile.TILE_SCALE), null);
+		
+			attackAnimationSubFrame += 1.25 * attackAnimationFrames.length / Game.fps;
+			attackAnimationFrame = (int) Math.floor(attackAnimationSubFrame);
+			
+			if(attackAnimationFrame >= attackAnimationFrames.length)
+			{
+				attackAnimationFrame = -1;
+				attackAnimationSubFrame = -1;
+			}
+		}
+	}
+
 	/**
 	 * Handles the dealing of damage between characters, passes different values
 	 * into takeDamage() depending on damageType when it’s called
@@ -370,7 +435,7 @@ public class Creature extends Entity
 			if(effects[i] != null)
 			{
 				effects[i].decrementDuration();
-				
+
 				if(effects[i].getDuration() == 0)
 				{
 					// TODO: Destroy Effect object
@@ -405,11 +470,17 @@ public class Creature extends Entity
 	 */
 	protected void die()
 	{
-		currentCell.getFloor().removeCreature(this);
+		//currentCell.getFloor().removeCreature(this);
 		currentCell.setOccupant(null);
 		currentCell = null;
+		dead = true;
 	}
 	
+	public boolean isDead()
+	{
+		return dead;
+	}
+
 	/**
 	 * Increment the given Stat by the given amount
 	 * 
