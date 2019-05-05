@@ -13,7 +13,7 @@ public class Smite extends Ability
 	@Override
 	public boolean validTargetCell(Creature caster, Cell cell) 
 	{
-		if(caster.getCurrentCell().isAdjecent(cell))
+		if(caster.getCurrentCell().isAdjecentWithCorners(cell))
 		{
 			return true;
 		}

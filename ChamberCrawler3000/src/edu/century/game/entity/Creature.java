@@ -160,7 +160,7 @@ public class Creature extends Entity
 	{
 		// Checking whether of not the Cells are adjacent is redundant so long as only a
 		// DPad-type system is used to control movement
-		if(currentCell.isAdjecent(destCell) && destCell.getSpaceOpen())
+		if(currentCell.isAdjecentWithCorners(destCell) && destCell.getSpaceOpen())
 		{
 			// Store the origin Cell temporarily
 			Cell prevCell = currentCell;

@@ -297,7 +297,7 @@ public class Floor
 				// enemies array
 				if(enemies[gridX][gridY] != null)
 				{
-					cells[gridX][gridY].setOccupant(new Enemy(cells[gridX][gridY], enemies[gridX][gridY], BehaviorTag.RANDOM_MOVE));
+					cells[gridX][gridY].setOccupant(new Enemy(cells[gridX][gridY], enemies[gridX][gridY], BehaviorTag.PURSUE));
 				}
 			}
 		}
@@ -332,6 +332,11 @@ public class Floor
 		}
 	}
 
+	public boolean validCoordinates(int gridX, int gridY)
+	{
+		return gridX >= 0 && gridX < gridWidth && gridY >= 0 && gridY < gridHeight;
+	}
+	
 	public void addCreature(Creature creature)
 	{
 		creatures.add(creature);

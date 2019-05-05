@@ -178,9 +178,22 @@ public class Cell
 	 *                  the cell with which to test adjacency
 	 * @return true if this Cell is adjacent to the passed in Cell otherCell
 	 */
-	public boolean isAdjecent(Cell otherCell)
+	public boolean isAdjecentWithCorners(Cell otherCell)
 	{
 		return Math.abs(gridX - otherCell.getGridX()) <= 1 && Math.abs(gridY - otherCell.getGridY()) <= 1;
+	}
+	
+	/**
+	 * Checks whether this Cell is adjacent to the passed in cell
+	 * 
+	 * @param otherCell
+	 *                  the cell with which to test adjacency
+	 * @return true if this Cell is adjacent to the passed in Cell otherCell
+	 */
+	public boolean isAdjecent(Cell otherCell)
+	{
+		return (Math.abs(gridX - otherCell.getGridX()) == 1 && Math.abs(gridY - otherCell.getGridY()) == 0)
+				|| (Math.abs(gridX - otherCell.getGridX()) == 0 && Math.abs(gridY - otherCell.getGridY()) == 1);
 	}
 	
 	/**

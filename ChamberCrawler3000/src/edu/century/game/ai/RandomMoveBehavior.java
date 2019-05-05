@@ -3,6 +3,12 @@ package edu.century.game.ai;
 import edu.century.game.entity.Creature;
 import edu.century.game.floor.Cell;
 
+/**
+ * Behavior which causes the Creature to move randomly
+ * 
+ * @author Mitchell Ford
+ *
+ */
 public class RandomMoveBehavior extends Behavior
 {
 	public RandomMoveBehavior(Creature creature)
@@ -12,6 +18,19 @@ public class RandomMoveBehavior extends Behavior
 
 	@Override
 	public void takeTurn()
+	{
+		if(moveRandomly())
+		{
+			creature.endTurn();
+		}
+		else
+		{
+			System.out.println("couldn't move");
+			creature.endTurn();
+		}
+	}
+	
+	private boolean moveRandomly()
 	{
 		Cell currentCell = creature.getCurrentCell();
 		Cell[] neighborCells = currentCell.getNeighbors();
@@ -43,12 +62,8 @@ public class RandomMoveBehavior extends Behavior
 					}
 				}
 			}
-			creature.endTurn();
+			return true;
 		}
-		else
-		{
-			System.out.println("couldn't move");
-			creature.endTurn();
-		}
-	}	
+		return false;
+	}
 }

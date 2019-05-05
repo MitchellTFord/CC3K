@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 
 import edu.century.game.ai.Behavior;
 import edu.century.game.ai.BehaviorTag;
+import edu.century.game.ai.PursueBehavior;
 import edu.century.game.ai.RandomMoveBehavior;
 import edu.century.game.entity.race.Race;
 import edu.century.game.floor.Cell;
@@ -21,6 +22,9 @@ public class Enemy extends Creature
 		{
 			case RANDOM_MOVE:
 				this.behavior = new RandomMoveBehavior(this);
+				break;
+			case PURSUE:
+				this.behavior = new PursueBehavior(this);
 				break;
 			default:
 				this.behavior = new RandomMoveBehavior(this);
