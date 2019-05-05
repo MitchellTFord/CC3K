@@ -8,6 +8,7 @@ import edu.century.game.effect.Effect;
 import edu.century.game.entity.race.Race;
 import edu.century.game.floor.Cell;
 import edu.century.game.graphics.Assets;
+import edu.century.game.state.GameState;
 import edu.century.game.tiles.Tile;
 
 public class Creature extends Entity
@@ -38,26 +39,30 @@ public class Creature extends Entity
 
 	// Rendering offsets for movement animations
 	protected float animationOffsetX = 0, animationOffsetY = 0;
-	
+
 	protected int posX, posY;
+
+	protected GameState turnController;
+
+	protected boolean doneWithTurn;
 
 	public Creature(Cell currentCell, Race race)
 	{
 		super(currentCell);
-		
+
 		this.race = race;
-		
+
 		this.name = race.getRaceName();
-		
+
 		this.health = this.maxHealth = this.healthHardCap = 125 + this.race.getHealthMod();
 		this.attack = 25 + this.race.getAttackMod();
 		this.defence = 25 + this.race.getDefenseMod();
 
 		this.characterSprite = race.getRaceSprite();
-		
+
 		this.addEffect(race.getEffect(this));
-		
-		//Only do this if not dealing with the player
+
+		// Only do this if not dealing with the player
 		if(currentCell != null)
 		{
 			currentCell.getFloor().addCreature(this);
@@ -67,29 +72,33 @@ public class Creature extends Entity
 	@Override
 	public void render(Graphics g, double offsetX, double offsetY)
 	{
-		//System.out.println(race.getRaceSprite());
-		g.drawImage(characterSprite, (int) (offsetX + currentCell.getGridX() * Tile.TILE_WIDTH * Tile.TILE_SCALE + animationOffsetX), 
-				(int) (offsetY + currentCell.getGridY() * Tile.TILE_HEIGHT * Tile.TILE_SCALE + animationOffsetY), 
+		// System.out.println(race.getRaceSprite());
+		g.drawImage(characterSprite,
+				(int) (offsetX + currentCell.getGridX() * Tile.TILE_WIDTH * Tile.TILE_SCALE + animationOffsetX),
+				(int) (offsetY + currentCell.getGridY() * Tile.TILE_HEIGHT * Tile.TILE_SCALE + animationOffsetY),
 				(int) (Tile.TILE_WIDTH * Tile.TILE_SCALE), (int) (Tile.TILE_HEIGHT * Tile.TILE_SCALE), null);
-		
+
 		posX = (int) (currentCell.getGridX() * Tile.TILE_WIDTH * Tile.TILE_SCALE + animationOffsetX);
 		posY = (int) (currentCell.getGridY() * Tile.TILE_HEIGHT * Tile.TILE_SCALE + animationOffsetY);
-		
+
 		if((Math.abs(animationOffsetX) >= (double) 1 / Game.fps))
 		{
 			if(animationOffsetX > 0)
 			{
-				//System.out.println("animationOffsetX -= " + Math.min((float) Tile.TILE_WIDTH * Tile.TILE_SCALE / Game.fps, animationOffsetX));
-				animationOffsetX -= Math.min((float) Tile.TILE_WIDTH * Tile.TILE_SCALE / Game.fps * 2, animationOffsetX);
+				// System.out.println("animationOffsetX -= " + Math.min((float) Tile.TILE_WIDTH
+				// * Tile.TILE_SCALE / Game.fps, animationOffsetX));
+				animationOffsetX -= Math.min((float) Tile.TILE_WIDTH * Tile.TILE_SCALE / Game.fps * 2,
+						animationOffsetX);
 			} else if(animationOffsetX < 0)
 			{
-				//System.out.println("animationOffsetX += " + Math.min((float) Tile.TILE_WIDTH * Tile.TILE_SCALE / Game.fps, animationOffsetX));
-				animationOffsetX += Math.max((float) Tile.TILE_WIDTH * Tile.TILE_SCALE / Game.fps * 2, animationOffsetX);
+				// System.out.println("animationOffsetX += " + Math.min((float) Tile.TILE_WIDTH
+				// * Tile.TILE_SCALE / Game.fps, animationOffsetX));
+				animationOffsetX += Math.max((float) Tile.TILE_WIDTH * Tile.TILE_SCALE / Game.fps * 2,
+						animationOffsetX);
 			}
-		}
-		else
+		} else
 		{
-			//Prevents stuttering from offset over-compensation
+			// Prevents stuttering from offset over-compensation
 			animationOffsetX = 0;
 		}
 
@@ -97,15 +106,16 @@ public class Creature extends Entity
 		{
 			if(animationOffsetY > 0)
 			{
-				animationOffsetY -= Math.min((float) Tile.TILE_HEIGHT * Tile.TILE_SCALE / Game.fps * 2, animationOffsetY);
+				animationOffsetY -= Math.min((float) Tile.TILE_HEIGHT * Tile.TILE_SCALE / Game.fps * 2,
+						animationOffsetY);
 			} else if(animationOffsetY < 0)
 			{
-				animationOffsetY += Math.max((float) Tile.TILE_HEIGHT * Tile.TILE_SCALE / Game.fps * 2, animationOffsetY);
+				animationOffsetY += Math.max((float) Tile.TILE_HEIGHT * Tile.TILE_SCALE / Game.fps * 2,
+						animationOffsetY);
 			}
-		}
-		else
+		} else
 		{
-			//Prevents stuttering from offset over-compensation
+			// Prevents stuttering from offset over-compensation
 			animationOffsetY = 0;
 		}
 	}
@@ -113,8 +123,12 @@ public class Creature extends Entity
 	/**
 	 * Triggered at the start of a turn, calls updateStats() and applyEffects()
 	 */
-	public void startTurn(/* TurnController turnController */)
+	public void startTurn(GameState turnController)
 	{
+		this.turnController = turnController;
+
+		doneWithTurn = false;
+		
 		this.updateStats();
 		this.applyEffects();
 	}
@@ -127,9 +141,13 @@ public class Creature extends Entity
 	public void endTurn()
 	{
 		this.decrementEffectDurations(this.effects);
-
-		// Indicate to controller object that this character's turn is over
-		// turnController.NextCharactersTurn()
+		doneWithTurn = true;
+	}
+	
+	public void forceEndTurn()
+	{
+		endTurn();
+		turnController.nextCharactersTurn();
 	}
 
 	/**
@@ -157,7 +175,7 @@ public class Creature extends Entity
 				// Set movement animation offsets
 				animationOffsetX += Tile.TILE_SCALE * Tile.TILE_WIDTH * (prevCell.getGridX() - currentCell.getGridX());
 				animationOffsetY += Tile.TILE_SCALE * Tile.TILE_HEIGHT * (prevCell.getGridY() - currentCell.getGridY());
-								
+
 				return true;
 			} else
 			{
@@ -188,6 +206,16 @@ public class Creature extends Entity
 		return false;
 	}
 
+	public boolean isMoving()
+	{
+		return(animationOffsetX != 0 || animationOffsetY != 0);
+	}
+	
+	public boolean isDoneWithTurn()
+	{
+		return doneWithTurn;
+	}
+	
 	/**
 	 * Handles the dealing of damage between characters, passes different values
 	 * into takeDamage() depending on damageType when it’s called
@@ -205,15 +233,16 @@ public class Creature extends Entity
 	{
 		switch(damageType)
 		{
-		case PHYSICAL:
-			double damageDone = Math.ceil((100 / (100 + target.getDefence())) * damage);
-			System.out.println(caster.getName() + " attacked " + target.getName() + " for " + damageDone + " health");
-			target.takeDamage(damageDone, caster);
-			break;
-		case ELEMENTAL:
-			target.takeDamage(damage, caster);
-			// Elemental damage goes through armor for now
-			break;
+			case PHYSICAL:
+				double damageDone = Math.ceil((100 / (100 + target.getDefence())) * damage);
+				System.out
+						.println(caster.getName() + " attacked " + target.getName() + " for " + damageDone + " health");
+				target.takeDamage(damageDone, caster);
+				break;
+			case ELEMENTAL:
+				target.takeDamage(damage, caster);
+				// Elemental damage goes through armor for now
+				break;
 		}
 	}
 
@@ -244,10 +273,7 @@ public class Creature extends Entity
 				// No handling is needed
 			}
 
-			// TODO: destroy instance
-			// TODO: handle player death
-			
-			currentCell.getFloor().removeCreature(this);
+			die();
 		}
 	}
 
@@ -305,12 +331,12 @@ public class Creature extends Entity
 				effects[i].applyStatChange();
 			}
 		}
-		
+
 		if(healthHardCap != -1 && maxHealth > healthHardCap)
 		{
 			maxHealth = healthHardCap;
 		}
-		
+
 		if(maxHealth != -1 && health > maxHealth)
 		{
 			health = maxHealth;
@@ -341,14 +367,18 @@ public class Creature extends Entity
 	{
 		for(int i = 0; i < effects.length; i++)
 		{
-			effects[i].decrementDuration();
-
-			if(effects[i].getDuration() == 0)
+			if(effects[i] != null)
 			{
-				// TODO: Destroy Effect object
+				effects[i].decrementDuration();
+				
+				if(effects[i].getDuration() == 0)
+				{
+					// TODO: Destroy Effect object
 
-				// Remove object from effects array
-				effects[i] = null;
+					// Remove object from effects array
+					effects[i] = null;
+
+				}
 			}
 		}
 	}
@@ -371,6 +401,16 @@ public class Creature extends Entity
 	}
 
 	/**
+	 * Handles the death of non-player creatures
+	 */
+	protected void die()
+	{
+		currentCell.getFloor().removeCreature(this);
+		currentCell.setOccupant(null);
+		currentCell = null;
+	}
+	
+	/**
 	 * Increment the given Stat by the given amount
 	 * 
 	 * @param amount
@@ -382,27 +422,27 @@ public class Creature extends Entity
 	{
 		switch(stat)
 		{
-		case MAX_HEALTH:
-			maxHealth += amount;
-			break;
-		case ATTACK:
-			attack += amount;
-			break;
-		case DEFENCE:
-			defence += amount;
-			break;
-		case POTION_POWER:
-			potionPower += amount;
-			break;
-		case HEALTH_ON_KILL:
-			healthOnKill += amount;
-			break;
-		case GOLD_ON_KILL:
-			goldOnKill += amount;
-			break;
-		default:
-			// Shouldn't ever happen
-			break;
+			case MAX_HEALTH:
+				maxHealth += amount;
+				break;
+			case ATTACK:
+				attack += amount;
+				break;
+			case DEFENCE:
+				defence += amount;
+				break;
+			case POTION_POWER:
+				potionPower += amount;
+				break;
+			case HEALTH_ON_KILL:
+				healthOnKill += amount;
+				break;
+			case GOLD_ON_KILL:
+				goldOnKill += amount;
+				break;
+			default:
+				// Shouldn't ever happen
+				break;
 		}
 	}
 
@@ -413,7 +453,12 @@ public class Creature extends Entity
 	{
 		return effects;
 	}
-	
+
+	public GameState getTurnController()
+	{
+		return turnController;
+	}
+
 	/**
 	 * @return this Character's attack
 	 */
@@ -430,7 +475,7 @@ public class Creature extends Entity
 		return defence;
 	}
 
-	public String getName() 
+	public String getName()
 	{
 		return name;
 	}
@@ -459,7 +504,7 @@ public class Creature extends Entity
 	{
 		this.healthHardCap = healthHardCap;
 	}
-	
+
 	public int getGold()
 	{
 		return gold;
@@ -484,7 +529,7 @@ public class Creature extends Entity
 	{
 		return posY;
 	}
-	
+
 	@Override
 	public String toString()
 	{
@@ -492,7 +537,6 @@ public class Creature extends Entity
 				+ (int) maxHealth + "\n" + "Attack: " + (int) attack + "\n" + "Defence: " + (int) defence + "\n"
 				+ "Gold: " + gold + "\n" + "Health on Kill: " + (int) healthOnKill + "\n" + "Gold on Kill: "
 				+ goldOnKill + "\n";
-		;
 
 		return str;
 	}

@@ -12,4 +12,10 @@ public class Player extends Creature
 		
 		this.name = name;
 	}
+	
+	@Override
+	protected void die()
+	{
+		
+	}
 }

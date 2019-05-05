@@ -34,7 +34,7 @@ public class Game implements Runnable
 	public static double timePerRender = 1000000000 / fps;
 
 	// Maximum time in nanoseconds between updates to meet 30 updates per second
-	private static double timePerUpdate = 1000000000 / 30;
+	public static double timePerUpdate = 1000000000 / 30;
 
 	// Status of the game
 	private boolean running = false;

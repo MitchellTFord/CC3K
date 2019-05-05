@@ -1,13 +1,13 @@
 package edu.century.game.state;
 
 import java.awt.Graphics;
+import java.util.Iterator;
 
 import edu.century.game.Game;
 import edu.century.game.entity.Creature;
 import edu.century.game.entity.DamageType;
 import edu.century.game.entity.Player;
 import edu.century.game.floor.Floor;
-import edu.century.game.floor.SampleFloor;
 import edu.century.game.graphics.Camera;
 
 /**
@@ -16,11 +16,15 @@ import edu.century.game.graphics.Camera;
  */
 public class GameState extends State
 {
+	public static final double TURN_WAIT_SEC = .25;
+	
 	private Player player;
 	private Floor floor;
 	private Graphics g;
 	private Camera camera;
 	private Creature currentTurnHolder;
+	private Iterator<Creature> turnQueue;
+	private long waitTime;
 
 //	/**
 //	 * Constructor for GameState without Floor parameter
@@ -59,8 +63,10 @@ public class GameState extends State
 		
 		camera.setTargetCreature(player);
 		
+		turnQueue = floor.getCreatures().iterator();
+		
 		currentTurnHolder = player;
-		player.startTurn();
+		player.startTurn(this);
 	}
 
 	@Override
@@ -69,7 +75,15 @@ public class GameState extends State
 	 */
 	public void update()
 	{
-		//TODO: manage turns
+		if(currentTurnHolder.isDoneWithTurn() && !currentTurnHolder.isMoving())
+		{
+			waitTime += Game.timePerUpdate;
+			if(waitTime >= Game.timePerUpdate * TURN_WAIT_SEC * 30)
+			{
+				nextCharactersTurn();
+				waitTime = 0;
+			}
+		}
 	}
 
 	@Override
@@ -88,12 +102,33 @@ public class GameState extends State
 		game.getDisplay().updatePlayerInfoPanel(player);
 	}
 
+	public void nextCharactersTurn()
+	{
+		if(turnQueue.hasNext())
+		{
+			currentTurnHolder = null;
+			//System.out.println("Next creature's turn");
+			currentTurnHolder = turnQueue.next();
+			currentTurnHolder.startTurn(this);
+			System.out.println("It is now " + currentTurnHolder.getName() + "'s turn");
+		}
+		else
+		{
+			turnQueue = floor.getCreatures().iterator();
+			nextCharactersTurn();
+		}
+		if(currentTurnHolder != null)
+		{
+			camera.setTargetCreature(currentTurnHolder);
+		}
+	}
+
 	/**
 	 * @param xComponent the x component of the DPad button that created this ActionEvent
 	 * @param yComponent the y component of the DPad button that created this ActionEvent
 	 */
 	public void takePlayerDPadInput(int xComponent, int yComponent)
-	{
+	{	
 		//Check to see if it is the player's turn, ignore this input if it isn't
 		if (currentTurnHolder.equals(player))
 		{
@@ -118,6 +153,7 @@ public class GameState extends State
 							player.move(player.getGridX() + xComponent, player.getGridY() + yComponent);
 							
 							//End turn
+							player.endTurn();
 						}	
 					}
 					else
@@ -131,9 +167,15 @@ public class GameState extends State
 						}
 						
 						//End turn
+						player.endTurn();
 					}
 				}
 			}
 		}
+	}
+	
+	public Player getPlayer()
+	{
+		return player;
 	}
 }

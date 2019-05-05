@@ -182,6 +182,31 @@ public class Cell
 	{
 		return Math.abs(gridX - otherCell.getGridX()) <= 1 && Math.abs(gridY - otherCell.getGridY()) <= 1;
 	}
+	
+	/**
+	 * @return The up-to-four Cells adjacent to this Cell
+	 */
+	public Cell[] getNeighbors()
+	{
+		Cell[] neighbors = new Cell[4];
+		if(gridX - 1 >= 0)
+		{
+			neighbors[0] = floor.getCell(gridX - 1, gridY);
+		}
+		if(gridX + 1 < floor.getGridWidth())
+		{
+			neighbors[1] = floor.getCell(gridX + 1, gridY);
+		}
+		if(gridY - 1 >= 0)
+		{
+			neighbors[2] = floor.getCell(gridX, gridY - 1);
+		}
+		if(gridY + 1 < floor.getGridWidth())
+		{
+			neighbors[3] = floor.getCell(gridX, gridY + 1);
+		}
+		return neighbors;
+	}
 
 	public boolean hasForegroundTexture()
 	{

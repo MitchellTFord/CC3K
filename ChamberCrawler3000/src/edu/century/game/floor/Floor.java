@@ -8,6 +8,8 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import edu.century.game.ai.BehaviorTag;
+import edu.century.game.ai.RandomMoveBehavior;
 import edu.century.game.entity.Creature;
 import edu.century.game.entity.Enemy;
 import edu.century.game.entity.Entity;
@@ -295,7 +297,7 @@ public class Floor
 				// enemies array
 				if(enemies[gridX][gridY] != null)
 				{
-					cells[gridX][gridY].setOccupant(new Enemy(cells[gridX][gridY], enemies[gridX][gridY]));
+					cells[gridX][gridY].setOccupant(new Enemy(cells[gridX][gridY], enemies[gridX][gridY], BehaviorTag.RANDOM_MOVE));
 				}
 			}
 		}
@@ -338,6 +340,11 @@ public class Floor
 	public void removeCreature(Creature creature)
 	{
 		creatures.remove(creature);
+	}
+	
+	public ArrayList<Creature> getCreatures()
+	{
+		return creatures;
 	}
 
 	// public void addCharacter(Character newCharacter)
