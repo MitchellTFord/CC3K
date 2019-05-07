@@ -98,19 +98,6 @@ public class Floor
 				}
 			}
 		}
-		
-
-		// Render Entity foreground textures
-		for(int gridY = 0; gridY < gridHeight; gridY++)
-		{
-			for(int gridX = 0; gridX < gridWidth; gridX++)
-			{
-				if(cells[gridX][gridY].getOccupant() != null)
-				{
-					cells[gridX][gridY].renderOccupantExtras(g, offsetX, offsetY);
-				}
-			}
-		}
 	}
 
 	/**

@@ -1,7 +1,5 @@
 package edu.century.game.graphics;
 
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.awt.image.RasterFormatException;
 import java.util.Arrays;
@@ -18,18 +16,10 @@ public class SpriteSheet
 	private BufferedImage sheet;
 	
 	//The 2d array for storing individual sprites
-	private BufferedImage[][] sprites, sprites90, sprites180, sprites270;
+	private BufferedImage[][] sprites;
 	
 	//Data about SpriteSheets dimensions
 	private int spriteHeight, spriteWidth, numSpritesTall, numSpritesWide;
-
-	//Whether rotated versions of the sprites should be created
-	private boolean needsRotations;
-	
-	enum Direction
-	{
-		UP, RIGHT, DOWN, LEFT;
-	}
 	
 	/**
 	 * SpriteSheet constructor
@@ -38,31 +28,18 @@ public class SpriteSheet
 	 * @param spriteHeight the height of sprites in pixels
 	 * @param numSpritesWide the number of sprites wide the original sheet is
 	 * @param numSpritesTall the number of sprites tall the original sheet is
-	 * @param needsRotations TODO
 	 */
-	public SpriteSheet(BufferedImage sheet, int spriteWidth, int spriteHeight, int numSpritesWide, int numSpritesTall, boolean needsRotations)
+	public SpriteSheet(BufferedImage sheet, int spriteWidth, int spriteHeight, int numSpritesWide, int numSpritesTall)
 	{
 		this.sheet = sheet;
 		this.spriteWidth = spriteWidth;
 		this.spriteHeight = spriteHeight;
 		this.numSpritesTall = numSpritesTall;
 		this.numSpritesWide = numSpritesWide;
-		this.needsRotations = needsRotations;
 
 		sprites = new BufferedImage[numSpritesWide][numSpritesTall];
-		if(needsRotations)
-		{
-			sprites90 = new BufferedImage[numSpritesWide][numSpritesTall];
-			sprites180 = new BufferedImage[numSpritesWide][numSpritesTall];
-			sprites270 = new BufferedImage[numSpritesWide][numSpritesTall];
-		}
 		
 		makeSprites();
-		
-		if(needsRotations)
-		{
-			makeRotatedSprites();
-		}
 	}
 	
 	/**
@@ -78,42 +55,6 @@ public class SpriteSheet
 	public ImageIcon getSpriteAsIcon(int x, int y)
 	{
 		return new ImageIcon(getSprite(x, y));
-	}
-	
-	public BufferedImage getRotatedSprite(int x, int y, Direction direction)
-	{
-		switch(direction)
-		{
-			case DOWN:
-				return sprites180[x][y];
-			case LEFT:
-				return sprites270[x][y];
-			case RIGHT:
-				return sprites90[x][y];
-			case UP:
-			default:
-				return sprites[x][y];
-		}
-	}
-	
-	public BufferedImage getRotatedSpriteFromVector(int x, int y, int dX, int dY)
-	{
-		if(dX == 1)
-		{
-			return getRotatedSprite(x, y, Direction.RIGHT);
-		}
-		else if(dX == -1)
-		{
-			return getRotatedSprite(x, y, Direction.LEFT);
-		}
-		else if(dY == -1)
-		{
-			return getRotatedSprite(x, y, Direction.DOWN);
-		}
-		else
-		{
-			return getRotatedSprite(x, y, Direction.UP);
-		}
 	}
 
 	/**
@@ -145,28 +86,6 @@ public class SpriteSheet
 		}
 	}
 
-	/**
-	 * Populates the 4 cardinal sprite arrays
-	 */
-	private void makeRotatedSprites()
-	{
-		double centerX = spriteWidth / 2;
-		double centerY = spriteHeight / 2;
-		
-		AffineTransform transform = AffineTransform.getRotateInstance(Math.toRadians(90), centerX, centerY);
-		AffineTransformOp operation = new AffineTransformOp(transform, AffineTransformOp.TYPE_BILINEAR);
-		
-		for(int y = 0; y < numSpritesTall; y++)
-		{
-			for(int x = 0; x < numSpritesWide; x++)
-			{
-				sprites270[x][y] = operation.filter(sprites[x][y], null);
-				sprites180[x][y] = operation.filter(sprites270[x][y], null);
-				sprites90[x][y] = operation.filter(sprites180[x][y], null);
-			}
-		}
-	}
-	
 	/**
 	 * Passes all of the arguments into sheet.getSubimage()
 	 * This method shouldn't be necessary but the program will not run if you use getSubimage directly

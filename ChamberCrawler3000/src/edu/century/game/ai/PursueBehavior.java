@@ -48,7 +48,6 @@ public class PursueBehavior extends Behavior
 		{
 			Creature.doDamage(creature, creature.getTurnController().getPlayer(), DamageType.PHYSICAL,
 					creature.getAttack());
-			creature.doAttackAnimation(creature.getGridX() - target.getGridX(), creature.getGridY() - target.getGridY());
 			return true;
 		}
 		else
