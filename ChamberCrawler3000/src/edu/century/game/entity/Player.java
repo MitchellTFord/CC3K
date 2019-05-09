@@ -6,6 +6,8 @@ import edu.century.game.graphics.Assets;
 
 public class Player extends Creature
 {	
+	public static final double PLAYER_EVASION_CHANCE = 0.30;
+	
 	public Player(Cell currentCell, Race race, String name)
 	{
 		super(currentCell, race);
@@ -16,6 +18,6 @@ public class Player extends Creature
 	@Override
 	protected void die()
 	{
-		
+		turnController.getGame().endGame();
 	}
 }

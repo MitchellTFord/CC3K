@@ -18,5 +18,8 @@ public enum Stat
 	HEALTH_ON_KILL, 
 	
 	//corresponds to goldOnKill
-	GOLD_ON_KILL;
+	GOLD_ON_KILL,
+	
+	//health and max health on hit
+	MAX_HEALTH_ON_HIT;
 }

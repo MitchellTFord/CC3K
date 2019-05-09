@@ -6,9 +6,13 @@ import java.util.Iterator;
 import edu.century.game.Game;
 import edu.century.game.entity.Creature;
 import edu.century.game.entity.DamageType;
+import edu.century.game.entity.Enemy;
+import edu.century.game.entity.Item;
+import edu.century.game.entity.ItemType;
 import edu.century.game.entity.Player;
 import edu.century.game.floor.Floor;
 import edu.century.game.graphics.Camera;
+import edu.century.game.tiles.Tile;
 
 /**
  * The State where most or all gameplay occurs
@@ -16,7 +20,7 @@ import edu.century.game.graphics.Camera;
  */
 public class GameState extends State
 {
-	public static final double TURN_WAIT_SEC = .25;
+	public static final double TURN_WAIT_SEC = 0;
 	
 	private Player player;
 	private Floor floor;
@@ -42,14 +46,12 @@ public class GameState extends State
 	 * Constructor for GameState
 	 * @param game the game object
 	 * @param player the player object
-	 * @param g the Graphics object to render things with
 	 * @param floor the floor object to manage and render
 	 */
-	public GameState(Game game, Player player, Graphics g, Floor floor, Camera camera)
+	public GameState(Game game, Player player, Floor floor, Camera camera)
 	{
 		super(game);
 		this.player = player;
-		this.g = g;
 		this.floor = floor;
 		this.camera = camera;
 		
@@ -74,7 +76,12 @@ public class GameState extends State
 	 * Manages turns
 	 */
 	public void update()
-	{
+	{	
+		if(currentTurnHolder == null)
+		{
+			nextCharactersTurn();
+		}
+		
 		if(currentTurnHolder.isDoneWithTurn() && !currentTurnHolder.isMoving())
 		{
 			waitTime += Game.timePerUpdate;
@@ -83,6 +90,10 @@ public class GameState extends State
 				nextCharactersTurn();
 				waitTime = 0;
 			}
+		}
+		else if(Enemy.class.isAssignableFrom(currentTurnHolder.getClass()) && !camera.inViewPort(currentTurnHolder.getCurrentCell()))
+		{
+			currentTurnHolder.resetAnimationOffsets();
 		}
 	}
 
@@ -96,31 +107,41 @@ public class GameState extends State
 		camera.updateCamera();
 		
 		//Render the floor
-		floor.render(g, camera, camera.getOffsetX(), camera.getOffsetY());
+		floor.render(g, camera);
 		
 		//Update the PlayerInfoPanel
 		game.getDisplay().updatePlayerInfoPanel(player);
+		
+		if(currentTurnHolder != null)
+		{
+			g.drawImage(currentTurnHolder.getRace().getRaceSprite(), 10, 10, 32, 32, null);
+		}
 	}
 
 	public void nextCharactersTurn()
 	{
-		if(turnQueue.hasNext())
-		{
 			currentTurnHolder = null;
-			//System.out.println("Next creature's turn");
-			currentTurnHolder = turnQueue.next();
+			while(currentTurnHolder == null)
+			{
+				if(!turnQueue.hasNext())
+				{
+					turnQueue = floor.getCreatures().iterator();
+				}
+
+				currentTurnHolder = turnQueue.next();
+				
+				if(currentTurnHolder != null)
+				{
+					if(currentTurnHolder.isDead())
+					{
+						currentTurnHolder = null;
+					}
+				}
+			}
 			currentTurnHolder.startTurn(this);
+			//camera.setTargetCreature(currentTurnHolder);
+			
 			System.out.println("It is now " + currentTurnHolder.getName() + "'s turn");
-		}
-		else
-		{
-			turnQueue = floor.getCreatures().iterator();
-			nextCharactersTurn();
-		}
-		if(currentTurnHolder != null)
-		{
-			camera.setTargetCreature(currentTurnHolder);
-		}
 	}
 
 	/**
@@ -130,7 +151,7 @@ public class GameState extends State
 	public void takePlayerDPadInput(int xComponent, int yComponent)
 	{	
 		//Check to see if it is the player's turn, ignore this input if it isn't
-		if (currentTurnHolder.equals(player))
+		if (currentTurnHolder.equals(player) && !player.isDoneWithTurn())
 		{
 			//Check to see if it was the middle button that was pressed
 			if(xComponent == 0 && yComponent == 0)
@@ -164,10 +185,47 @@ public class GameState extends State
 						{
 							//System.out.println("Target Cell's occpant is a Creature? " + Creature.class.isAssignableFrom(floor.getCell(player.getGridX() + xComponent, player.getGridY() + yComponent).getOccupant().getClass()));
 							Creature.doDamage((Creature) player, (Creature) floor.getCell(player.getGridX() + xComponent, player.getGridY() + yComponent).getOccupant(), DamageType.PHYSICAL, player.getAttack());
-						}
 						
-						//End turn
-						player.endTurn();
+							//End turn
+							player.endTurn();
+						}
+						else if(Item.class.isAssignableFrom(floor.getCell(player.getGridX() + xComponent, player.getGridY() + yComponent).getOccupant().getClass()))
+						{
+							//System.out.println("Target Cell's occpant is a Creature? " + Creature.class.isAssignableFrom(floor.getCell(player.getGridX() + xComponent, player.getGridY() + yComponent).getOccupant().getClass()));
+							Item item = (Item) floor.getCell(player.getGridX() + xComponent, player.getGridY() + yComponent).getOccupant();
+							switch(item.getItemType())
+							{
+								case ARMOR:
+									if(player.getArmor() == null)
+									{
+										player.setArmor(item);
+										item.getCurrentCell().setOccupant(null);
+										item.setCurrentCell(null);
+										appendLog(player.getName() + " equipped " + item.getName());
+									}
+									break;
+								case POTION:
+									player.takeHeal(player.getMaxHealth());
+									appendLog(player.getName() + " was fully healed by " + item.getName());
+									item.getCurrentCell().setOccupant(null);
+									item.setCurrentCell(null);
+									break;
+								case WEAPON:
+									if(player.getWeapon() == null)
+									{
+										player.setWeapon(item);
+										item.getCurrentCell().setOccupant(null);
+										item.setCurrentCell(null);
+										appendLog(player.getName() + " equipped " + item.getName());
+									}
+									break;
+								default:
+									break;
+							}
+						
+							//End turn
+							player.endTurn();
+						}
 					}
 				}
 			}
@@ -177,5 +235,10 @@ public class GameState extends State
 	public Player getPlayer()
 	{
 		return player;
+	}
+	
+	public void appendLog(String line)
+	{
+		game.getDisplay().appendLog(line);
 	}
 }

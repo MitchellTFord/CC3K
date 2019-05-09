@@ -23,13 +23,10 @@ public class Camera
 	// The Creature the Camera should follow
 	private Creature targetCreature;
 
-	private boolean useBuffer;
-
-	public Camera(int viewWidth, int viewHeight, boolean useBuffer, Creature targetCreature)
+	public Camera(int viewWidth, int viewHeight, Creature targetCreature)
 	{
 		this.viewWidth = viewWidth;
 		this.viewHeight = viewHeight;
-		this.useBuffer = useBuffer;
 		this.targetCreature = targetCreature;
 		
 		viewPort = new Rectangle();
@@ -37,7 +34,7 @@ public class Camera
 
 	public Camera(int viewWidth, int viewHeight, boolean useBuffer)
 	{
-		this(viewWidth, viewHeight, useBuffer, null);
+		this(viewWidth, viewHeight, null);
 	}
 
 	public void updateCamera()
@@ -70,6 +67,12 @@ public class Camera
 		}
 	}
 
+	public void setViewDimensions(int width, int height)
+	{
+		this.viewWidth = width;
+		this.viewHeight = height;
+	}
+	
 	public boolean inViewPort(Cell cell)
 	{
 		Rectangle cellBounds = new Rectangle();

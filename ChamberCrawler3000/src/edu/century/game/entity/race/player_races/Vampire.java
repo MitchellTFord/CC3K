@@ -4,8 +4,10 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
 
+import edu.century.game.effect.BoostStat;
 import edu.century.game.effect.Effect;
 import edu.century.game.entity.Creature;
+import edu.century.game.entity.Stat;
 import edu.century.game.entity.race.Race;
 import edu.century.game.graphics.Assets;
 
@@ -17,11 +19,12 @@ public class Vampire extends Race
 	}
 	
 	@Override
-	public Effect getEffect(Creature character)
+	public Effect getEffect(Creature creature)
 	{
+		creature.setHealthHardCap(-1);
+		
 		//Gains 5 health on kill, no maximum health
-		//TODO: implement vampire racial effect
-		return null;
+		return new BoostStat(creature, null, "Vampirism (health steal)", 5, -1, Stat.MAX_HEALTH_ON_HIT);
 	}
 	
 	@Override

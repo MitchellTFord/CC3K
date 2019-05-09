@@ -14,7 +14,7 @@ public class Halfling extends Race
 {
 	public Halfling()
 	{
-		super("Dragon", 25, -5, 5, null);
+		super("Halfling", 25, -5, 5, null);
 	}
 	
 	@Override

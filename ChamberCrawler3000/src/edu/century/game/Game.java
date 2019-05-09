@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 import edu.century.game.display.Display;
+import edu.century.game.display.EndGameScreen;
 import edu.century.game.entity.Player;
 import edu.century.game.floor.Floor;
 import edu.century.game.floor.Floor.FloorFormatException;
@@ -233,8 +234,14 @@ public class Game implements Runnable
 		camera = new Camera(display.getFloorPanel().getWidth(), display.getFloorPanel().getHeight(), true);
 		
 		// Create a game state
-		state = new GameState(this, player, g, floor, camera);
+		state = new GameState(this, player, floor, camera);
 		System.out.println("GameState Created");
+	}
+	
+	public void endGame()
+	{
+		new EndGameScreen(player, display.getLogText());
+		display.setVisible(false);
 	}
 
 	public State getState()

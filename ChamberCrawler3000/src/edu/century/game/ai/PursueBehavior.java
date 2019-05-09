@@ -2,6 +2,7 @@ package edu.century.game.ai;
 
 import edu.century.game.entity.Creature;
 import edu.century.game.entity.DamageType;
+import edu.century.game.entity.Player;
 import edu.century.game.floor.Cell;
 
 /**
@@ -22,22 +23,21 @@ public class PursueBehavior extends Behavior
 	{
 		if(attackTarget(creature.getTurnController().getPlayer()))
 		{
-			System.out.println("Attacking");
 			creature.endTurn();
 		}
-		else if(moveTowardTarget(creature.getTurnController().getPlayer()))
+		else if(moveTowardTarget(creature.getTurnController().getPlayer(), 3))
 		{
-			System.out.println("Moving toward target");
+			//creature.getTurnController().appendLog(creature.getName() + " moves toward the player");
 			creature.endTurn();
 		}
 		else if(moveRandomly())
 		{
-			System.out.println("Moving randomly");
+			//creature.getTurnController().appendLog(creature.getName() + " moves randomly");
 			creature.endTurn();
 		}
 		else
 		{
-			System.out.println("Couldn't move");
+			//creature.getTurnController().appendLog(creature.getName() + " couldn't move");
 			creature.endTurn();
 		}
 	}
@@ -46,8 +46,15 @@ public class PursueBehavior extends Behavior
 	{
 		if(creature.getCurrentCell().isAdjecent(target.getCurrentCell()))
 		{
-			Creature.doDamage(creature, creature.getTurnController().getPlayer(), DamageType.PHYSICAL,
-					creature.getAttack());
+			if(Math.random() > Player.PLAYER_EVASION_CHANCE)
+			{
+				Creature.doDamage(creature, creature.getTurnController().getPlayer(), DamageType.PHYSICAL,
+						creature.getAttack());
+			}
+			else
+			{
+				creature.getTurnController().appendLog(creature.getName() + " missed an attack against " + target.getName());
+			}
 			return true;
 		}
 		else
@@ -56,11 +63,16 @@ public class PursueBehavior extends Behavior
 		}
 	}
 
-	private boolean moveTowardTarget(Creature target)
+	private boolean moveTowardTarget(Creature target, int minDistance)
 	{
 		Cell currentCell = creature.getCurrentCell();
 		Cell[] neighborCells = currentCell.getNeighbors();
 
+		if(manhattanDistance(currentCell, target.getCurrentCell()) > minDistance)
+		{
+			return false;
+		}
+		
 		// Move closer to the target if possible
 		for(int i = 0; i < neighborCells.length; i++)
 		{

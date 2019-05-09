@@ -35,4 +35,9 @@ public abstract class State
 	 * @param yMove the y component of the button that created this ActionEvent
 	 */
 	public abstract void takePlayerDPadInput(int xMove, int yMove);
+	
+	public Game getGame()
+	{
+		return game;
+	}
 }

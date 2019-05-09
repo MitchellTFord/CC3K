@@ -50,17 +50,17 @@ public class Cell
 		this.foregroundTexture = tile.getForegroundTexture();
 	}
 
-	public void render(Graphics g, int renderX, int renderY)
-	{
-		// TODO: prevent non-visible Cells from rendering
-
-		// Render cellBorder if it is something other than null
-		if(cellBorder != null)
-		{
-			g.drawImage(cellBorder, (int) renderX, (int) renderY, (int) (Tile.TILE_WIDTH * Tile.TILE_SCALE),
-					(int) (Tile.TILE_HEIGHT * Tile.TILE_SCALE), null);
-		}
-	}
+//	public void render(Graphics g, int renderX, int renderY)
+//	{
+//		// TODO: prevent non-visible Cells from rendering
+//
+//		// Render cellBorder if it is something other than null
+//		if(cellBorder != null)
+//		{
+//			g.drawImage(cellBorder, (int) renderX, (int) renderY, (int) (Tile.TILE_WIDTH * Tile.TILE_SCALE),
+//					(int) (Tile.TILE_HEIGHT * Tile.TILE_SCALE), null);
+//		}
+//	}
 
 	public void renderTile(Graphics g, double offsetX, double offsetY)
 	{

@@ -10,6 +10,7 @@ import edu.century.game.floor.Cell;
 import edu.century.game.graphics.Assets;
 import edu.century.game.state.GameState;
 import edu.century.game.tiles.Tile;
+import sun.net.www.protocol.http.HttpURLConnection.TunnelState;
 
 public class Creature extends Entity
 {
@@ -17,7 +18,7 @@ public class Creature extends Entity
 	protected String name;
 
 	// this character's various stats
-	protected double health, maxHealth, healthHardCap, attack, defence, potionPower, healthOnKill;
+	protected double health, maxHealth, healthHardCap, attack, defence, potionPower, healthOnKill, maxHealthOnHit;
 
 	// the amount of gold gained on kill
 	protected int goldOnKill;
@@ -40,12 +41,18 @@ public class Creature extends Entity
 	// Rendering offsets for movement animations
 	protected float animationOffsetX = 0, animationOffsetY = 0;
 
+	//More precise position of this creature in the floor
 	protected int posX, posY;
 
+	//The object that controls turns for this game
 	protected GameState turnController;
 
+	//Indicates that all actions have been taken for this turn
 	protected boolean doneWithTurn;
 
+	//Indicates whether or not this creature is dead
+	protected boolean dead = false;
+	
 	public Creature(Cell currentCell, Race race)
 	{
 		super(currentCell);
@@ -59,7 +66,7 @@ public class Creature extends Entity
 		this.defence = 25 + this.race.getDefenseMod();
 
 		this.characterSprite = race.getRaceSprite();
-
+		
 		this.addEffect(race.getEffect(this));
 
 		// Only do this if not dealing with the player
@@ -72,14 +79,13 @@ public class Creature extends Entity
 	@Override
 	public void render(Graphics g, double offsetX, double offsetY)
 	{
-		// System.out.println(race.getRaceSprite());
 		g.drawImage(characterSprite,
 				(int) (offsetX + currentCell.getGridX() * Tile.TILE_WIDTH * Tile.TILE_SCALE + animationOffsetX),
 				(int) (offsetY + currentCell.getGridY() * Tile.TILE_HEIGHT * Tile.TILE_SCALE + animationOffsetY),
 				(int) (Tile.TILE_WIDTH * Tile.TILE_SCALE), (int) (Tile.TILE_HEIGHT * Tile.TILE_SCALE), null);
 
-		posX = (int) (currentCell.getGridX() * Tile.TILE_WIDTH * Tile.TILE_SCALE + animationOffsetX);
-		posY = (int) (currentCell.getGridY() * Tile.TILE_HEIGHT * Tile.TILE_SCALE + animationOffsetY);
+		posX = getPosX();
+		posY = getPosY();
 
 		if((Math.abs(animationOffsetX) >= (double) 1 / Game.fps))
 		{
@@ -140,7 +146,7 @@ public class Creature extends Entity
 	 */
 	public void endTurn()
 	{
-		this.decrementEffectDurations(this.effects);
+		this.decrementEffectDurations();
 		doneWithTurn = true;
 	}
 	
@@ -216,6 +222,11 @@ public class Creature extends Entity
 		return doneWithTurn;
 	}
 	
+	public boolean isDead()
+	{
+		return dead;
+	}
+	
 	/**
 	 * Handles the dealing of damage between characters, passes different values
 	 * into takeDamage() depending on damageType when it’s called
@@ -235,8 +246,8 @@ public class Creature extends Entity
 		{
 			case PHYSICAL:
 				double damageDone = Math.ceil((100 / (100 + target.getDefence())) * damage);
-				System.out
-						.println(caster.getName() + " attacked " + target.getName() + " for " + damageDone + " health");
+				caster.getTurnController().appendLog(caster.getName() + " attacked " + target.getName() + " for " + damageDone + " health");
+				caster.hitTarget();
 				target.takeDamage(damageDone, caster);
 				break;
 			case ELEMENTAL:
@@ -285,9 +296,18 @@ public class Creature extends Entity
 	 */
 	public void takeHeal(double amount)
 	{
+		if(healthHardCap == -1)
+		{
+			this.maxHealth += amount;
+		}
 		this.health = Math.min(this.health + amount, this.maxHealth);
 	}
 
+	public void hitTarget()
+	{
+		takeHeal(maxHealthOnHit);
+	}
+	
 	/**
 	 * Adds the given effect Effect to this character’s effects array
 	 * 
@@ -314,7 +334,7 @@ public class Creature extends Entity
 	 * bonuses, and stat-changing effects, calls effects[i].applyStatChange()
 	 * for all i in effects
 	 */
-	public void updateStats()
+	protected void updateStats()
 	{
 		// Set all stats to base values
 		maxHealth = 125 + race.getHealthMod();
@@ -322,8 +342,22 @@ public class Creature extends Entity
 		defence = 25 + race.getDefenseMod();
 		potionPower = 1;
 		healthOnKill = 0;
-		goldOnKill = 0;
-
+		maxHealthOnHit = 0;
+		goldOnKill = 5;
+		
+		if(armor != null)
+		{
+			attack += armor.getAttackMod();
+			defence += armor.getDefenceMod();
+			maxHealth += armor.getHealthMod();
+		}
+		if(weapon != null)
+		{
+			attack += weapon.getAttackMod();
+			defence += weapon.getDefenceMod();
+			maxHealth += weapon.getHealthMod();
+		}
+		
 		for(int i = 0; i < effects.length; i++)
 		{
 			if(effects[i] != null)
@@ -346,7 +380,7 @@ public class Creature extends Entity
 	/**
 	 * Calls effects[i].applyEffect() for all i in effects
 	 */
-	public void applyEffects()
+	protected void applyEffects()
 	{
 		for(int i = 0; i < effects.length; i++)
 		{
@@ -363,7 +397,7 @@ public class Creature extends Entity
 	 * 
 	 * @param effects
 	 */
-	public void decrementEffectDurations(Effect[] effects)
+	protected void decrementEffectDurations()
 	{
 		for(int i = 0; i < effects.length; i++)
 		{
@@ -392,12 +426,27 @@ public class Creature extends Entity
 	public void targetKilled(Creature target)
 	{
 		// On-kill effects are triggered here
+		
+		int addedGold = 0;
+		
+		addedGold += goldOnKill;
 
-		// TODO: implement vampire/dwarf rule
-		// Doesn't account for vampires being allergic to dwarves
 		this.takeHeal(healthOnKill);
-
-		this.gold += goldOnKill;
+		
+		//Vampire dwarf rule
+		if(this.race.equals(Race.playerRaces[4]) && target.getRace().equals(Race.enemyRaces[1]))
+		{
+			this.takeDamage(10, target);
+		}
+		
+		if(target.getRace().equals(Race.playerRaces[4]))
+		{
+			addedGold += 5;
+		}
+		
+		turnController.appendLog(this.name + " looted " + addedGold + " gold from " + target.getName());
+		
+		this.gold += addedGold;
 	}
 
 	/**
@@ -405,7 +454,7 @@ public class Creature extends Entity
 	 */
 	protected void die()
 	{
-		currentCell.getFloor().removeCreature(this);
+		dead = true;
 		currentCell.setOccupant(null);
 		currentCell = null;
 	}
@@ -440,12 +489,21 @@ public class Creature extends Entity
 			case GOLD_ON_KILL:
 				goldOnKill += amount;
 				break;
+			case MAX_HEALTH_ON_HIT:
+				maxHealthOnHit += amount;
+				break;
 			default:
 				// Shouldn't ever happen
 				break;
 		}
 	}
 
+	public void resetAnimationOffsets()
+	{
+		this.animationOffsetX = 0;
+		this.animationOffsetY = 0;
+	}
+	
 	/**
 	 * @return this player's effects array
 	 */
@@ -520,14 +578,24 @@ public class Creature extends Entity
 		return weapon;
 	}
 
+	public void setArmor(Item armor)
+	{
+		this.armor = armor;
+	}
+
+	public void setWeapon(Item weapon)
+	{
+		this.weapon = weapon;
+	}
+
 	public int getPosX()
 	{
-		return posX;
+		return (int) (currentCell.getGridX() * Tile.TILE_WIDTH * Tile.TILE_SCALE + animationOffsetX);
 	}
 
 	public int getPosY()
 	{
-		return posY;
+		return (int) (currentCell.getGridY() * Tile.TILE_HEIGHT * Tile.TILE_SCALE + animationOffsetY);
 	}
 
 	@Override
@@ -537,7 +605,16 @@ public class Creature extends Entity
 				+ (int) maxHealth + "\n" + "Attack: " + (int) attack + "\n" + "Defence: " + (int) defence + "\n"
 				+ "Gold: " + gold + "\n" + "Health on Kill: " + (int) healthOnKill + "\n" + "Gold on Kill: "
 				+ goldOnKill + "\n";
-
+		
+		if(armor != null)
+		{
+			str += "Armor: " + armor.getName();
+		}
+		if(weapon != null)
+		{
+			str += "Weapon: " + weapon.getName();
+		}
+		
 		return str;
 	}
 }

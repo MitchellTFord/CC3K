@@ -9,10 +9,10 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import edu.century.game.ai.BehaviorTag;
-import edu.century.game.ai.RandomMoveBehavior;
 import edu.century.game.entity.Creature;
 import edu.century.game.entity.Enemy;
 import edu.century.game.entity.Entity;
+import edu.century.game.entity.Item;
 import edu.century.game.entity.race.Race;
 import edu.century.game.graphics.Camera;
 import edu.century.game.tiles.Tile;
@@ -39,7 +39,7 @@ public class Floor
 	// The gridX and gridY locations of the player's spawn location
 	protected int playerSpawnX, playerSpawnY;
 
-	public void render(Graphics g, Camera camera, double offsetX, double offsetY)
+	public void render(Graphics g, Camera camera)
 	{
 		// Render Tile textures
 		for(int gridY = 0; gridY < gridHeight; gridY++)
@@ -50,7 +50,7 @@ public class Floor
 				{
 					// Calls renderTile() for each Cell object in cells using passed in
 					// offset values
-					cells[gridX][gridY].renderTile(g, offsetX, offsetY);
+					cells[gridX][gridY].renderTile(g, camera.getOffsetX(), camera.getOffsetY());
 				}
 			}
 		}
@@ -62,21 +62,14 @@ public class Floor
 			{
 				if(cells[gridX][gridY].getOccupant() != null)
 				{
-					Entity entity = cells[gridX][gridY].getOccupant();
-					Rectangle bounds = new Rectangle();
-					bounds.setBounds((int) entity.getPosX(), (int) entity.getPosY(),
-							(int) (Tile.TILE_WIDTH * Tile.TILE_SCALE), (int) (Tile.TILE_HEIGHT * Tile.TILE_SCALE));
-					if(camera.inViewPort(bounds))
-					{
 						// Calls renderOccupant() for each Cell object in cells using passed in
 						// offset values
-						cells[gridX][gridY].renderOccupant(g, offsetX, offsetY);
-					}
+						cells[gridX][gridY].renderOccupant(g, camera.getOffsetX(), camera.getOffsetY());
 				}
 			}
 		}
 
-		// Render Entity textures
+		// Render foreground textures
 		for(int gridY = 0; gridY < gridHeight; gridY++)
 		{
 			for(int gridX = 0; gridX < gridWidth; gridX++)
@@ -93,7 +86,7 @@ public class Floor
 					{
 						// Calls renderOccupant() for each Cell object in cells using passed in
 						// offset values
-						cells[gridX][gridY].renderForeground(g, offsetX, offsetY);
+						cells[gridX][gridY].renderForeground(g, camera.getOffsetX(), camera.getOffsetY());
 					}
 				}
 			}
@@ -197,6 +190,8 @@ public class Floor
 		// A 2D array of Race objects to be given to enemy creatures (gridWidth x
 		// gridHeight)
 		Race[][] enemies = new Race[gridWidth][gridHeight];
+		Integer[][] itemIDs = new Integer[gridWidth][gridHeight];
+		
 		for(int line = 0; line < fileLines.length; line++)
 		{
 			// String array from tokens that were separated by commas
@@ -223,7 +218,14 @@ public class Floor
 
 				if(tokensInCell.length > 1)
 				{
-					enemies[tokenInLine][line] = Race.enemyRaces[Integer.parseInt(tokensInCell[1])];
+					if(tokensInCell[1].contains("-"))
+					{
+						itemIDs[tokenInLine][line] = Math.abs(Integer.parseInt(tokensInCell[1]));
+					}
+					else
+					{
+						enemies[tokenInLine][line] = Race.enemyRaces[Integer.parseInt(tokensInCell[1])];
+					}
 				}
 			}
 		}
@@ -233,13 +235,12 @@ public class Floor
 		{
 			throw new FloorFormatException("The player spawn location is obstructed");
 		}
-
-		// Temp
-		System.out.println("Floor File Loaded");
-
+		
 		// Initialize the cells array of this Floor using the created tiles and enemies
 		// arrays
-		initCells(tiles, enemies);
+		initCells(tiles, enemies, itemIDs);
+		
+		System.out.println("Floor File Loaded");
 	}
 
 	private void initCells(Tile[][] tiles)
@@ -269,7 +270,7 @@ public class Floor
 		}
 	}
 
-	private void initCells(Tile[][] tiles, Race[][] enemies)
+	private void initCells(Tile[][] tiles, Race[][] enemies, Integer[][] itemIDs)
 	{
 		// Initializes the cells array with dimensions defined by the
 		// constructor
@@ -298,6 +299,11 @@ public class Floor
 				if(enemies[gridX][gridY] != null)
 				{
 					cells[gridX][gridY].setOccupant(new Enemy(cells[gridX][gridY], enemies[gridX][gridY], BehaviorTag.PURSUE));
+				}
+				
+				if(itemIDs[gridX][gridY] != null)
+				{
+					cells[gridX][gridY].setOccupant(new Item(cells[gridX][gridY], itemIDs[gridX][gridY].intValue()));
 				}
 			}
 		}

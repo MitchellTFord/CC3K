@@ -194,7 +194,7 @@ public class Launcher extends JFrame implements ActionListener, WindowListener
 		useDPadCheckBox = new JCheckBox("Use DPad");
 		useDPadCheckBox.setSelected(true);
 		useDPadCheckBox.addActionListener(this);
-		optionsPanel.add(useDPadCheckBox);
+		//optionsPanel.add(useDPadCheckBox);
 
 		// FPS combo box
 		Integer[] fpsOptions = { 15, 30, 45, 60 };
@@ -206,6 +206,7 @@ public class Launcher extends JFrame implements ActionListener, WindowListener
 		optionsPanel.add(fpsPanel);
 
 		// Temporary place-holders
+		optionsPanel.add(new JLabel("placeholder"));
 		optionsPanel.add(new JLabel("placeholder"));
 		optionsPanel.add(new JLabel("placeholder"));
 		optionsPanel.add(new JLabel("placeholder"));
@@ -266,7 +267,7 @@ public class Launcher extends JFrame implements ActionListener, WindowListener
 		floorPanelRow0.add(floorBrowseButton);
 		
 		//File name text field
-		floorFileTextField = new JTextField("testFloor1.floor");
+		floorFileTextField = new JTextField("mainFloor.floor");
 		floorFileTextField.setEditable(false);
 		floorFileTextField.setColumns(10);
 		floorPanelRow0.add(floorFileTextField);
@@ -365,7 +366,7 @@ public class Launcher extends JFrame implements ActionListener, WindowListener
 			{
 				try
 				{
-					floor = new Floor(Assets.testFloor1);
+					floor = new Floor(Assets.mainFloor);
 				} catch(FloorFormatException floorException)
 				{
 					floorException.printStackTrace();

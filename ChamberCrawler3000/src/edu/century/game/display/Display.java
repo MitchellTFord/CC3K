@@ -55,9 +55,6 @@ public class Display extends JFrame implements WindowListener
 		layout.setVgap(0);
 		setLayout(layout);
 		
-		floorPanel = new FloorDisplay(width * 1/2, height);
-		add(floorPanel, BorderLayout.CENTER);
-		
 		leftPanel = new JPanel();
 		leftPanel.setLayout(new BorderLayout());
 		leftPanel.setPreferredSize(new Dimension(width * 1/4, height));
@@ -77,7 +74,20 @@ public class Display extends JFrame implements WindowListener
 		logPanel = new LogPanel(width * 1/4, height);
 		add(logPanel, BorderLayout.EAST);
 		
+		floorPanel = new FloorDisplay(width * 1/2, height);
+		add(floorPanel, BorderLayout.CENTER);
+		
 		pack();
+	}
+	
+	public String getLogText()
+	{
+		return logPanel.getLog();
+	}
+	
+	public void appendLog(String line)
+	{
+		logPanel.appendLog(line);
 	}
 	
 	public FloorDisplay getFloorPanel()

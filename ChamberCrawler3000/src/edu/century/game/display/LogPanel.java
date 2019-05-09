@@ -2,9 +2,12 @@ package edu.century.game.display;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.text.Highlighter.HighlightPainter;
 
 import edu.century.game.entity.Player;
  /**
@@ -16,8 +19,14 @@ public class LogPanel extends JPanel
 	//The width/height of the panel
 	private int width, height;
 	
+	//The scrollpane for the text area
+	private JScrollPane scrollPane;
+	
 	//The text area for displaying player information
 	private JTextArea textArea;
+	
+	//The layout of the panel
+	private BorderLayout layout;
 	
 	/**
 	 * Constructor for PlayerInfoPanel
@@ -44,14 +53,24 @@ public class LogPanel extends JPanel
 		//Temp
 		setBackground(Color.pink);
 		
-		//Sets the layout of the panel to a BorderLayout
-		setLayout(new BorderLayout());
+		layout = new BorderLayout();
+		layout.setHgap(0);
+		layout.setVgap(0);
+		setLayout(layout);
 		
-		//Player info text area
-		textArea = new JTextArea("--- Game Log ---");
+		textArea = new JTextArea();
 		textArea.setEditable(false);
 		textArea.setLineWrap(true);
-		add(textArea, BorderLayout.CENTER);
+		textArea.setWrapStyleWord(true);
+		
+		scrollPane = new JScrollPane(textArea);
+		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane.setPreferredSize(new Dimension(width, height));
+		scrollPane.setMaximumSize(new Dimension(width, height));
+		scrollPane.setMinimumSize(new Dimension(width, height));
+		
+		add(scrollPane);
 	}
 	
 	/**
@@ -60,15 +79,12 @@ public class LogPanel extends JPanel
 	 */
 	public void appendLog(String text)
 	{
-		textArea.append(text);
-		
-//		if(getFontMetrics(getFont()).stringWidth(text) < textArea.getWidth())
-//		{
-//		textArea.append(text);
-//		}
-//		else
-//		{
-//			String[] textParts = new String[4];	
-//		}
+		textArea.append(" - " + text + "\n");
+		textArea.setCaretPosition(textArea.getDocument().getLength());
+	}
+	
+	public String getLog()
+	{
+		return textArea.getText();
 	}
 }
