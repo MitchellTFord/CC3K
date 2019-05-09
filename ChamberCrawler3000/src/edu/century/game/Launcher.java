@@ -205,7 +205,7 @@ public class Launcher extends JFrame implements ActionListener, WindowListener
 		Integer[] fpsOptions = { 15, 30, 45, 60 };
 		fpsComboBox = new JComboBox<Integer>(fpsOptions);
 		fpsComboBox.setEditable(false);
-		fpsComboBox.setSelectedIndex(1);
+		fpsComboBox.setSelectedIndex(3);
 		fpsComboBox.addActionListener(this);
 		fpsPanel = new CombinedPanel(new JLabel("FPS"), fpsComboBox);
 		optionsPanel.add(fpsPanel);
@@ -272,7 +272,7 @@ public class Launcher extends JFrame implements ActionListener, WindowListener
 		floorPanelRow0.add(floorBrowseButton);
 		
 		//File name text field
-		floorFileTextField = new JTextField("mainFloor.floor");
+		floorFileTextField = new JTextField("");
 		floorFileTextField.setEditable(false);
 		floorFileTextField.setColumns(10);
 		floorPanelRow0.add(floorFileTextField);
@@ -367,24 +367,16 @@ public class Launcher extends JFrame implements ActionListener, WindowListener
 			fps = (Integer) fpsComboBox.getSelectedItem();
 			player = new Player(null, playerRace, playerName);
 
-			if(floor == null)
+			if(floor != null)
 			{
-				try
-				{
-					floor = new Floor(Assets.mainFloor);
-				} catch(FloorFormatException floorException)
-				{
-					floorException.printStackTrace();
-					System.exit(1);
-				} catch(NumberFormatException | FileNotFoundException otherException)
-				{
-					otherException.printStackTrace();
-					System.exit(1);
-				}
+				// Launch the game
+				startGame(640, 360, useDPad, player, floor);
+			}
+			else
+			{
+				floorStatusTextField.setText("You must select a Floor file.");
 			}
 			
-			// Launch the game
-			startGame(640, 360, useDPad, player, floor);
 		} else if(actionSource.equals(floorEditorButton))
 		{
 			// Launch the floor editor
@@ -411,12 +403,12 @@ public class Launcher extends JFrame implements ActionListener, WindowListener
 					//Set the text of floorFileTextField to the name of the chosen file
 					floorFileTextField.setText(floorFile.getName());
 					
-					floorStatusTextField.setText(floorFile.getName().substring(0, 10) + "..." + " was successfully loaded.\n");
+					floorStatusTextField.setText(floorFile.getName().substring(0, 15) + "..." + " was successfully loaded.\n");
 				} catch (FileNotFoundException | FloorFormatException e) 
 				{
-					if(floorFile.getName().length() > 13)
+					if(floorFile.getName().length() > 18)
 					{
-						floorStatusTextField.setText(floorFile.getName().substring(0, 10) + "..." + " could not be loaded.\n" + e.getMessage());
+						floorStatusTextField.setText(floorFile.getName().substring(0, 15) + "..." + " could not be loaded.\n" + e.getMessage());
 					}	
 					else
 					{

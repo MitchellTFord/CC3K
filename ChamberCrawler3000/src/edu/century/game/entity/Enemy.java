@@ -9,9 +9,9 @@ import edu.century.game.floor.Cell;
 import edu.century.game.state.GameState;
 
 public class Enemy extends Creature
-{	
+{
 	protected Behavior behavior;
-	
+
 	public Enemy(Cell currentCell, Race race, BehaviorTag behaviorTag)
 	{
 		super(currentCell, race);
@@ -28,17 +28,17 @@ public class Enemy extends Creature
 				break;
 		}
 	}
-	
+
 	/**
 	 * Triggered at the start of a turn, calls updateStats() and applyEffects()
 	 */
 	public void startTurn(GameState turnController)
 	{
 		this.turnController = turnController;
-		
+
 		this.updateStats();
 		this.applyEffects();
-		
+
 		behavior.takeTurn();
 	}
 }

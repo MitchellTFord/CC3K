@@ -107,12 +107,12 @@ public abstract class Race
 	}
 
 	/**
-	 * @param character
+	 * @param creature
 	 *                  the Character this Effect is being applied to
 	 * @return a new Effect, implemented differently for each Race, character is
 	 *         the character effected
 	 */
-	public abstract Effect getEffect(Creature character);
+	public abstract Effect getEffect(Creature creature);
 
 	public String toString()
 	{

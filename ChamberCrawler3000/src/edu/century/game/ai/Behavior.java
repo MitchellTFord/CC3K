@@ -14,7 +14,7 @@ public abstract class Behavior
 		this.creature = creature;
 	}
 	
-	public static double manhattanDistance(Cell cell1, Cell cell2)
+	public static int manhattanDistance(Cell cell1, Cell cell2)
 	{
 		return Math.abs(cell1.getGridX() - cell2.getGridX()) + Math.abs(cell1.getGridY() - cell2.getGridY());
 	}
