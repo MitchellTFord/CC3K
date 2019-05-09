@@ -1,14 +1,11 @@
 package edu.century.game.entity;
 
-import java.awt.image.BufferedImage;
-
 import edu.century.game.ai.Behavior;
 import edu.century.game.ai.BehaviorTag;
 import edu.century.game.ai.PursueBehavior;
 import edu.century.game.ai.RandomMoveBehavior;
 import edu.century.game.entity.race.Race;
 import edu.century.game.floor.Cell;
-import edu.century.game.graphics.Assets;
 import edu.century.game.state.GameState;
 
 public class Enemy extends Creature

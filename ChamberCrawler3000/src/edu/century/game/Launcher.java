@@ -40,6 +40,11 @@ import edu.century.game.graphics.Assets;
 
 public class Launcher extends JFrame implements ActionListener, WindowListener
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	// The Launcher object that will be used
 	private static Launcher launcher;
 
@@ -406,7 +411,7 @@ public class Launcher extends JFrame implements ActionListener, WindowListener
 					//Set the text of floorFileTextField to the name of the chosen file
 					floorFileTextField.setText(floorFile.getName());
 					
-					floorStatusTextField.setText(floorFile.getName() + " was loaded successfully");
+					floorStatusTextField.setText(floorFile.getName().substring(0, 10) + "..." + " was successfully loaded.\n");
 				} catch (FileNotFoundException | FloorFormatException e) 
 				{
 					if(floorFile.getName().length() > 13)

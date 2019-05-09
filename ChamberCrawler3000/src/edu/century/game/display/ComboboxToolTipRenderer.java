@@ -9,10 +9,14 @@ import javax.swing.JList;
 
 public class ComboboxToolTipRenderer extends DefaultListCellRenderer
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	List<String> tooltips;
 	
 	@Override
-	public Component getListCellRendererComponent(JList list, Object value,
+	public Component getListCellRendererComponent(JList<?> list, Object value,
 			int index, boolean isSelected, boolean cellHasFocus)
 	{
 		JComponent component = (JComponent) super.getListCellRendererComponent(list, 

@@ -11,6 +11,11 @@ import javax.swing.JPanel;
 public class CombinedPanel extends JPanel
 {
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
 	 * 1 component constructor for CombinedPanel, centers it
 	 * @param a The component to be put on the left
 	 */

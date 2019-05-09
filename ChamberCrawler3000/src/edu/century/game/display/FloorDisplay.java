@@ -8,7 +8,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 
 import javax.swing.JPanel;
-import javax.swing.LayoutStyle;
 
 /**
  * The JPanel for displaying the Floor
@@ -16,6 +15,11 @@ import javax.swing.LayoutStyle;
  */
 public class FloorDisplay extends JPanel implements MouseMotionListener
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	//The width/height of the panel
 	private int width, height;
 

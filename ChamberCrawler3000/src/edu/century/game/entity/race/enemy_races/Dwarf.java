@@ -6,7 +6,6 @@ import javax.swing.ImageIcon;
 
 import edu.century.game.effect.*;
 import edu.century.game.entity.Creature;
-import edu.century.game.entity.Stat;
 import edu.century.game.entity.race.Race;
 import edu.century.game.graphics.Assets;
 

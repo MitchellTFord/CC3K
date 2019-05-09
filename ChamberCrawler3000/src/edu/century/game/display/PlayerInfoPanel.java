@@ -21,6 +21,11 @@ import edu.century.game.entity.Player;
   */
 public class PlayerInfoPanel extends JPanel implements ActionListener
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	//The width/height of the panel
 	private int width, height;
 	

@@ -7,15 +7,17 @@ import java.awt.Dimension;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.text.Highlighter.HighlightPainter;
-
-import edu.century.game.entity.Player;
  /**
   * The panel for displaying information about the player
   * @author Mitchell Ford
   */
 public class LogPanel extends JPanel
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	//The width/height of the panel
 	private int width, height;
 	

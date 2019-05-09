@@ -2,11 +2,9 @@ package edu.century.game.display;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -15,6 +13,11 @@ import edu.century.game.entity.Player;
 
 public class Display extends JFrame implements WindowListener
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private int width, height;
 	
 	private BorderLayout layout;

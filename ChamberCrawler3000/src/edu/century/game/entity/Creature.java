@@ -7,10 +7,8 @@ import edu.century.game.Game;
 import edu.century.game.effect.Effect;
 import edu.century.game.entity.race.Race;
 import edu.century.game.floor.Cell;
-import edu.century.game.graphics.Assets;
 import edu.century.game.state.GameState;
 import edu.century.game.tiles.Tile;
-import sun.net.www.protocol.http.HttpURLConnection.TunnelState;
 
 public class Creature extends Entity
 {
@@ -608,11 +606,11 @@ public class Creature extends Entity
 		
 		if(armor != null)
 		{
-			str += "Armor: " + armor.getName();
+			str += "Armor: " + armor.getName() + "\n";
 		}
 		if(weapon != null)
 		{
-			str += "Weapon: " + weapon.getName();
+			str += "Weapon: " + weapon.getName() + "\n";
 		}
 		
 		return str;

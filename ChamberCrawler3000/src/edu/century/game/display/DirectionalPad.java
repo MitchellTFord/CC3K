@@ -18,6 +18,11 @@ import edu.century.game.graphics.Assets;
  */
 public class DirectionalPad extends JPanel
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private Game game;
 	
 	private GridLayout layout;
@@ -70,6 +75,10 @@ public class DirectionalPad extends JPanel
 	 */
 	private class MovementButton extends JButton implements ActionListener
 	{
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 		private DirectionalPad dPad;
 		private int xMove, yMove;
 		

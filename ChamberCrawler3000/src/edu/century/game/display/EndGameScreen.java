@@ -18,6 +18,10 @@ import edu.century.game.entity.race.Race;
 public class EndGameScreen extends JFrame implements WindowListener
 {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField scoreField;
 	private JTextArea playerInfoTextArea, logTextArea;

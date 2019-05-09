@@ -8,11 +8,9 @@ import edu.century.game.entity.Creature;
 import edu.century.game.entity.DamageType;
 import edu.century.game.entity.Enemy;
 import edu.century.game.entity.Item;
-import edu.century.game.entity.ItemType;
 import edu.century.game.entity.Player;
 import edu.century.game.floor.Floor;
 import edu.century.game.graphics.Camera;
-import edu.century.game.tiles.Tile;
 
 /**
  * The State where most or all gameplay occurs
@@ -24,7 +22,6 @@ public class GameState extends State
 	
 	private Player player;
 	private Floor floor;
-	private Graphics g;
 	private Camera camera;
 	private Creature currentTurnHolder;
 	private Iterator<Creature> turnQueue;

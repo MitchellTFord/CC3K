@@ -7,13 +7,15 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 public class ConfirmExit extends JFrame implements ActionListener
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JLabel messageLabel = new JLabel("Are you sure you want to exit?");
 	private JButton yesButton = new JButton("Yes");
 	private JButton noButton = new JButton("No");

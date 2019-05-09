@@ -2,14 +2,10 @@ package edu.century.game;
 
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
-import java.io.File;
-import java.io.FileNotFoundException;
-
 import edu.century.game.display.Display;
 import edu.century.game.display.EndGameScreen;
 import edu.century.game.entity.Player;
 import edu.century.game.floor.Floor;
-import edu.century.game.floor.Floor.FloorFormatException;
 import edu.century.game.graphics.Camera;
 import edu.century.game.state.GameState;
 import edu.century.game.state.State;

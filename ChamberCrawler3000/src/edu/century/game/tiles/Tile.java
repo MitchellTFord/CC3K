@@ -3,7 +3,6 @@ package edu.century.game.tiles;
 import java.awt.image.BufferedImage;
 
 import edu.century.game.graphics.Assets;
-import edu.century.game.graphics.SpriteSheet;
 
 public class Tile
 {

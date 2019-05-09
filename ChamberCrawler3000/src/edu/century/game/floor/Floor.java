@@ -1,7 +1,6 @@
 package edu.century.game.floor;
 
 import java.awt.Graphics;
-import java.awt.Rectangle;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -11,7 +10,6 @@ import java.util.Scanner;
 import edu.century.game.ai.BehaviorTag;
 import edu.century.game.entity.Creature;
 import edu.century.game.entity.Enemy;
-import edu.century.game.entity.Entity;
 import edu.century.game.entity.Item;
 import edu.century.game.entity.race.Race;
 import edu.century.game.graphics.Camera;
@@ -410,6 +408,11 @@ public class Floor
 
 	public class FloorFormatException extends Exception
 	{
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
 		private FloorFormatException(String errorMessage)
 		{
 			super(errorMessage);
