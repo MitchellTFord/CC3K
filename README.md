@@ -1,6 +1,5 @@
 # ChamberCrawler3000 #
 
-### Gameplay Demo ###
 ![Demo GIF 1](https://github.com/MitchellTFord/CC3K/blob/master/doc/images/CC3K%20Demo%201.gif)
 
 ### What is ChamberCrawler3000? ###
