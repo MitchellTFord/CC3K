@@ -1,5 +1,7 @@
 # ChamberCrawler3000 #
 
+### [Longer Demo on YouTube](https://www.youtube.com/watch?v=q6o92FsPy-w)
+
 ![Demo GIF 1](https://github.com/MitchellTFord/CC3K/blob/master/doc/images/CC3K%20Demo%201.gif)
 
 ### What is ChamberCrawler3000? ###
